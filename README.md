@@ -44,7 +44,9 @@ If a production `SITE` is configured, inspect generated sitemap files after `pnp
 
 This project uses the Astro Cloudflare adapter (`output: 'server'`), whose `wrangler.jsonc` entry point (`@astrojs/cloudflare/entrypoints/server`) only exists after `astro build` has run. **Deploying without building first fails with `The entry-point file at "@astrojs/cloudflare/entrypoints/server" was not found.`**
 
-The `deploy` script is `astro build && wrangler deploy`, so building is always part of the deploy step. On CI platforms that run a configured **Deploy command**, set it to `npm run deploy` (or `pnpm run deploy`) — this is the reliable option because some platforms skip the separate **Build command** phase entirely (verified in production: the platform ran only `pnpm install` then `npx wrangler deploy`). Only rely on a separate Build command when your platform demonstrably executes it before the Deploy command.
+The `deploy` script is `astro build && wrangler deploy`, so building is always part of the deploy step. On CI platforms that run a configured **Deploy command**, set it to `npm run deploy` (or `pnpm run deploy`) — this is the reliable option because some platforms skip the separate **Build command** phase entirely (verified in production: the platform ran only `pnpm install --frozen-lockfile` then `npx wrangler deploy`). Only rely on a separate Build command when your platform demonstrably executes it before the Deploy command.
+
+**Safety net:** a `postinstall` hook (`node scripts/prepare-deploy.mjs`) runs `astro build` automatically when a deploy platform does `pnpm install` on a fresh clone, so `dist/server/wrangler.json` exists before `wrangler deploy` even if the platform never runs a Build command. It rebuilds only when `dist/server/wrangler.json` is missing or when `CI`/`DEPLOY` is set, so local installs are not slowed down.
 
 ## Delivery sandbox limitation
 
