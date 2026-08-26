@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Noto Sans Kannada", "Nirmala UI", "Tunga", system-ui, sans-serif;
+  --color-ocean-50: #f3fbfa;
+  --color-ocean-100: #d9f2ee;
+  --color-ocean-200: #afe2da;
+  --color-ocean-500: #147d7a;
+  --color-ocean-700: #0c5a59;
+  --color-ocean-900: #073f40;
+  --color-sand-50: #fffaf0;
+  --color-sand-100: #f8ecd2;
+  --color-sand-200: #edd8ae;
+  --color-sand-600: #a66a2f;
+  --color-temple-500: #d7632a;
+  --color-ink: #173034;
+}
+
+:root {
+  color-scheme: light;
+  font-family: var(--font-sans);
+  background: #fffaf0;
+  color: #173034;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+html { scroll-behavior: smooth; }
+body { margin: 0; background: #fffaf0; }
+a { text-underline-offset: 0.22em; }
+::selection { background: #afe2da; color: #073f40; }
+
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: -5rem;
+  z-index: 100;
+  border-radius: 999px;
+  background: #073f40;
+  color: white;
+  padding: .7rem 1rem;
+  transition: top .2s ease;
+}
+.skip-link:focus { top: 1rem; }
+
+.shell { width: min(1180px, calc(100% - 2rem)); margin-inline: auto; }
+.eyebrow { letter-spacing: .12em; text-transform: uppercase; font-size: .76rem; font-weight: 800; color: #0c5a59; }
+.section-title { font-size: clamp(1.8rem, 3.8vw, 3rem); line-height: 1.12; font-weight: 800; letter-spacing: -.025em; }
+.lead { font-size: clamp(1.02rem, 1.5vw, 1.2rem); line-height: 1.9; color: #38575b; }
+.card { border: 1px solid rgba(12,90,89,.15); border-radius: 1.5rem; background: rgba(255,255,255,.82); box-shadow: 0 22px 70px rgba(7,63,64,.07); }
+.pill { border: 1px solid rgba(255,255,255,.32); background: rgba(4,44,45,.44); backdrop-filter: blur(9px); }
+
+.hero-photo {
+  background-image:
+    linear-gradient(90deg, rgba(5,45,47,.9) 0%, rgba(5,45,47,.6) 42%, rgba(5,45,47,.12) 78%),
+    url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Gokarna_Main_Beach.jpg/1280px-Gokarna_Main_Beach.jpg');
+  background-size: cover;
+  background-position: center 55%;
+}
+
+.wave-rule {
+  height: 22px;
+  background:
+    radial-gradient(24px 14px at 24px -2px, transparent 23px, #d9f2ee 24px, #d9f2ee 27px, transparent 28px) repeat-x;
+  background-size: 48px 22px;
+  opacity: .7;
+}
+
+.photo-frame img { transition: transform .5s ease; }
+.photo-frame:hover img { transform: scale(1.025); }
+
+.prose-kannada p, .prose-kannada li { line-height: 1.9; color: #38575b; }
+.prose-kannada h2 { margin-top: 2.5rem; font-size: 1.65rem; font-weight: 800; color: #173034; }
+.prose-kannada h3 { margin-top: 1.75rem; font-size: 1.15rem; font-weight: 800; color: #173034; }
+.prose-kannada ul { padding-left: 1.3rem; list-style: disc; }
+
+.map-frame iframe { width: 100%; min-height: 480px; border: 0; }
+
+@media (max-width: 720px) {
+  .hero-photo { background-position: 62% center; }
+  .map-frame iframe { min-height: 380px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

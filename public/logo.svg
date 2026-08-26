@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="180" viewBox="0 0 720 180">
+<defs><linearGradient id="g" x1="15" y1="15" x2="150" y2="160" gradientUnits="userSpaceOnUse"><stop stop-color="#147d7a"/><stop offset="1" stop-color="#073f40"/></linearGradient></defs>
+<circle cx="90" cy="90" r="82" fill="url(#g)"/>
+<circle cx="126" cy="52" r="16" fill="#f0a34a"/>
+<path d="M28 105c20-20 37-20 57 0s38 20 67-3v31c-26 22-51 22-73 3-20-17-32-17-51-3v-28Z" fill="#d9f2ee"/>
+<path d="M46 88c14-14 27-14 41 0 14 12 26 14 45 3" fill="none" stroke="#fffaf0" stroke-width="10" stroke-linecap="round"/>
+<path d="M78 36h20l-4 31H82l-4-31Zm-8 34h37l12 23H58l12-23Z" fill="#f4d6a4"/>
+<text x="205" y="86" font-family="Noto Sans Kannada, Nirmala UI, Tunga, sans-serif" font-size="44" font-weight="800" fill="#073f40">ಗೋಕರ್ಣ ಕರಾವಳಿ</text>
+<text x="205" y="132" font-family="Noto Sans Kannada, Nirmala UI, Tunga, sans-serif" font-size="27" font-weight="600" fill="#147d7a">ಸ್ವತಂತ್ರ ಪ್ರವಾಸಿ ಮಾಹಿತಿ ಮಾರ್ಗದರ್ಶಿ</text>
+</svg>

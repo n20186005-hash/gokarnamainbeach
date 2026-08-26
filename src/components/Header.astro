@@ -1,0 +1,24 @@
+---
+import Logo from './Logo.astro';
+const path = Astro.url.pathname;
+const home = path === '/';
+---
+<header class="sticky top-0 z-50 border-b border-ocean-900/10 bg-sand-50/95 backdrop-blur-xl">
+  <div class="shell flex min-h-18 items-center justify-between gap-5 py-3">
+    <Logo compact />
+    <nav aria-label="ಮುಖ್ಯ ಸಂಚರಣೆ" class="hidden items-center gap-6 text-sm font-bold text-ocean-900 md:flex">
+      {home ? (
+        <>
+          <a href="#ಪರಿಚಯ" class="hover:text-temple-500">ಪರಿಚಯ</a>
+          <a href="#ಯೋಜನೆ" class="hover:text-temple-500">ಭೇಟಿ ಯೋಜನೆ</a>
+          <a href="#ಸೌಲಭ್ಯ" class="hover:text-temple-500">ಸೌಲಭ್ಯಗಳು</a>
+          <a href="#ಸಾರಿಗೆ" class="hover:text-temple-500">ಸಾರಿಗೆ</a>
+          <a href="#ಪ್ರಶ್ನೆಗಳು" class="hover:text-temple-500">ಸಾಮಾನ್ಯ ಪ್ರಶ್ನೆಗಳು</a>
+        </>
+      ) : (
+        <a href="/" class="rounded-full bg-ocean-900 px-5 py-2.5 text-white hover:bg-ocean-700">ಕಡಲತೀರ ಮಾರ್ಗದರ್ಶಿಗೆ ಮರಳಿ</a>
+      )}
+    </nav>
+    {home && <a href="#ನಕ್ಷೆ" class="rounded-full bg-ocean-900 px-4 py-2.5 text-sm font-bold text-white md:hidden">ನಕ್ಷೆ</a>}
+  </div>
+</header>

@@ -1,0 +1,25 @@
+---
+interface Props {
+  compact?: boolean;
+  light?: boolean;
+}
+const { compact = false, light = false } = Astro.props;
+---
+<a href="/" class="inline-flex items-center gap-3 no-underline" aria-label="ಗೋಕರ್ಣ ಮುಖ್ಯ ಕಡಲತೀರ ಮುಖಪುಟ">
+  <svg class:list={[compact ? 'h-9 w-9' : 'h-11 w-11']} viewBox="0 0 64 64" role="img" aria-hidden="true">
+    <defs>
+      <linearGradient id="g" x1="8" y1="8" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#147d7a"/>
+        <stop offset="1" stop-color="#073f40"/>
+      </linearGradient>
+    </defs>
+    <circle cx="32" cy="32" r="30" fill="url(#g)"/>
+    <circle cx="45" cy="19" r="6" fill="#f0a34a"/>
+    <path d="M10 37c7-7 13-7 20 0s13 7 24-1v11c-9 8-18 8-26 1-7-6-11-6-18-1V37Z" fill="#d9f2ee"/>
+    <path d="M16 31c5-5 10-5 15 0 5 4 9 5 16 1" fill="none" stroke="#fffaf0" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M28 14h7l-1 11h-5l-1-11Zm-3 12h13l4 8H21l4-8Z" fill="#f4d6a4" opacity=".96"/>
+  </svg>
+  <span class:list={[compact ? 'text-base' : 'text-lg', 'font-extrabold tracking-tight', light ? 'text-white' : 'text-ocean-900']}>
+    ಗೋಕರ್ಣ ಕರಾವಳಿ ಮಾರ್ಗದರ್ಶಿ
+  </span>
+</a>
