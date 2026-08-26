@@ -13,6 +13,7 @@
     "check": "astro check",
     "build": "astro build",
     "preview": "astro preview",
+    "predeploy": "astro build",
     "deploy": "wrangler deploy",
     "verify": "node scripts/verify.mjs"
   },

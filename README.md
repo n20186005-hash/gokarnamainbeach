@@ -40,6 +40,15 @@ pnpm verify
 
 If a production `SITE` is configured, inspect generated sitemap files after `pnpm build`. If `SITE` remains empty, no sitemap should be emitted by design.
 
+## Deployment to Cloudflare Workers
+
+This project uses the Astro Cloudflare adapter (`output: 'server'`), whose `wrangler.jsonc` entry point (`@astrojs/cloudflare/entrypoints/server`) only exists after `astro build` has run. **Deploying without building first fails with `The entry-point file at "@astrojs/cloudflare/entrypoints/server" was not found.`**
+
+`pnpm deploy` (or `npm run deploy`) runs the `predeploy` hook, which builds before `wrangler deploy`. If your CI platform invokes `npx wrangler deploy` directly, either:
+
+- set the platform **Build command** to `pnpm build` and the **Deploy command** to `npx wrangler deploy`, or
+- point the platform's Deploy command at `pnpm deploy` / `npm run deploy` so the build hook runs automatically.
+
 ## Delivery sandbox limitation
 
 `pnpm-lock.yaml` is intentionally **not** fabricated in this source package. This sandbox cannot reach the npm registry, so Corepack cannot obtain the pinned pnpm binary and a synchronized lockfile cannot be generated or verified here. See `VALIDATION-NOTES.md` for the exact release gate and the recorded limitation. The same sandbox restriction prevents bundling the credited Wikimedia Commons photo binaries locally; the source currently uses their HTTPS image URLs.
