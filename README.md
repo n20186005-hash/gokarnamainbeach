@@ -44,10 +44,7 @@ If a production `SITE` is configured, inspect generated sitemap files after `pnp
 
 This project uses the Astro Cloudflare adapter (`output: 'server'`), whose `wrangler.jsonc` entry point (`@astrojs/cloudflare/entrypoints/server`) only exists after `astro build` has run. **Deploying without building first fails with `The entry-point file at "@astrojs/cloudflare/entrypoints/server" was not found.`**
 
-`pnpm deploy` (or `npm run deploy`) runs the `predeploy` hook, which builds before `wrangler deploy`. If your CI platform invokes `npx wrangler deploy` directly, either:
-
-- set the platform **Build command** to `pnpm build` and the **Deploy command** to `npx wrangler deploy`, or
-- point the platform's Deploy command at `pnpm deploy` / `npm run deploy` so the build hook runs automatically.
+The `deploy` script is `astro build && wrangler deploy`, so building is always part of the deploy step. On CI platforms that run a configured **Deploy command**, set it to `npm run deploy` (or `pnpm run deploy`) — this is the reliable option because some platforms skip the separate **Build command** phase entirely (verified in production: the platform ran only `pnpm install` then `npx wrangler deploy`). Only rely on a separate Build command when your platform demonstrably executes it before the Deploy command.
 
 ## Delivery sandbox limitation
 
