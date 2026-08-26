@@ -13,8 +13,9 @@
     "check": "astro check",
     "build": "astro build",
     "preview": "astro preview",
-    "predeploy": "astro build",
-    "deploy": "wrangler deploy",
+    "deploy": "astro build && wrangler deploy",
+    "deploy:worker": "astro build && wrangler deploy",
+    "deploy:ci": "astro build && wrangler deploy",
     "verify": "node scripts/verify.mjs"
   },
   "dependencies": {
