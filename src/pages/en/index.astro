@@ -1,0 +1,334 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WeatherSection from '../../components/WeatherSection.astro';
+import TidesSection from '../../components/TidesSection.astro';
+import { place, sourceLinks } from '../../data/place';
+import { enFaq, enAttractionSchema, enFaqSchema } from '../../data/enGuide';
+
+export const prerender = false;
+
+const pageUrl = Astro.site ? new URL('/en/', Astro.site).toString() : undefined;
+const jsonLd = [enAttractionSchema(Astro.site ? Astro.site.toString() : undefined), enFaqSchema()];
+---
+
+<BaseLayout
+  lang="en"
+  title="Gokarna Main Beach Guide — Timings, Location, Things to Do & Near Temple"
+  description="Plan your visit to Gokarna Main Beach in Karnataka, India. Practical guide covering beach activities, nearby Mahabaleshwar Temple, sunset views, best time to visit, how to reach, swimming safety, live weather and tides."
+  image={place.heroImage}
+  imageAlt={`${place.fullNameEn} in ${place.cityEn}, ${place.countryEn}`}
+  alternates={[{ lang: 'kn', href: '/' }, { lang: 'x-default', href: '/en/' }]}
+  jsonLd={jsonLd}
+>
+  <section class="hero-photo relative min-h-[680px] overflow-hidden text-white">
+    <div class="absolute inset-0 bg-[linear-gradient(180deg,transparent_60%,rgba(7,63,64,.58)_100%)]"></div>
+    <div class="shell relative flex min-h-[680px] items-end pb-14 pt-24 md:items-center md:pb-20">
+      <div class="max-w-3xl">
+        <p class="mb-5 inline-flex rounded-full border border-white/25 bg-ocean-900/45 px-4 py-2 text-xs font-extrabold tracking-[.12em] backdrop-blur">Uttara Kannada · Karnataka · Arabian Sea</p>
+        <h1 class="text-5xl font-black leading-[1.08] tracking-[-.035em] sm:text-6xl lg:text-7xl">Gokarna Main Beach</h1>
+        <p class="mt-6 max-w-2xl text-lg leading-8 text-white/90 md:text-xl">The town-facing public beach where the Arabian Sea, long sand and Shaiva pilgrimage life meet on one coastline in Gokarna, Karnataka, India.</p>
+        <div class="mt-8 flex flex-wrap gap-3 text-sm font-bold">
+          <span class="pill rounded-full px-4 py-2.5">★ 4.4 · 35,614 reviews</span>
+          <span class="pill rounded-full px-4 py-2.5">Public beach</span>
+          <span class="pill rounded-full px-4 py-2.5">Free entry</span>
+          <span class="pill rounded-full px-4 py-2.5">Usually 07:00–19:00</span>
+        </div>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href="#guide" class="rounded-full bg-white px-6 py-3.5 text-sm font-extrabold text-ocean-900 no-underline hover:bg-sand-100">Plan your visit</a>
+          <a href={place.mapsUrl} rel="noreferrer" class="rounded-full border border-white/35 bg-white/10 px-6 py-3.5 text-sm font-extrabold text-white no-underline backdrop-blur hover:bg-white/20">Open in Maps</a>
+        </div>
+      </div>
+    </div>
+    <p class="absolute bottom-4 right-5 rounded-full bg-black/45 px-3 py-1.5 text-[11px] text-white/90 backdrop-blur">Photo: Kondephy · Wikimedia Commons · CC BY-SA 4.0</p>
+  </section>
+
+  <div class="wave-rule" aria-hidden="true"></div>
+
+  <section id="guide" class="shell py-18 md:py-24">
+    <div class="grid gap-10 lg:grid-cols-[1.05fr_.95fr] lg:items-start">
+      <div>
+        <p class="eyebrow">About the place</p>
+        <h2 class="section-title mt-3">The beach that touches everyday life in the pilgrimage town</h2>
+        <p class="lead mt-6">Gokarna Main Beach is a wide public sandy beach right at the western edge of Gokarna town. Uttara Kannada district marks it as the beach closest to the town; it is not only a sunset spot — pilgrims heading to the temple, the fishing community’s coastal activity, local families and travellers all use the same stretch of shore in different ways.</p>
+        <p class="mt-5 text-base leading-8 text-slate-600">Unlike Gokarna’s more famous Om-shaped beaches, here the “town-and-sea” link is direct. Reached on foot from Belehittal Road and the temple area, the atmosphere shifts through the day — from early-morning religious activity to the evening sunset.</p>
+        <p class="mt-5 text-sm font-semibold tracking-wide text-ocean-700">Gokarna Main Beach → Gokarna → Karnataka → India</p>
+        <p class="mt-2 text-sm leading-7 text-slate-500">Gokarna Main Beach is the central public beach in Gokarna, Uttara Kannada, Karnataka, India — the namesake of gokarnamainbeach.com.</p>
+      </div>
+      <aside class="card p-6 md:p-8" aria-label="Quick facts">
+        <p class="text-sm font-extrabold text-ocean-700">Quick facts</p>
+        <dl class="mt-5 divide-y divide-ocean-900/10 text-sm">
+          <div class="grid grid-cols-[120px_1fr] gap-4 py-4"><dt class="font-bold">Address</dt><dd class="text-slate-600">{place.addressDisplay}</dd></div>
+          <div class="grid grid-cols-[120px_1fr] gap-4 py-4"><dt class="font-bold">Entry</dt><dd class="text-slate-600">Public; general entry free</dd></div>
+          <div class="grid grid-cols-[120px_1fr] gap-4 py-4"><dt class="font-bold">Hours</dt><dd class="text-slate-600">Listed ~{place.opening}; may vary</dd></div>
+          <div class="grid grid-cols-[120px_1fr] gap-4 py-4"><dt class="font-bold">Best season</dt><dd class="text-slate-600">Oct–Mar; morning or before sunset</dd></div>
+          <div class="grid grid-cols-[120px_1fr] gap-4 py-4"><dt class="font-bold">Typical visit</dt><dd class="text-slate-600">Usually 1–2 hrs; more with temple/walk</dd></div>
+          <div class="grid grid-cols-[120px_1fr] gap-4 py-4"><dt class="font-bold">Character</dt><dd class="text-slate-600">Town-facing sand · pilgrimage · sunset</dd></div>
+        </dl>
+        <p class="mt-5 rounded-2xl bg-sand-100 p-4 text-xs leading-6 text-sand-600">Ratings, timings and services change over time. Verify official/local notices before key travel decisions.</p>
+      </aside>
+    </div>
+  </section>
+
+  <WeatherSection lang="en" />
+
+  <TidesSection lang="en" />
+
+  <section class="bg-white py-18 md:py-24">
+    <div class="shell grid gap-12 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
+      <div class="photo-frame overflow-hidden rounded-[2rem] bg-ocean-100 shadow-2xl shadow-ocean-900/10">
+        <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Gokarna_Main_Beach_in_January_2023.jpg?width=1400" alt="Gokarna Main Beach sand and the Arabian Sea — Gokarna Main Beach, Gokarna, India" class="aspect-[4/3] h-full w-full object-cover" loading="lazy" />
+        <p class="bg-sand-50 px-4 py-3 text-[11px] leading-5 text-slate-500">Photo: Alexey Komarov · Wikimedia Commons · CC BY-SA 4.0</p>
+      </div>
+      <div>
+        <p class="eyebrow">History &amp; tradition</p>
+        <h2 class="section-title mt-3">The name “Gokarna” and the Atmalinga legend</h2>
+        <div class="mt-6 space-y-5 text-base leading-8 text-slate-600">
+          <p>Gokarna is known as one of the ancient Shaiva pilgrimage centres on India’s west coast. Karnataka Tourism links the name “Gokarna” with the meaning “cow’s ear”; the town’s shape and local religious stories feed into that explanation.</p>
+          <p><strong class="text-ocean-900">The legend:</strong> The story of how Ravana, having received the Atmalinga from Shiva, was made to set it down at Gokarna by Ganesha’s trick is the core mythological background of the Mahabaleshwar Temple. It remains a living pilgrimage narrative, not dated recorded history.</p>
+          <p>Main Beach is part of this religious landscape. Some devotees bathe in the sea before visiting the Mahabaleshwar Temple. When using the space, respect the privacy and dignity of those bathing, praying or performing rituals.</p>
+          <p>These stories are mythology and folklore, not documented historical events with fixed dates. Still, following the temple’s rules shows respect for local tradition.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="shell py-18 md:py-24">
+    <div class="max-w-3xl">
+      <p class="eyebrow">Plan your visit</p>
+      <h2 class="section-title mt-3">Timing, season, cost and safety — at a glance</h2>
+      <p class="lead mt-5">The quality of a coastal experience changes directly with weather, tide, crowds and religious events. A flexible plan beats a fixed “perfect time”.</p>
+    </div>
+    <div class="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+      <article class="card p-6">
+        <div class="text-2xl">☀</div>
+        <h3 class="mt-4 text-lg font-extrabold">Best season</h3>
+        <p class="mt-3 text-sm leading-7 text-slate-600">October to March usually brings less rain and comfortable outdoor weather. November–February mornings/evenings are pleasant for walks.</p>
+      </article>
+      <article class="card p-6">
+        <div class="text-2xl">◷</div>
+        <h3 class="mt-4 text-lg font-extrabold">Suggested duration</h3>
+        <p class="mt-3 text-sm leading-7 text-slate-600">1–2 hours is enough for sand, sunset and a slow walk. Add half a day if you include the Mahabaleshwar Temple or the old town streets.</p>
+      </article>
+      <article class="card p-6">
+        <div class="text-2xl">₹</div>
+        <h3 class="mt-4 text-lg font-extrabold">Ticket / cost</h3>
+        <p class="mt-3 text-sm leading-7 text-slate-600">General beach entry is free. Parking, private activities/transport or rentals may cost separately; no fixed rate is assumed here.</p>
+      </article>
+      <article class="card p-6">
+        <div class="text-2xl">≈</div>
+        <h3 class="mt-4 text-lg font-extrabold">Monsoon caution</h3>
+        <p class="mt-3 text-sm leading-7 text-slate-600">June–September can bring strong waves, rain and slippery paths. Do not enter the water against lifeguard advice; don’t leave children alone at the water’s edge.</p>
+      </article>
+    </div>
+
+    <div class="mt-10 rounded-[2rem] bg-ocean-900 p-7 text-white md:p-10">
+      <div class="grid gap-8 lg:grid-cols-[.65fr_1.35fr]">
+        <div>
+          <p class="text-sm font-extrabold text-ocean-200">Sea safety</p>
+          <h3 class="mt-3 text-2xl font-black">Beautiful water is not always safe water</h3>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2 text-sm leading-7 text-ocean-50/90">
+          <p>Karnataka Tourism’s current place guide flags Main Beach as not ideal for swimming because of strong currents. Treat any lifeguard or warning flag as the first instruction; if in doubt, don’t enter.</p>
+          <p>Coastal currents like rip currents may be invisible. When in doubt, stay at the shore and enjoy the beach instead of going in.</p>
+          <p>Water, a hat and skin protection help against sunburn. Watch for broken glass/trash in the sand; keep footwear handy.</p>
+          <p>Give space to religious bathing and local fishing; don’t walk through boats, nets and work areas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="shell py-18 md:py-24">
+    <div class="max-w-3xl">
+      <p class="eyebrow">Seasonal travel advice</p>
+      <h2 class="section-title mt-3">Plan around the time of year</h2>
+      <p class="lead mt-5">The table below is based on roughly 30 years of typical coastal weather for Gokarna (India Meteorological Department long-term averages). Exact temperatures and rainfall vary year to year.</p>
+    </div>
+    <div class="mt-10 overflow-x-auto">
+      <table class="w-full border-collapse text-left text-sm">
+        <thead>
+          <tr class="bg-ocean-900 text-ocean-50">
+            <th class="px-4 py-3 font-extrabold">Season</th>
+            <th class="px-4 py-3 font-extrabold">Months</th>
+            <th class="px-4 py-3 font-extrabold">Temperature</th>
+            <th class="px-4 py-3 font-extrabold">Rain</th>
+            <th class="px-4 py-3 font-extrabold">Sea state</th>
+            <th class="px-4 py-3 font-extrabold">Advice</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-ocean-900/10">
+          <tr class="bg-white">
+            <td class="px-4 py-3 font-bold text-ocean-900">Winter / dry</td>
+            <td class="px-4 py-3 text-slate-600">Oct–Mar</td>
+            <td class="px-4 py-3 text-slate-600">20–32°C</td>
+            <td class="px-4 py-3 text-slate-600">Low</td>
+            <td class="px-4 py-3 text-slate-600">Calmer, better for swimming</td>
+            <td class="px-4 py-3 text-slate-600">Best season; morning/evening walks</td>
+          </tr>
+          <tr class="bg-ocean-50/40">
+            <td class="px-4 py-3 font-bold text-ocean-900">Summer</td>
+            <td class="px-4 py-3 text-slate-600">Mar–May</td>
+            <td class="px-4 py-3 text-slate-600">28–36°C</td>
+            <td class="px-4 py-3 text-slate-600">Sparse</td>
+            <td class="px-4 py-3 text-slate-600">Hot sun, warmer sea</td>
+            <td class="px-4 py-3 text-slate-600">Start early; shade at midday</td>
+          </tr>
+          <tr class="bg-white">
+            <td class="px-4 py-3 font-bold text-ocean-900">Monsoon</td>
+            <td class="px-4 py-3 text-slate-600">Jun–Sep</td>
+            <td class="px-4 py-3 text-slate-600">24–30°C</td>
+            <td class="px-4 py-3 text-slate-600">Heavy</td>
+            <td class="px-4 py-3 text-slate-600">Rough waves, unsafe swimming</td>
+            <td class="px-4 py-3 text-slate-600">Green scenery; don’t enter the sea</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="bg-ocean-50 py-18 md:py-24">
+    <div class="shell">
+      <div class="max-w-3xl">
+        <p class="eyebrow">Travel by group</p>
+        <h2 class="section-title mt-3">A style that fits your group</h2>
+        <p class="lead mt-5">Three notes based on group composition and pace — families, photography, or low physical effort.</p>
+      </div>
+      <div class="mt-10 grid gap-5 lg:grid-cols-3">
+        <article class="card p-7">
+          <p class="text-xs font-extrabold text-temple-500">With family &amp; kids</p>
+          <h3 class="mt-3 text-xl font-extrabold text-ocean-900">Slow family visit</h3>
+          <ul class="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+            <li>Temple darshan in the morning, beach walk before noon.</li>
+            <li>Carry shade, water and sun protection; avoid midday sun.</li>
+            <li>Enter the water only where lifeguards are present; don’t leave kids alone at the edge.</li>
+          </ul>
+        </article>
+        <article class="card p-7">
+          <p class="text-xs font-extrabold text-ocean-700">Photography &amp; nature</p>
+          <h3 class="mt-3 text-xl font-extrabold text-ocean-900">Chase the light</h3>
+          <ul class="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+            <li>Sunrise and sunset give the best beach light.</li>
+            <li>Om Beach viewpoints, the bay and coastal rocks offer varied frames.</li>
+            <li>Monsoon greens and cloudy light are good for photography.</li>
+          </ul>
+        </article>
+        <article class="card p-7">
+          <p class="text-xs font-extrabold text-ocean-700">Low physical effort</p>
+          <h3 class="mt-3 text-xl font-extrabold text-ocean-900">Step-free visit</h3>
+          <ul class="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+            <li>Use auto/taxi to the Belehittal Road entrance; reduce the final walk.</li>
+            <li>Avoid long sand walks; pick nearby shade and seating.</li>
+            <li>Wheelchair/walker users should plan with a helper; sand is hard to move on.</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="nearby" class="bg-white py-18 md:py-24">
+    <div class="shell">
+      <div class="max-w-3xl">
+        <p class="eyebrow">Things to do</p>
+        <h2 class="section-title mt-3">More than a beach — and where to read deeper</h2>
+        <p class="lead mt-5">Main Beach is the gateway. Religious sites and the string of beaches to the south turn Gokarna’s geography and culture into a fuller picture.</p>
+      </div>
+      <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <article class="rounded-[1.6rem] border border-ocean-900/10 p-6"><p class="text-xs font-extrabold text-temple-500">Pilgrimage</p><h3 class="mt-2 text-lg font-extrabold">Mahabaleshwar Temple</h3><p class="mt-3 text-sm leading-7 text-slate-600">The Shaiva religious centre of Gokarna, tied to the Atmalinga legend. Follow local dress, photography and entry rules.</p></article>
+        <article class="rounded-[1.6rem] border border-ocean-900/10 p-6"><p class="text-xs font-extrabold text-temple-500">Religious site</p><h3 class="mt-2 text-lg font-extrabold">Maha Ganapati Temple</h3><p class="mt-3 text-sm leading-7 text-slate-600">Linked to Ganesha’s role in the legend; can be added to the temple-area pedestrian walk.</p></article>
+        <article class="rounded-[1.6rem] border border-ocean-900/10 p-6"><p class="text-xs font-extrabold text-temple-500">Sacred pool</p><h3 class="mt-2 text-lg font-extrabold">Koti Tirtha</h3><p class="mt-3 text-sm leading-7 text-slate-600">A key water body in Gokarna’s religious landscape. Keep a respectful distance during rituals.</p></article>
+        <article class="rounded-[1.6rem] border border-ocean-900/10 p-6"><p class="text-xs font-extrabold text-ocean-700">Beach</p><h3 class="mt-2 text-lg font-extrabold">Kudle Beach</h3><p class="mt-3 text-sm leading-7 text-slate-600">A bay-shaped sandy beach south of Main Beach; access depends on walking/road conditions and season.</p></article>
+        <article class="rounded-[1.6rem] border border-ocean-900/10 p-6"><p class="text-xs font-extrabold text-ocean-700">Beach</p><h3 class="mt-2 text-lg font-extrabold">Om Beach</h3><p class="mt-3 text-sm leading-7 text-slate-600">Famous for the two curved bays that look like “Om” from above; good for seeing Gokarna’s coastline shape.</p></article>
+        <article class="rounded-[1.6rem] border border-ocean-900/10 p-6"><p class="text-xs font-extrabold text-ocean-700">Farther coves</p><h3 class="mt-2 text-lg font-extrabold">Half Moon &amp; Paradise</h3><p class="mt-3 text-sm leading-7 text-slate-600">Reached by walk/boat depending on season, waves and trail safety; don’t assume access in monsoon.</p></article>
+      </div>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="/en/things-to-do/" class="rounded-full bg-ocean-900 px-5 py-3 text-sm font-extrabold text-white no-underline hover:bg-ocean-700">Things to do — full guide</a>
+        <a href="/en/nearby-beaches/" class="rounded-full border border-ocean-900/15 px-5 py-3 text-sm font-bold text-ocean-900 no-underline hover:bg-ocean-50">Nearby beaches</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="getting-there" class="shell py-18 md:py-24">
+    <div class="max-w-3xl">
+      <p class="eyebrow">Getting there</p>
+      <h2 class="section-title mt-3">Flight, train, bus, taxi and own vehicle</h2>
+      <p class="lead mt-5">Gokarna sits near National Highway 66, but the last stretch to Main Beach runs through the old town streets. For the final few km, local transport or a short walk is often easier than a large vehicle.</p>
+    </div>
+    <div class="mt-10 grid gap-5 lg:grid-cols-2">
+      <article class="card p-7">
+        <div class="flex items-start gap-4"><span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-ocean-100 font-black text-ocean-900">✈</span><div><h3 class="text-lg font-extrabold">By flight</h3><p class="mt-2 text-sm leading-7 text-slate-600">Uttara Kannada district points to Goa and Mangalore airports as the nearest major air links to Gokarna. Karnataka Tourism lists Dabolim/Manohar (Goa) at roughly 149–150 km. Combine with a pre-booked taxi, bus connection or train from the airport.</p></div></div>
+      </article>
+      <article class="card p-7">
+        <div class="flex items-start gap-4"><span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-ocean-100 font-black text-ocean-900">▰</span><div><h3 class="text-lg font-extrabold">By train</h3><p class="mt-2 text-sm leading-7 text-slate-600">Konkan Railway’s Gokarna Road station is about 10 km from town. Ankola (~20 km) and Kumta (~31–32 km) are alternative stations and may suit some long-distance trains. From the station, reach town by bus, auto or taxi.</p></div></div>
+      </article>
+      <article class="card p-7">
+        <div class="flex items-start gap-4"><span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-ocean-100 font-black text-ocean-900">▣</span><div><h3 class="text-lg font-extrabold">By bus</h3><p class="mt-2 text-sm leading-7 text-slate-600">State/private buses connect Bengaluru, Mangalore, Hubballi, Goa/coastal towns to Gokarna or nearby Kumta/Ankola. Karnataka Tourism suggests ~485 km from Bengaluru and ~238 km from Mangalore; timings vary by season.</p></div></div>
+      </article>
+      <article class="card p-7">
+        <div class="flex items-start gap-4"><span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-ocean-100 font-black text-ocean-900">⌁</span><div><h3 class="text-lg font-extrabold">Taxi &amp; auto</h3><p class="mt-2 text-sm leading-7 text-slate-600">Local taxi/auto is the usual last step from the station, bus stand or within town. Agree the fare or meter, luggage charge and night charge before starting. This site recommends no specific driver/service.</p></div></div>
+      </article>
+      <article class="card p-7 lg:col-span-2">
+        <div class="flex items-start gap-4"><span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-ocean-100 font-black text-ocean-900">◇</span><div><h3 class="text-lg font-extrabold">Own / rental vehicle</h3><p class="mt-2 text-sm leading-7 text-slate-600">NH 66 is the main access axis. The temple area and beach-side lanes are narrow, with pedestrians and festival crowds. Rather than forcing a vehicle to the beach gate, parking at a proper spot and walking the last part is often simpler.</p></div></div>
+      </article>
+    </div>
+    <div class="mt-8">
+      <a href="/en/getting-there/" class="rounded-full bg-ocean-900 px-5 py-3 text-sm font-extrabold text-white no-underline hover:bg-ocean-700">Getting there — full guide</a>
+    </div>
+  </section>
+
+  <section id="map" class="shell py-18 md:py-24">
+    <div class="grid gap-8 lg:grid-cols-[.7fr_1.3fr] lg:items-start">
+      <div>
+        <p class="eyebrow">Location &amp; access</p>
+        <h2 class="section-title mt-3">Gokarna Main Beach on the map</h2>
+        <p class="mt-5 text-base leading-8 text-slate-600">The map loads from an external Google service. Opening it may apply Google’s privacy and cookie terms.</p>
+        <address class="mt-6 not-italic text-sm leading-7 text-slate-600">{place.addressDisplay}</address>
+        <a href={place.mapsUrl} rel="noreferrer" class="mt-6 inline-flex rounded-full bg-ocean-900 px-5 py-3 text-sm font-extrabold text-white no-underline hover:bg-ocean-700">Open full map</a>
+      </div>
+      <div class="map-frame overflow-hidden rounded-[2rem] border border-ocean-900/10 bg-white shadow-xl shadow-ocean-900/10">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d54994.45171442158!2d74.29299898165893!3d14.537248891959297!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bbe83d61cc8edb7%3A0x909513ca502e1759!2sGokarna%20Main%20Beach!5e1!3m2!1sen!2sin!4v1787707783447!5m2!1sen!2sin"
+          title="Map of Gokarna Main Beach"
+          allowfullscreen
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="bg-ocean-50 py-18 md:py-24">
+    <div class="shell max-w-5xl">
+      <div class="max-w-3xl">
+        <p class="eyebrow">Frequently asked questions</p>
+        <h2 class="section-title mt-3">Answers before you set out</h2>
+      </div>
+      <div class="mt-9 space-y-3">
+        {enFaq.map((item) => (
+          <details class="group rounded-2xl border border-ocean-900/10 bg-white p-5 open:shadow-md">
+            <summary class="cursor-pointer list-none pr-8 font-extrabold text-ocean-900 marker:content-none">{item.q}</summary>
+            <p class="mt-4 border-t border-ocean-900/10 pt-4 text-sm leading-7 text-slate-600">{item.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="shell py-18 md:py-24">
+    <div class="grid gap-8 lg:grid-cols-[.75fr_1.25fr]">
+      <div>
+        <p class="eyebrow">Sources</p>
+        <h2 class="section-title mt-3">Transparent basis</h2>
+      </div>
+      <div class="card p-6 md:p-8">
+        <p class="text-sm leading-7 text-slate-600">This guide’s geographic, access, season and facility information is compared mainly against the publications of the public bodies below. For fast-changing items like user ratings or typical hours, Google Maps listings are also used as an indicator.</p>
+        <ul class="mt-5 space-y-3 text-sm font-bold text-ocean-700">
+          <li><a class="underline" href={sourceLinks.localGovernment} rel="noreferrer">Karnataka Rural Development &amp; Panchayat Raj — local governance framework</a></li>
+          <li><a class="underline" href={sourceLinks.district} rel="noreferrer">Uttara Kannada district — Gokarna tourism information</a></li>
+          <li><a class="underline" href={sourceLinks.stateTourism} rel="noreferrer">Karnataka Tourism — Gokarna experience guide</a></li>
+          <li><a class="underline" href={sourceLinks.stateBeachGuide} rel="noreferrer">Karnataka Tourism — Gokarna beaches guide</a></li>
+          <li><a class="underline" href={sourceLinks.nationalTourism} rel="noreferrer">Ministry of Tourism, Government of India — national tourism information</a></li>
+        </ul>
+        <p class="mt-5 text-xs leading-6 text-slate-500">Note: this site does not replace official publications. Weather, sea state, transport timings, entry rules and facility status can change on the day of travel.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

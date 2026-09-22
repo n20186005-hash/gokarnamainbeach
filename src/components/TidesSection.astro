@@ -1,0 +1,177 @@
+---
+import { getTides } from '../lib/tides';
+import type { Lang } from '../lib/weather';
+
+interface Props {
+  lang?: Lang;
+}
+const { lang = 'kn' } = Astro.props;
+const data = await getTides();
+
+const UI = lang === 'en' ? {
+  eyebrow: 'Tides',
+  title: 'Sea level and tide times',
+  lead: 'The beach width, depth and exposed rocks shift with the tide. Use this to pick the best time for swimming, walking and photography.',
+  currentLevel: 'Current sea level',
+  note: 'At high tide rocks are submerged; at low tide coral and rocks are exposed. Exercise caution according to local conditions.',
+  upcoming: 'Upcoming tides',
+  high: 'High',
+  low: 'Low',
+  fallback: 'Tide data could not be loaded right now. Please try again shortly.',
+  footnote: 'This is a model-based estimate; for exact local tide tables check local fishers or official sources.',
+  today: 'Today',
+  tomorrow: 'Tomorrow',
+  dayAfter: 'Day after',
+} : {
+  eyebrow: 'ಜ್ವಾರಭಾಟ',
+  title: 'ಸಮುದ್ರ ಮಟ್ಟ ಮತ್ತು ಜ್ವಾರಭಾಟಗಳು',
+  lead: 'ಕಡಲತೀರದ ಅಗಲ, ಆಳ ಮತ್ತು ಬಂಡೆಗಳ ಬಹಿರಂಗತೆ ಜ್ವಾರಭಾಟದೊಂದಿಗೆ ಬದಲಾಗುತ್ತದೆ. ಈಜುವುದು, ನಡೆಯುವುದು ಮತ್ತು ಛಾಯಾಗ್ರಹಣ ಮಾಡುವುದಕ್ಕೆ ಸೂಕ್ತ ಸಮಯ ಆರಿಸಲು ಈ ಮಾಹಿತಿ ಸಹಾಯಕ.',
+  currentLevel: 'ಪ್ರಸ್ತುತ ಸಮುದ್ರ ಮಟ್ಟ',
+  note: 'ಹೆಚ್ಚು ಜಲದ ಸಮಯದಲ್ಲಿ ಬಂಡೆಗಳು ಮುಳುಗುತ್ತವೆ; ಕಡಿಮೆ ಜಲದಲ್ಲಿ ಹವಳ ಮತ್ತು ಕಲ್ಲು ಬಹಿರಂಗವಾಗುತ್ತದೆ. ಸ್ಥಳೀಯ ಪರಿಸ್ಥಿತಿಗೆ ಅನುಗುಣವಾಗಿ ಎಚ್ಚರಿಕೆ ವಹಿಸಿ.',
+  upcoming: 'ಮುಂದಿನ ಜ್ವಾರಭಾಟಗಳು',
+  high: 'ಹೆಚ್ಚು ಜಲ',
+  low: 'ಕಡಿಮೆ ಜಲ',
+  fallback: 'ಜ್ವಾರಭಾಟ ಮಾಹಿತಿಯನ್ನು ಪ್ರಸ್ತುತ ಹೊರತೆಗೆಯಲಾಗಲಿಲ್ಲ. ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಮರುಪ್ರಯತ್ನಿಸಿ.',
+  footnote: 'ಇದು ಮಾದರಿ-ಆಧಾರಿತ ಅಂದಾಜು; ನಿಖರ ಸ್ಥಳೀಯ ಜ್ವಾರಭಾಟ ಪಟ್ಟಿಗೆ ಸ್ಥಳೀಯ ಮೀನುಗಾರರು ಅಥವಾ ಅಧಿಕೃತ ಮಾಹಿತಿ ನೋಡಿ.',
+  today: 'ಇಂದು',
+  tomorrow: 'ನಾಳೆ',
+  dayAfter: 'ಮಾರನೆಯದಿನ',
+};
+
+function istDate(d: Date): string {
+  return new Date(d.getTime() + 5.5 * 3600 * 1000).toISOString().slice(0, 10);
+}
+function dayLabel(iso: string): string {
+  const today = istDate(new Date());
+  const diff = Math.round(
+    (new Date(iso.slice(0, 10) + 'T00:00:00').getTime() - new Date(today + 'T00:00:00').getTime()) / 86400000,
+  );
+  if (diff === 0) return UI.today;
+  if (diff === 1) return UI.tomorrow;
+  if (diff === 2) return UI.dayAfter;
+  return iso.slice(8, 10) + '/' + iso.slice(5, 7);
+}
+function hhmm(iso: string): string {
+  return iso.slice(11, 16);
+}
+
+let chart: {
+  W: number;
+  H: number;
+  poly: string;
+  area: string;
+  markers: { type: 'high' | 'low'; cx: string; cy: string }[];
+  nowX: string;
+  nowY: string;
+} | null = null;
+let eventsView: { type: 'high' | 'low'; day: string; time: string; height: number }[] = [];
+let nowState = '';
+
+if (data) {
+  const W = 640;
+  const H = 170;
+  const PAD = 10;
+  const heights = data.series.map((p) => p.height);
+  const minH = Math.min(...heights);
+  const maxH = Math.max(...heights);
+  const range = maxH - minH || 1;
+  const n = data.series.length;
+  const x = (i: number) => PAD + (i / (n - 1)) * (W - 2 * PAD);
+  const y = (h: number) => PAD + (1 - (h - minH) / range) * (H - 2 * PAD);
+  const poly = data.series.map((p, i) => `${x(i).toFixed(1)},${y(p.height).toFixed(1)}`).join(' ');
+  const area = `${poly} ${(W - PAD).toFixed(1)},${(H - PAD).toFixed(1)} ${PAD.toFixed(1)},${(H - PAD).toFixed(1)}`;
+  const markers = data.events.map((e) => ({ type: e.type, cx: x(e.index).toFixed(1), cy: y(e.height).toFixed(1) }));
+
+  const nowIdx = data.series.findIndex((p) => p.time === data.now.time);
+  const nowX = x(nowIdx < 0 ? 0 : nowIdx).toFixed(1);
+  const nowY = y(data.now.height).toFixed(1);
+
+  chart = { W, H, poly, area, markers, nowX, nowY };
+  eventsView = data.events.map((e) => ({ type: e.type, day: dayLabel(e.time), time: hhmm(e.time), height: e.height }));
+
+  const pos = (data.now.height - minH) / range;
+  nowState = pos > 0.66 ? (lang === 'en' ? 'High tide' : 'ತುತ್ತ ಜಲ (High)') : pos < 0.33 ? (lang === 'en' ? 'Low tide' : 'ತಗ್ಗು ಜಲ (Low)') : (lang === 'en' ? 'Mid level' : 'ಮಧ್ಯಮ ಮಟ್ಟ');
+}
+---
+
+<section id={lang === 'en' ? 'tides' : 'ಜ್ವಾರಭಾಟ'} class="shell py-18 md:py-24">
+  <div class="max-w-3xl">
+    <p class="eyebrow">{UI.eyebrow}</p>
+    <h2 class="section-title mt-3">{UI.title}</h2>
+    <p class="lead mt-5">{UI.lead}</p>
+  </div>
+
+  {
+    data && chart ? (
+      <div class="mt-10 grid gap-6 lg:grid-cols-[.85fr_1.15fr] lg:items-stretch">
+        <article class="card flex flex-col p-7">
+          <p class="text-sm font-extrabold text-ocean-700">{UI.currentLevel}</p>
+          <p class="mt-3 text-4xl font-black text-ocean-900">
+            <span id="tide-now-height">{data.now.height}</span> m
+          </p>
+          <p id="tide-now-state" class="mt-2 text-sm font-bold text-slate-600">{nowState}</p>
+          <p class="mt-6 rounded-2xl bg-ocean-50 px-4 py-3 text-sm leading-7 text-ocean-900">{UI.note}</p>
+        </article>
+
+        <article class="card p-7">
+          <p class="text-sm font-extrabold text-ocean-700">{UI.upcoming}</p>
+          <svg viewBox={`0 0 ${chart.W} ${chart.H}`} class="mt-4 h-auto w-full" role="img" aria-label={UI.title}>
+            <polygon points={chart.area} fill="#0d9488" fill-opacity="0.12" />
+            <polyline points={chart.poly} fill="none" stroke="#0d9488" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" />
+            <line x1={chart.nowX} y1="0" x2={chart.nowX} y2={chart.H} stroke="#073f40" stroke-width="1.5" stroke-dasharray="4 4" />
+            <circle cx={chart.nowX} cy={chart.nowY} r="4.5" fill="#073f40" />
+            {chart.markers.map((m) => (
+              <circle cx={m.cx} cy={m.cy} r="4" fill={m.type === 'high' ? '#b91c1c' : '#0369a1'} />
+            ))}
+          </svg>
+          <ul class="mt-5 grid gap-3 sm:grid-cols-2">
+            {eventsView.map((e) => (
+              <li class="flex items-center gap-3 rounded-2xl border border-ocean-900/10 bg-white px-4 py-3">
+                <span class="text-2xl leading-none">{e.type === 'high' ? '↑' : '↓'}</span>
+                <div class="flex-1">
+                  <p class="text-sm font-extrabold text-ocean-900">
+                    {e.type === 'high' ? UI.high : UI.low} · {e.day}
+                  </p>
+                  <p class="text-sm text-slate-600">{e.time} · {e.height} m</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </article>
+      </div>
+    ) : (
+      <p class="mt-10 rounded-2xl bg-sand-100 p-6 text-sm leading-7 text-sand-600">{UI.fallback}</p>
+    )
+  }
+  <p class="mt-6 max-w-3xl text-xs leading-6 text-slate-400">{UI.footnote}</p>
+</section>
+
+<script is:inline define:vars={{ lang }}>
+(function () {
+  function setText(id, text) { var el = document.getElementById(id); if (el) el.textContent = text; }
+  var LBL = {
+    kn: { high: 'ತುತ್ತ ಜಲ (High)', low: 'ತಗ್ಗು ಜಲ (Low)', mid: 'ಮಧ್ಯಮ ಮಟ್ಟ' },
+    en: { high: 'High tide', low: 'Low tide', mid: 'Mid level' }
+  };
+  var L = LBL[lang] || LBL.kn;
+  function refresh() {
+    fetch('/api/tides', { cache: 'no-store' })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (!d || !d.now) return;
+        setText('tide-now-height', d.now.height);
+        if (d.series && d.series.length >= 2) {
+          var hs = d.series.map(function (p) { return p.height; });
+          var minH = Math.min.apply(null, hs), maxH = Math.max.apply(null, hs);
+          var range = (maxH - minH) || 1;
+          var pos = (d.now.height - minH) / range;
+          setText('tide-now-state', pos > 0.66 ? L.high : pos < 0.33 ? L.low : L.mid);
+        }
+      })
+      .catch(function () {});
+  }
+  refresh();
+  setInterval(refresh, 10 * 60 * 1000);
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) refresh(); });
+})();
+</script>

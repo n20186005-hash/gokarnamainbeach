@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 // ಉತ್ಪಾದನಾ ಡೊಮೇನ್ ಅನ್ನು ಇಲ್ಲಿ ಮಾತ್ರ ನಮೂದಿಸಿ. ಖಾಲಿ ಇದ್ದರೂ build ಕೆಲಸ ಮಾಡುತ್ತದೆ.
-const SITE = '';
+const SITE = 'https://gokarnamainbeach.com';
 
 export default defineConfig({
   site: SITE || undefined,

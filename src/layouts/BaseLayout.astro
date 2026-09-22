@@ -2,35 +2,62 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { SITE_NAME } from '../data/place';
 
 interface Props {
   title: string;
   description: string;
   image?: string;
+  imageAlt?: string;
   jsonLd?: unknown | unknown[];
+  robots?: string;
+  lang?: 'kn' | 'en';
+  alternates?: { lang: string; href: string }[];
 }
-const { title, description, image, jsonLd } = Astro.props;
+const {
+  title,
+  description,
+  image,
+  imageAlt,
+  jsonLd,
+  robots = 'index,follow,max-image-preview:large',
+  lang = 'kn',
+  alternates,
+} = Astro.props;
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : undefined;
+const htmlLang = lang === 'en' ? 'en' : 'kn-IN';
+const ogLocale = lang === 'en' ? 'en_IN' : 'kn_IN';
 ---
 <!doctype html>
-<html lang="kn-IN">
+<html lang={htmlLang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#073f40" />
-    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <meta name="robots" content={robots} />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="kn_IN" />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     {canonical && <link rel="canonical" href={canonical} />}
     {canonical && <meta property="og:url" content={canonical} />}
+    {alternates && alternates.map((a) => (
+      <link rel="alternate" hreflang={a.lang} href={new URL(a.href, Astro.site).toString()} />
+    ))}
     {image && <meta property="og:image" content={image} />}
+    {image && imageAlt && <meta property="og:image:alt" content={imageAlt} />}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     {image && <meta name="twitter:image" content={image} />}
+    {image && imageAlt && <meta name="twitter:image:alt" content={imageAlt} />}
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Gokarna Beach" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/icons/favicon-32.png" sizes="32x32" />
     <link rel="icon" href="/icons/favicon-16.png" sizes="16x16" />
@@ -52,6 +79,13 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString(
         script.src = 'https://www.googletagmanager.com/gtag/js?id=G-HXM22WWPKP';
         document.head.appendChild(script);
       })();
+    </script>
+    <script is:inline>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {});
+        });
+      }
     </script>
   </head>
   <body>

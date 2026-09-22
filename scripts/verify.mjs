@@ -16,7 +16,8 @@ if (!/^\d+\.\d+\.\d+$/.test(pkg.engines?.node || '')) fail('engines.node 未固�
 if (read('.node-version').trim() !== pkg.engines.node) fail('.node-version 与 engines.node 不一致'); else ok('.node-version 与 engines.node 一致');
 
 const astroConfig = read('astro.config.mjs');
-if (!astroConfig.includes("const SITE = '';")) fail('Astro site 配置不是单一可空入口'); else ok('生产域名只有一个可空配置入口');
+const siteMatch = astroConfig.match(/const\s+SITE\s*=\s*'([^']*)'/);
+if (!siteMatch || !/^https:\/\//.test(siteMatch[1])) fail('Astro SITE 未配置为 https 生产域名'); else ok(`生产域名已配置为 ${siteMatch[1]}`);
 if (!astroConfig.includes('SITE ? [sitemap()] : []')) fail('sitemap 未按 site 是否存在进行条件启用'); else ok('sitemap 在 site 为空时禁用');
 
 const sourceFiles = [];

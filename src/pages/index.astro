@@ -1,10 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { place, sourceLinks } from '../data/place';
+import WeatherSection from '../components/WeatherSection.astro';
+import TidesSection from '../components/TidesSection.astro';
+import { place, sourceLinks, SITE_NAME } from '../data/place';
 
-export const prerender = true;
+export const prerender = false;
 
 const pageUrl = Astro.site ? new URL('/', Astro.site).toString() : undefined;
+const attractionId = Astro.site ? new URL('#attraction', Astro.site).toString() : undefined;
 
 const faq = [
   {
@@ -40,11 +43,19 @@ const faq = [
 const attractionSchema = {
   '@context': 'https://schema.org',
   '@type': ['TouristAttraction', 'LocalBusiness'],
+  ...(attractionId ? { '@id': attractionId } : {}),
   name: place.name,
-  alternateName: place.alternateName,
+  alternateName: [
+    place.alternateName,
+    `${place.cityEn} ${place.fullNameEn}`,
+    `${place.fullNameEn}, ${place.cityEn}, ${place.stateEn}`,
+  ],
   description: 'ಗೋಕರ್ಣ ಪಟ್ಟಣಕ್ಕೆ ಅತ್ಯಂತ ಸಮೀಪದಲ್ಲಿರುವ ಸಾರ್ವಜನಿಕ ಅರಬ್ಬೀ ಸಮುದ್ರ ಕಡಲತೀರ; ತೀರ್ಥಸಂಸ್ಕೃತಿ, ವಿಶಾಲ ಮರಳುತೀರ ಮತ್ತು ಸೂರ್ಯಾಸ್ತಕ್ಕಾಗಿ ಪರಿಚಿತ.',
   ...(pageUrl ? { url: pageUrl } : {}),
   image: [place.heroImage],
+  isAccessibleForFree: true,
+  hasMap: place.mapsUrl,
+  sameAs: [place.mapsUrl, sourceLinks.stateTourism, sourceLinks.nationalTourism],
   address: {
     '@type': 'PostalAddress',
     ...place.address,
@@ -62,7 +73,6 @@ const attractionSchema = {
       closes: '19:00',
     },
   ],
-  isAccessibleForFree: true,
   aggregateRating: {
     '@type': 'AggregateRating',
     ratingValue: place.rating,
@@ -85,9 +95,11 @@ const faqSchema = {
 const jsonLd = [attractionSchema, faqSchema];
 ---
 <BaseLayout
-  title="ಗೋಕರ್ಣ ಮುಖ್ಯ ಕಡಲತೀರ | ಸ್ವತಂತ್ರ ಪ್ರವಾಸಿ ಮಾಹಿತಿ ಮಾರ್ಗದರ್ಶಿ"
-  description="ಗೋಕರ್ಣ ಮುಖ್ಯ ಕಡಲತೀರದ ಇತಿಹಾಸ, ಧಾರ್ಮಿಕ ಹಿನ್ನೆಲೆ, ಭೇಟಿ ಸಮಯ, ಶುಲ್ಕ, ಸುರಕ್ಷತೆ, ಸೌಲಭ್ಯ, ಪಾರ್ಕಿಂಗ್, ಆಹಾರ, ವಸತಿ, ಸಾರಿಗೆ ಮತ್ತು ಸಮೀಪದ ಸ್ಥಳಗಳ ಲಾಭರಹಿತ ಮಾಹಿತಿ ಮಾರ್ಗದರ್ಶಿ."
+  title={SITE_NAME}
+  description="ಗೋಕರ್ಣ ಮುಖ್ಯ ಕಡಲತೀರದ ಇತಿಹಾಸ, ಧಾರ್ಮಿಕ ಹಿನ್ನೆಲೆ, ಋತು ಪ್ರವಾಸ ಸಮ್ಮತಿ, ಭೇಟಿ ಯೋಜನೆ, ಹವಾಮಾನ, ಸೌಲಭ್ಯ, ಪಾರ್ಕಿಂಗ್, ಆಹಾರ, ವಸತಿ, ಸಾರಿಗೆ ಮತ್ತು ಸಮೀಪದ ಸ್ಥಳಗಳ ಲಾಭರಹಿತ ಮಾಹಿತಿ ಮಾರ್ಗದರ್ಶಿ."
   image={place.heroImage}
+  imageAlt={`${place.fullNameEn} in ${place.cityEn}, ${place.countryEn}`}
+  alternates={[{ lang: 'en', href: '/en/' }, { lang: 'x-default', href: '/en/' }]}
   jsonLd={jsonLd}
 >
   <section class="hero-photo relative min-h-[680px] overflow-hidden text-white">
@@ -98,7 +110,7 @@ const jsonLd = [attractionSchema, faqSchema];
         <h1 class="text-5xl font-black leading-[1.08] tracking-[-.035em] sm:text-6xl lg:text-7xl">ಗೋಕರ್ಣ ಮುಖ್ಯ ಕಡಲತೀರ</h1>
         <p class="mt-6 max-w-2xl text-lg leading-8 text-white/90 md:text-xl">ಅಲೆ, ಮರಳು ಮತ್ತು ಶೈವ ತೀರ್ಥಸಂಸ್ಕೃತಿ ಒಂದೇ ಕರಾವಳಿಯಲ್ಲಿ ಸೇರುವ ಗೋಕರ್ಣದ ನಗರಮುಖ ಕಡಲತೀರ.</p>
         <div class="mt-8 flex flex-wrap gap-3 text-sm font-bold">
-          <span class="pill rounded-full px-4 py-2.5">★ 4.4 · 35,529 ಮೌಲ್ಯಮಾಪನಗಳು</span>
+          <span class="pill rounded-full px-4 py-2.5">★ 4.4 · 35,614 ಮೌಲ್ಯಮಾಪನಗಳು</span>
           <span class="pill rounded-full px-4 py-2.5">ಸಾರ್ವಜನಿಕ ಕಡಲತೀರ</span>
           <span class="pill rounded-full px-4 py-2.5">ಪ್ರವೇಶ ಉಚಿತ</span>
           <span class="pill rounded-full px-4 py-2.5">ಸಾಮಾನ್ಯ ಸಮಯ 07:00–19:00</span>
@@ -121,6 +133,8 @@ const jsonLd = [attractionSchema, faqSchema];
         <h2 class="section-title mt-3">ತೀರ್ಥಪಟ್ಟಣದ ದೈನಂದಿನ ಜೀವನವನ್ನು ನೇರವಾಗಿ ಮುಟ್ಟುವ ಕಡಲತೀರ</h2>
         <p class="lead mt-6">ಗೋಕರ್ಣ ಮುಖ್ಯ ಕಡಲತೀರವು ಪಟ್ಟಣದ ಪಶ್ಚಿಮ ಅಂಚಿನಲ್ಲೇ ಇರುವ ವಿಶಾಲ ಸಾರ್ವಜನಿಕ ಮರಳುತೀರ. ಉತ್ತರ ಕನ್ನಡ ಜಿಲ್ಲಾಡಳಿತ ಇದನ್ನು ಗೋಕರ್ಣ ಪಟ್ಟಣಕ್ಕೆ ಅತ್ಯಂತ ಸಮೀಪದ ಕಡಲತೀರವೆಂದು ಗುರುತಿಸುತ್ತದೆ. ಇದು ಕೇವಲ ಸೂರ್ಯಾಸ್ತ ನೋಡುವ ಸ್ಥಳವಲ್ಲ: ದೇವಾಲಯ ದರ್ಶನಕ್ಕೆ ಬರುವ ಯಾತ್ರಿಕರು, ಮೀನುಗಾರ ಸಮುದಾಯದ ಕರಾವಳಿ ಚಟುವಟಿಕೆ, ಸ್ಥಳೀಯ ಕುಟುಂಬಗಳು ಮತ್ತು ಪ್ರವಾಸಿಗರು ಒಂದೇ ಭೌಗೋಳಿಕ ಸ್ಥಳವನ್ನು ವಿಭಿನ್ನ ರೀತಿಯಲ್ಲಿ ಬಳಸುವ ಜೀವಂತ ಸಾರ್ವಜನಿಕ ವಲಯ.</p>
         <p class="mt-5 text-base leading-8 text-slate-600">ಗೋಕರ್ಣದ ಹೆಚ್ಚು ಪ್ರಸಿದ್ಧ ಓಂ ಆಕಾರದ ಕಡಲತೀರಗಳಿಗಿಂತ ಇಲ್ಲಿ “ಪಟ್ಟಣ ಮತ್ತು ಸಮುದ್ರ” ಸಂಬಂಧ ಹೆಚ್ಚು ನೇರ. ಬೆಲೆಹಿಟ್ಟಲ್ ರಸ್ತೆ ಮತ್ತು ದೇವಾಲಯ ಪ್ರದೇಶದಿಂದ ನಡೆದು ತಲುಪಬಹುದಾದ ಕಾರಣ ಬೆಳಗಿನ ಧಾರ್ಮಿಕ ಚಟುವಟಿಕೆಯಿಂದ ಸಂಜೆ ಸೂರ್ಯಾಸ್ತದವರೆಗೆ ತೀರದ ವಾತಾವರಣ ಬದಲಾಗುತ್ತಿರುತ್ತದೆ.</p>
+        <p class="mt-5 text-sm font-semibold tracking-wide text-ocean-700">ಗೋಕರ್ಣ ಮುಖ್ಯ ಕಡಲತೀರ → ಗೋಕರ್ಣ → ಕರ್ನಾಟಕ → ಭಾರತ</p>
+        <p class="mt-2 text-sm leading-7 text-slate-500">Gokarna Main Beach is the central public beach in Gokarna, Uttara Kannada, Karnataka, India — the namesake of gokarnamainbeach.com.</p>
       </div>
       <aside class="card p-6 md:p-8" aria-label="ತ್ವರಿತ ಮಾಹಿತಿ">
         <p class="text-sm font-extrabold text-ocean-700">ತ್ವರಿತ ಮಾಹಿತಿ</p>
@@ -137,10 +151,14 @@ const jsonLd = [attractionSchema, faqSchema];
     </div>
   </section>
 
+  <WeatherSection />
+
+  <TidesSection />
+
   <section class="bg-white py-18 md:py-24">
     <div class="shell grid gap-12 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
       <div class="photo-frame overflow-hidden rounded-[2rem] bg-ocean-100 shadow-2xl shadow-ocean-900/10">
-        <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Gokarna_Main_Beach_in_January_2023.jpg?width=1400" alt="ಗೋಕರ್ಣ ಮುಖ್ಯ ಕಡಲತೀರದ ಮರಳು ಮತ್ತು ಅರಬ್ಬೀ ಸಮುದ್ರ" class="aspect-[4/3] h-full w-full object-cover" loading="lazy" />
+        <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Gokarna_Main_Beach_in_January_2023.jpg?width=1400" alt="ಗೋಕರ್ಣ ಮುಖ್ಯ ಕಡಲತೀರದ ಮರಳು ಮತ್ತು ಅರಬ್ಬೀ ಸಮುದ್ರ — Gokarna Main Beach, Gokarna, India" class="aspect-[4/3] h-full w-full object-cover" loading="lazy" />
         <p class="bg-sand-50 px-4 py-3 text-[11px] leading-5 text-slate-500">ಚಿತ್ರ: Alexey Komarov · ವಿಕಿಮೀಡಿಯ ಕಾಮನ್ಸ್ · CC BY-SA 4.0</p>
       </div>
       <div>
@@ -150,6 +168,8 @@ const jsonLd = [attractionSchema, faqSchema];
           <p>ಗೋಕರ್ಣವು ಭಾರತದ ಪಶ್ಚಿಮ ಕರಾವಳಿಯ ಪ್ರಾಚೀನ ಶೈವ ತೀರ್ಥಕ್ಷೇತ್ರಗಳಲ್ಲಿ ಒಂದಾಗಿ ಪರಿಚಿತ. ಕರ್ನಾಟಕ ಪ್ರವಾಸೋದ್ಯಮದ ಪ್ರಕಟಿತ ವಿವರಗಳಲ್ಲಿ “ಗೋಕರ್ಣ” ಎಂಬ ಹೆಸರನ್ನು “ಗೋವಿನ ಕಿವಿ” ಎಂಬ ಅರ್ಥದೊಂದಿಗೆ ಸಂಪರ್ಕಿಸಲಾಗುತ್ತದೆ; ಪಟ್ಟಣದ ಭೂಆಕಾರ ಮತ್ತು ಸ್ಥಳೀಯ ಧಾರ್ಮಿಕ ಕಥನಗಳು ಈ ಹೆಸರಿನ ವಿವರಣೆಗೆ ಸೇರಿಕೊಂಡಿವೆ.</p>
           <p><strong class="text-ocean-900">ಪುರಾಣ ಪರಂಪರೆ:</strong> ರಾವಣನು ಶಿವನಿಂದ ಪಡೆದ ಆತ್ಮಲಿಂಗವನ್ನು ಲಂಕೆಗೆ ಕೊಂಡೊಯ್ಯುವಾಗ ಗಣೇಶನ ತಂತ್ರದಿಂದ ಅದು ಗೋಕರ್ಣದಲ್ಲಿ ನೆಲಸಿದ ಕಥೆ ಮಹಾಬಲೇಶ್ವರ ದೇವಾಲಯದ ಪ್ರಮುಖ ಪೌರಾಣಿಕ ಹಿನ್ನೆಲೆ. ಇದು ಭಕ್ತಿಪರಂಪರೆಯಲ್ಲಿ ಉಳಿದಿರುವ ಪುರಾಣಕಥೆ; ಪುರಾತತ್ತ್ವದ ದೃಢ ದಿನಾಂಕಿತ ಇತಿಹಾಸವೆಂದು ಪರಿಗಣಿಸಬಾರದು.</p>
           <p>ಮುಖ್ಯ ಕಡಲತೀರ ಈ ಧಾರ್ಮಿಕ ಭೂದೃಶ್ಯದ ಭಾಗ. ಕೆಲವು ಯಾತ್ರಿಕರು ಮಹಾಬಲೇಶ್ವರ ದೇವಾಲಯಕ್ಕೆ ತೆರಳುವ ಮೊದಲು ಸಮುದ್ರ ಸ್ನಾನ ಮಾಡುವ ಪದ್ಧತಿಯನ್ನು ಅನುಸರಿಸುತ್ತಾರೆ. ಆದ್ದರಿಂದ ಸ್ಥಳವನ್ನು ಬಳಸುವಾಗ ಸ್ನಾನ, ಪ್ರಾರ್ಥನೆ ಅಥವಾ ಪೂಜಾ ಆಚರಣೆಗಳಲ್ಲಿ ತೊಡಗಿರುವವರ ಖಾಸಗಿತನ ಮತ್ತು ಗೌರವವನ್ನು ಕಾಪಾಡುವುದು ಸೂಕ್ತ.</p>
+          <p>ಪುರಾಣದ ಪ್ರಕಾರ, ಶಿವನಿಂದ ಆತ್ಮಲಿಂಗ ಪಡೆದ ರಾವಣನು ಅದನ್ನು ಲಂಕೆಗೆ ಕೊಂಡೊಯ್ಯುವಾಗ ಮಧ್ಯಾಹ್ನದ ಪೂಜಾ ಸಮಯದಲ್ಲಿ ಗಣೇಶ ಬಾಲಕನ ವೇಷದಲ್ಲಿ ಬಂದು “ಇದನ್ನು ನೆಲದ ಮೇಲಿಡು” ಎಂದು ಮರುಳಿಸಿದನಂತೆ. ರಾವಣ ಅದನ್ನು ಇಟ್ಟ ಕೂಡಲೇ ಲಿಂಗ ಬೇರೂನಿತು; ಅದನ್ನು ಮೇಲೆತ್ತಲಾಗದೆ ಗೋಕರ್ಣದಲ್ಲೇ ಉಳಿಯಿತು — ಇಂದಿನ ಮಹಾಬಲೇಶ್ವರ ದೇವಾಲಯದ ಮೂಲ ಲಿಂಗ.</p>
+          <p>ಈ ಕಥೆಗಳು ಗೋಕರ್ಣದ ಗುರುತಿನ ಅವಿಭಾಜ್ಯ ಅಂಗವಾಗಿವೆ. ಅವು ಪುರಾಣ ಮತ್ತು ಜನಪದ ಕಥನಗಳು; ದಾಖಲಾದ ಇತಿಹಾಸದ ದೃಢ ದಿನಾಂಕಿತ ಘಟನೆಯೆಂದು ಓದಬಾರದು. ಆದರೆ ಪ್ರವಾಸಿಗಳು ದೇವಾಲಯದ ನಿಯಮಗಳನ್ನು ಪಾಲಿಸುವುದು ಇಲ್ಲಿನ ಸಂಪ್ರದಾಯಕ್ಕೆ ಗೌರವ ತೋರುತ್ತದೆ.</p>
         </div>
       </div>
     </div>
@@ -200,6 +220,121 @@ const jsonLd = [attractionSchema, faqSchema];
     </div>
   </section>
 
+  <section class="shell py-18 md:py-24">
+    <div class="max-w-3xl">
+      <p class="eyebrow">ಋತು ಪ್ರವಾಸ ಸಮ್ಮತಿ</p>
+      <h2 class="section-title mt-3">ವರ್ಷದ ಕಾಲಕ್ಕೆ ತಕ್ಕಂತೆ ಭೇಟಿ ಯೋಜಿಸಿ</h2>
+      <p class="lead mt-5">ಕೆಳಗಿನ ಕೋಷ್ಟಕವು ಗೋಕರ್ಣ ಕರಾವಳಿಯ ಸುಮಾರು 30 ವರ್ಷಗಳ ಹವಾಮಾನ ಸಾಮಾನ್ಯ ಸ್ಥಿತಿಯನ್ನು (ಭಾರತ ಹವಾಮಾನ ಇಲಾಖೆಯ ದೀರ್ಘಾವಧಿ ಸರಾಸರಿ) ಆಧರಿಸಿದೆ. ನಿಖರ ತಾಪಮಾನ ಮತ್ತು ಮಳೆ ವಾರ್ಷಿಕವಾಗಿ ಬದಲಾಗಬಹುದು.</p>
+    </div>
+    <div class="mt-10 overflow-x-auto">
+      <table class="w-full border-collapse text-left text-sm">
+        <thead>
+          <tr class="bg-ocean-900 text-ocean-50">
+            <th class="px-4 py-3 font-extrabold">ಋತು</th>
+            <th class="px-4 py-3 font-extrabold">ತಿಂಗಳುಗಳು</th>
+            <th class="px-4 py-3 font-extrabold">ತಾಪಮಾನ</th>
+            <th class="px-4 py-3 font-extrabold">ಮಳೆ</th>
+            <th class="px-4 py-3 font-extrabold">ಸಮುದ್ರ ಸ್ಥಿತಿ</th>
+            <th class="px-4 py-3 font-extrabold">ಶಿಫಾರಸು</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-ocean-900/10">
+          <tr class="bg-white">
+            <td class="px-4 py-3 font-bold text-ocean-900">ಚಳಿಗಾಲ / ಶುಷ್ಕ</td>
+            <td class="px-4 py-3 text-slate-600">ಅಕ್ಟೋಬರ್–ಮಾರ್ಚ್</td>
+            <td class="px-4 py-3 text-slate-600">೨೦–೩೨°C</td>
+            <td class="px-4 py-3 text-slate-600">ಕಡಿಮೆ</td>
+            <td class="px-4 py-3 text-slate-600">ಸಮತಟ್ಟು, ಈಜಲು ಸುಧಾರಿತ</td>
+            <td class="px-4 py-3 text-slate-600">ಅತ್ಯುತ್ತಮ ಕಾಲ; ಬೆಳಗ್ಗೆ/ಸಂಜೆ ನಡೆ</td>
+          </tr>
+          <tr class="bg-ocean-50/40">
+            <td class="px-4 py-3 font-bold text-ocean-900">ಬೆಸಿಗೆ</td>
+            <td class="px-4 py-3 text-slate-600">ಮಾರ್ಚ್–ಮೇ</td>
+            <td class="px-4 py-3 text-slate-600">೨೮–೩೬°C</td>
+            <td class="px-4 py-3 text-slate-600">ಬರಳು</td>
+            <td class="px-4 py-3 text-slate-600">ಬಿಸಿಲು ಹೆಚ್ಚು, ಸಮುದ್ರ ಬೆಚ್ಚಗೆ</td>
+            <td class="px-4 py-3 text-slate-600">ಬೆಳಿಗ್ಗೆ ಆರಂಭಿಸಿ; ಮಧ್ಯಾಹ್ನ ನೆರಳು</td>
+          </tr>
+          <tr class="bg-white">
+            <td class="px-4 py-3 font-bold text-ocean-900">ಮುಂಗಾರು / ಮಳೆಗಾಲ</td>
+            <td class="px-4 py-3 text-slate-600">ಜೂನ್–ಸೆಪ್ಟೆಂಬರ್</td>
+            <td class="px-4 py-3 text-slate-600">೨೪–೩೦°C</td>
+            <td class="px-4 py-3 text-slate-600">ಭಾರಿ</td>
+            <td class="px-4 py-3 text-slate-600">ರುಕ್ಷ ಅಲೆ, ಈಜು ಅಸುರಕ್ಷಿತ</td>
+            <td class="px-4 py-3 text-slate-600">ಹಸಿರು ಪರಿಸರ; ಸಮುದ್ರಕ್ಕೆ ಇಳಿಯಬೇಡಿ</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="bg-ocean-50 py-18 md:py-24">
+    <div class="shell">
+      <div class="max-w-3xl">
+        <p class="eyebrow">ಪ್ರಯಾಣ ಸಂಯೋಜನೆಯ ಪ್ರಕಾರ ಯೋಜನೆ</p>
+        <h2 class="section-title mt-3">ನಿಮ್ಮ ಗುಂಪಿಗೆ ಸರಿಹೊಂದುವ ರೀತಿ</h2>
+        <p class="lead mt-5">ಪ್ರಯಾಣದ ಸಂಯೋಜನೆ ಮತ್ತು ಗತಿಯ ಆಧಾರದ ಮೇಲೆ ಮೂರು ಗಮನಿಕೆಗಳು — ಕುಟುಂಬ, ಛಾಯಾಗ್ರಹಣ ಅಥವಾ ಕಡಿಮೆ ಶಾರೀರಿಕ ಶ್ರಮ.</p>
+      </div>
+      <div class="mt-10 grid gap-5 lg:grid-cols-3">
+        <article class="card p-7">
+          <p class="text-xs font-extrabold text-temple-500">ಕುಟುಂಬ ಮತ್ತು ಮಕ್ಕಳೊಂದಿಗೆ</p>
+          <h3 class="mt-3 text-xl font-extrabold text-ocean-900">ನಿಧಾನವಾದ ಕುಟುಂಬ ಭೇಟಿ</h3>
+          <ul class="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+            <li>ಬೆಳಗ್ಗೆ ದೇವಾಲಯ ದರ್ಶನ, ಮಧ್ಯಾಹ್ನಕ್ಕೆ ಮುಂಚೆ ಕಡಲತೀರಕ್ಕೆ ನಡೆ.</li>
+            <li>ನೆರಳು, ನೀರು ಮತ್ತು ಸೂರ್ಯರಕ್ಷಣೆ ಜೊತೆಗೆ ಇಡಿ; ಮಧ್ಯಾಹ್ನ ಬಿಸಿಲನ್ನು ತಪಿಸಿ.</li>
+            <li>ರಕ್ಷಕರ ಇರುವ ಭಾಗದಲ್ಲಿ ಮಾತ್ರ ನೀರಿಗಿಳಿಯಿರಿ; ಮಕ್ಕಳನ್ನು ಸಮುದ್ರದ ಅಂಚಿನಲ್ಲಿ ಒಬ್ಬರನ್ನೇ ಬಿಡಬೇಡಿ.</li>
+          </ul>
+        </article>
+        <article class="card p-7">
+          <p class="text-xs font-extrabold text-ocean-700">ಛಾಯಾಗ್ರಹಣ ಮತ್ತು ನೈಸರ್ಗಿಕ</p>
+          <h3 class="mt-3 text-xl font-extrabold text-ocean-900">ಬೆಳಕಿನ ಸಮಯ ಬೇಟೆ</h3>
+          <ul class="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+            <li>ಸೂರ್ಯೋದಯ ಮತ್ತು ಸೂರ್ಯಾಸ್ತ ಕಡಲತೀರಕ್ಕೆ ಅತ್ಯುತ್ತಮ ಬೆಳಕು.</li>
+            <li>ಓಂ ಕಡಲತೀರ ಮೇಲ್ಚಾಚಿನ ನೋಟ, ಕೊಲ್ಲಿ ಮತ್ತು ಕರಾವಳಿ ಕಲ್ಲುಗಳು ವೈವಿಧ್ಯಮಯ ಚಿತ್ರಗಳಿಗೆ ಅವಕಾಶ.</li>
+            <li>ಮುಂಗಾರಿನಲ್ಲಿ ಹಸಿರು ಗಿಡ್ಡ ಮತ್ತು ಮೋಡದ ಬೆಳಕು ಛಾಯಾಗ್ರಹಣಕ್ಕೆ ಒಳ್ಳೆಯದು.</li>
+          </ul>
+        </article>
+        <article class="card p-7">
+          <p class="text-xs font-extrabold text-ocean-700">ಕಡಿಮೆ ಶಾರೀರಿಕ ಶ್ರಮ</p>
+          <h3 class="mt-3 text-xl font-extrabold text-ocean-900">ಅಡ್ಡಂತರ-ಮುಕ್ತ ಭೇಟಿ</h3>
+          <ul class="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+            <li>ಬೆಲೆಹಿಟ್ಟಲ್ ರಸ್ತೆಯ ಪ್ರವೇಶದವರೆಗೆ ಆಟೋ/ಟ್ಯಾಕ್ಸಿ ಬಳಸಿ; ಕೊನೆಯ ನಡೆಯನ್ನು ಕಡಿಮೆ ಮಾಡಿ.</li>
+            <li>ಮರಳಿನ ಉದ್ದದ ನಡೆಯನ್ನು ತಪ್ಪಿಸಿ, ಸಮೀಪದ ನೆರಳು ಮತ್ತು ಕುಳಿತುಕೊಳ್ಳುವ ಜಾಗ ಆಯ್ಕೆ ಮಾಡಿ.</li>
+            <li>ವೀಲ್‌ಚೇರ್ / ವಾಕರ್ ಬಳಕೆದಾರರು ಸಹಾಯಕರೊಂದಿಗೆ ಯೋಜಿಸಿ; ಮರಳು ಮೇಲ್ಮೈ ಚಲನೆಗೆ ಅಡ್ಡಿಯಾಗಬಹುದು.</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="shell py-18 md:py-24">
+    <div class="max-w-3xl">
+      <p class="eyebrow">ಸಾಮಾನ್ಯ ಪ್ರವಾಸಿ ಮಾರ್ಗಗಳು</p>
+      <h2 class="section-title mt-3">ಅರ್ಧ ದಿನ ಮತ್ತು ಪೂರ್ಣ ದಿನ ಯೋಜನೆ</h2>
+      <p class="lead mt-5">ಸಮಯದ ಲಭ್ಯತೆಗೆ ತಕ್ಕಂತೆ ಎರಡು ಸಾಮಾನ್ಯ ಮಾರ್ಗಗಳು. ಧಾರ್ಮಿಕ ಕಾರ್ಯಕ್ರಮಗಳು ಮತ್ತು ಹವಾಮಾನಕ್ಕೆ ಅನುಗುಣವಾಗಿ ಕ್ರಮವನ್ನು ಬದಲಾಯಿಸಿ.</p>
+    </div>
+    <div class="mt-10 grid gap-6 lg:grid-cols-2">
+      <article class="card p-7">
+        <p class="text-sm font-extrabold text-ocean-700">ಅರ್ಧ ದಿನ · ಸುಮಾರು ೩–೪ ಗಂಟೆ</p>
+        <ol class="mt-4 space-y-3 text-sm leading-7 text-slate-600">
+          <li><span class="font-bold text-ocean-900">೧.</span> ಬೆಳಗ್ಗೆ ಮಹಾಬಲೇಶ್ವರ ದೇವಾಲಯ ದರ್ಶನ.</li>
+          <li><span class="font-bold text-ocean-900">೨.</span> ಕೋಟಿ ತೀರ್ಥದಲ್ಲಿ ಪವಿತ್ರ ಸ್ನಾನ / ಛಾಯಾಗ್ರಹಣ.</li>
+          <li><span class="font-bold text-ocean-900">೩.</span> ಮುಖ್ಯ ಕಡಲತೀರದಲ್ಲಿ ನಡೆ ಮತ್ತು ಸೂರ್ಯಾಸ್ತ.</li>
+          <li><span class="font-bold text-ocean-900">೪.</span> ಪಟ್ಟಣದಲ್ಲಿ ಸಸ್ಯಾಹಾರಿ ಊಟ ಮತ್ತು ಮರಳು.</li>
+        </ol>
+      </article>
+      <article class="card p-7">
+        <p class="text-sm font-extrabold text-ocean-700">ಪೂರ್ಣ ದಿನ · ಸುಮಾರು ೭–೮ ಗಂಟೆ</p>
+        <ol class="mt-4 space-y-3 text-sm leading-7 text-slate-600">
+          <li><span class="font-bold text-ocean-900">೧.</span> ಬೆಳಗ್ಗೆ ದೇವಾಲಯ, ಕೋಟಿ ತೀರ್ಥ ಮತ್ತು ಹಳೆಯ ಪಟ್ಟಣ ಬೀದಿಗಳು.</li>
+          <li><span class="font-bold text-ocean-900">೨.</span> ಮುಖ್ಯ ಕಡಲತೀರದಲ್ಲಿ ಮುಕ್ತ ಸಮಯ ಮತ್ತು ಊಟ.</li>
+          <li><span class="font-bold text-ocean-900">೩.</span> ಮಧ್ಯಾಹ್ನ ಓಂ / ಕುಡ್ಲೆ ಕಡಲತೀರಕ್ಕೆ ನಡೆ ಅಥವಾ ದೋಣಿ.</li>
+          <li><span class="font-bold text-ocean-900">೪.</span> ಸಂಜೆ ಮುಖ್ಯ ಕಡಲತೀರದ ಸೂರ್ಯಾಸ್ತ, ರಾತ್ರಿ ಊಟ.</li>
+        </ol>
+      </article>
+    </div>
+  </section>
+
   <section id="ಸೌಲಭ್ಯ" class="bg-ocean-50 py-18 md:py-24">
     <div class="shell">
       <div class="max-w-3xl">
@@ -217,6 +352,10 @@ const jsonLd = [attractionSchema, faqSchema];
         <article class="card p-6"><h3 class="font-extrabold">ರಕ್ಷಕರು ಮತ್ತು ತುರ್ತು ಪರಿಸ್ಥಿತಿ</h3><p class="mt-3 text-sm leading-7 text-slate-600">ರಾಜ್ಯ ಪ್ರವಾಸೋದ್ಯಮದ ಸೌಲಭ್ಯ ಪಟ್ಟಿಯಲ್ಲಿ ಜೀವ ರಕ್ಷಕರನ್ನು ಸೂಚಿಸಲಾಗಿದೆ. ಆದರೂ ಪ್ರತಿಯೊಂದು ಭಾಗ/ಪ್ರತಿ ಕ್ಷಣದಲ್ಲಿ ಮೇಲ್ವಿಚಾರಣೆ ಖಚಿತವಲ್ಲ; ಸಮುದ್ರ ಸುರಕ್ಷತೆಯ ವೈಯಕ್ತಿಕ ಹೊಣೆಗಾರಿಕೆ ಉಳಿಯುತ್ತದೆ.</p></article>
         <article class="card p-6"><h3 class="font-extrabold">ಚಲನಸೌಲಭ್ಯ</h3><p class="mt-3 text-sm leading-7 text-slate-600">ಮರಳು ಮೇಲ್ಮೈ ಕಾರಣ ಚಕ್ರಕುರ್ಚಿ, ವಾಕರ್ ಮತ್ತು ಮಕ್ಕಳ ಗಾಡಿಗೆ ಸ್ವತಂತ್ರ ಚಲನೆ ಕಷ್ಟವಾಗಬಹುದು. ಸಮತಟ್ಟಾದ ಪ್ರವೇಶದ ಸ್ಥಿತಿ ಋತು/ಮರಳು ಬದಲಾವಣೆಯಿಂದ ವ್ಯತ್ಯಾಸವಾಗಬಹುದು; ಸಹಾಯಕರೊಂದಿಗೆ ಯೋಜಿಸುವುದು ಸೂಕ್ತ.</p></article>
         <article class="card p-6"><h3 class="font-extrabold">ಸಂಪರ್ಕ ಮತ್ತು ಪಾವತಿ</h3><p class="mt-3 text-sm leading-7 text-slate-600">ಪಟ್ಟಣ ಪ್ರದೇಶದಲ್ಲಿ ಮೊಬೈಲ್ ಸಂಪರ್ಕ ಸಾಮಾನ್ಯವಾಗಿ ದೊರೆಯಬಹುದು; ಜನಸಂದಣಿ ಅಥವಾ ಹವಾಮಾನದಿಂದ ಗುಣಮಟ್ಟ ಬದಲಾಗಬಹುದು. ಸಣ್ಣ ವೆಚ್ಚಗಳಿಗೆ ಡಿಜಿಟಲ್ ಪಾವತಿಯ ಜೊತೆಗೆ ಸ್ವಲ್ಪ ನಗದು ಇಡುವುದು ಉಪಯುಕ್ತ.</p></article>
+        <article class="card p-6"><h3 class="font-extrabold">ಎಟಿಎಂ ಮತ್ತು ಬ್ಯಾಂಕಿಂಗ್</h3><p class="mt-3 text-sm leading-7 text-slate-600">ಪಟ್ಟಣ ಮತ್ತು ಬಸ್ ನಿಲ್ದಾಣ ಸಮೀಪ ಎಟಿಎಂ ಹಾಗೂ ಬ್ಯಾಂಕ್ ಶಾಖೆಗಳು ಲಭ್ಯ. ನಗದು ತೆಗೆದುಕೊಳ್ಳಲು ಕಾರ್ಡ್ ಬಳಸಬಹುದು; ಸಂಜೆ/ರಜೆಯಲ್ಲಿ ಮಿತಿಗಳಿರಬಹುದು.</p></article>
+        <article class="card p-6"><h3 class="font-extrabold">ಪ್ರವಾಸಿ ಮಾಹಿತಿ ಕೇಂದ್ರ</h3><p class="mt-3 text-sm leading-7 text-slate-600">ಜಿಲ್ಲಾಡಳಿತ ಮತ್ತು ಪ್ರವಾಸೋದ್ಯಮ ಕಚೇರಿಗಳ ಮೂಲಕ ಪ್ರವಾಸಿ ಮಾಹಿತಿ ಕೇಂದ್ರ/ಸಹಾಯ ಡೆಸ್ಕ್ ಲಭ್ಯವಿರಬಹುದು. ಮಾರ್ಗದರ್ಶಿ, ನಕ್ಷೆ ಮತ್ತು ಘಟನೆ ಮಾಹಿತಿಗೆ ಅಲ್ಲಿ ವಿಚಾರಿಸಿ.</p></article>
+        <article class="card p-6"><h3 class="font-extrabold">ಪ್ರಥಮ ಚಿಕಿತ್ಸೆ ಮತ್ತು ಔಷಧಾಲಯ</h3><p class="mt-3 text-sm leading-7 text-slate-600">ಪಟ್ಟಣದಲ್ಲಿ ಔಷಧಾಲಯಗಳು ಮತ್ತು ಪ್ರಾಥಮಿಕ ಆರೋಗ್ಯ ಕೇಂದ್ರಗಳು ಇವೆ. ಸೂರ್ಯತಾಪ, ಕಡಲುನೀರು ಅಥವಾ ಚಿಕ್ಕ ಗಾಯಗಳಿಗೆ ತ್ವರಿತ ನಿವಾರಣೆಗೆ ಸ್ಥಳೀಯ ಔಷಧಾಲಯ ಬಳಸಿ.</p></article>
+        <article class="card p-6"><h3 class="font-extrabold">ಕಡಲತೀರ ಸಾಧನ ಬಾಡಿಗೆ</h3><p class="mt-3 text-sm leading-7 text-slate-600">ಮಡಕ್ಕೆ, ಸೂರ್ಯಕಿರಣ ಚಟಾಕ್, ಛತ್ರಿ ಮತ್ತು ಕುಳಿತುಕೊಳ್ಳುವ ಸಾಧನಗಳನ್ನು ನೀಡುವ ಬೀಚ್-ಆಧಾರಿತ ಬಾಡಿಗೆ ವ್ಯವಸ್ಥೆಗಳು ಋತು ಮತ್ತು ಸ್ಥಳಕ್ಕೆ ಅವಲಂಬಿತ. ದರ ಮತ್ತು ಠೇವಣಿ ನಿಯಮ ಸ್ಥಳದಲ್ಲೇ ದೃಢಪಡಿಸಿ.</p></article>
       </div>
     </div>
   </section>
@@ -235,7 +374,7 @@ const jsonLd = [attractionSchema, faqSchema];
         </div>
       </div>
       <div class="photo-frame overflow-hidden rounded-[2rem] bg-sand-100">
-        <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Gokarna_main_beach%2C_February%2C_2018.jpg?width=1400" alt="ಗೋಕರ್ಣ ಮುಖ್ಯ ಕಡಲತೀರದ ಕರಾವಳಿ ದೃಶ್ಯ" class="aspect-[4/3] h-full w-full object-cover" loading="lazy" />
+        <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Gokarna_main_beach%2C_February%2C_2018.jpg?width=1400" alt="ಗೋಕರ್ಣ ಮುಖ್ಯ ಕಡಲತೀರದ ಕರಾವಳಿ ದೃಶ್ಯ — Gokarna Main Beach coastline, Gokarna, India" class="aspect-[4/3] h-full w-full object-cover" loading="lazy" />
         <p class="px-4 py-3 text-[11px] leading-5 text-slate-500">ಚಿತ್ರ: Alexey Komarov · ವಿಕಿಮೀಡಿಯ ಕಾಮನ್ಸ್ · CC BY-SA 4.0</p>
       </div>
     </div>
@@ -265,6 +404,23 @@ const jsonLd = [attractionSchema, faqSchema];
           <div class="flex items-start gap-4"><span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-ocean-100 font-black text-ocean-900">◇</span><div><h3 class="text-lg font-extrabold">ಸ್ವಂತ ವಾಹನ / ಬಾಡಿಗೆ ವಾಹನ</h3><p class="mt-2 text-sm leading-7 text-slate-600">ರಾಷ್ಟ್ರೀಯ ಹೆದ್ದಾರಿ 66 ಮುಖ್ಯ ಪ್ರವೇಶ ಅಕ್ಷ. ಗೋಕರ್ಣ ಪಟ್ಟಣದ ದೇವಾಲಯ ಭಾಗ ಮತ್ತು ಕಡಲತೀರದ ಸಮೀಪ ಕಿರಿದಾದ ಬೀದಿಗಳು, ಪಾದಚಾರಿಗಳು ಮತ್ತು ಹಬ್ಬದ ಜನಸಂದಣಿ ಇರಬಹುದು. ಕಡಲತೀರದ ಬಾಗಿಲಿನವರೆಗೂ ವಾಹನ ಒತ್ತಿಹಾಕುವುದಕ್ಕಿಂತ ಮಾನ್ಯ ಪಾರ್ಕಿಂಗ್ ಸ್ಥಳದಲ್ಲಿ ನಿಲ್ಲಿಸಿ ಕೊನೆಯ ಭಾಗ ನಡೆದು ಬರುವುದು ಬಹಳ ಸಂದರ್ಭಗಳಲ್ಲಿ ಸರಳ.</p></div></div>
         </article>
       </div>
+      <div class="mt-10 grid gap-5 lg:grid-cols-3">
+        <article class="card p-6">
+          <p class="text-xs font-extrabold text-temple-500">ವಿಮಾನ ನಿಲ್ದಾಣ → ಕಡಲತೀರ</p>
+          <h3 class="mt-2 text-lg font-extrabold text-ocean-900">ವಿಮಾನದಿಂದ</h3>
+          <p class="mt-3 text-sm leading-7 text-slate-600">ಗೋವಾ (ಮನೋಹರ್/ದಾಬೋಲಿಂ) ಸುಮಾರು 150–160 ಕಿಮೀ, ಮಂಗಳೂರು ಸುಮಾರು 235–240 ಕಿಮೀ ದೂರ. ನಿಲ್ದಾಣದಿಂದ ಪೂರ್ವನಿಗದಿತ ಟ್ಯಾಕ್ಸಿ ಅಥವಾ KSRTC/ಖಾಸಗಿ ಬಸ್‌ನಲ್ಲಿ ಗೋಕರ್ಣ/ಕುಮಟಾ/ಅಂಕೋಲಾಕ್ಕೆ ಬನ್ನಿ, ನಂತರ ಸ್ಥಳೀಯ ಆಟೋ/ಟ್ಯಾಕ್ಸಿಯಿಂದ ಮುಖ್ಯ ಕಡಲತೀರದವರೆಗೆ.</p>
+        </article>
+        <article class="card p-6">
+          <p class="text-xs font-extrabold text-ocean-700">ರೈಲು / ಬಸ್ → ಕಡಲತೀರ</p>
+          <h3 class="mt-2 text-lg font-extrabold text-ocean-900">ರೈಲು ಅಥವಾ ಬಸ್ಸಿನಿಂದ</h3>
+          <p class="mt-3 text-sm leading-7 text-slate-600">ಗೋಕರ್ಣ ರಸ್ತೆ ರೈಲು ನಿಲ್ದಾಣ ~10 ಕಿಮೀ; ಅಲ್ಲಿಂದ ಆಟೋ/ಟ್ಯಾಕ್ಸಿ. KSRTC ಬಸ್ ನೇರವಾಗಿ ಗೋಕರ್ಣ ಬಸ್ ನಿಲ್ದಾಣಕ್ಕೆ ಬಂದರೆ, ಅಲ್ಲಿಂದ ಕಡಲತೀರ ~5 ನಿಮಿಷದ ಆಟೋ ಪ್ರಯಾಣ. ಕುಮಟಾ/ಅಂಕೋಲಾದಿಂದ ಬಂದರೆ ಬಸ್/ಆಟೋ ಬಳಸಿ.</p>
+        </article>
+        <article class="card p-6">
+          <p class="text-xs font-extrabold text-ocean-700">ಸ್ಥಳೀಯ → ಕಡಲತೀರ</p>
+          <h3 class="mt-2 text-lg font-extrabold text-ocean-900">ಟ್ಯಾಕ್ಸಿ / ಆಟೋದಿಂದ</h3>
+          <p class="mt-3 text-sm leading-7 text-slate-600">ಪಟ್ಟಣದ ಯಾವುದೇ ಬಿಂದುವಿನಿಂದ ಬೆಲೆಹಿಟ್ಟಲ್ ರಸ್ತೆ ಪ್ರವೇಶದವರೆಗೆ ಆಟೋ/ಟ್ಯಾಕ್ಸಿ; ಕೊನೆಯ ಕೆಲವು ನೂರು ಮೀಟರ್ ಮರಳಿನಲ್ಲಿ ನಡೆಯಿರಿ. ದರ ಮೊದಲೇ ನಿಗದಿಪಡಿಸಿ, ರಾತ್ರಿ ಶುಲ್ಕ ವಿಚಾರಿಸಿ.</p>
+        </article>
+      </div>
     </div>
   </section>
 
@@ -273,6 +429,7 @@ const jsonLd = [attractionSchema, faqSchema];
       <p class="eyebrow">ಸಮೀಪದ ಆಕರ್ಷಣೆಗಳು</p>
       <h2 class="section-title mt-3">ಗೋಕರ್ಣವನ್ನು ಒಂದೇ ಕಡಲತೀರವಾಗಿ ನೋಡಬೇಡಿ</h2>
       <p class="lead mt-5">ಮುಖ್ಯ ಕಡಲತೀರ ಪಟ್ಟಣದ ಪ್ರವೇಶದ್ವಾರ. ಧಾರ್ಮಿಕ ತಾಣಗಳು ಮತ್ತು ದಕ್ಷಿಣಕ್ಕೆ ಸರಸರಣಿಯಾಗಿ ಇರುವ ಕಡಲತೀರಗಳನ್ನು ಸೇರಿಸಿದರೆ ಗೋಕರ್ಣದ ಭೌಗೋಳಿಕ ಮತ್ತು ಸಾಂಸ್ಕೃತಿಕ ಸ್ವರೂಪ ಹೆಚ್ಚು ಸ್ಪಷ್ಟವಾಗುತ್ತದೆ.</p>
+      <p class="mt-4 text-base leading-8 text-slate-600">ಗೋಕರ್ಣ ಮುಖ್ಯ ಕಡಲತೀರಕ್ಕೆ ಭೇಟಿ ನೀಡುವಾಗ ಸಂದರ್ಶಕರು ಮಹಾಬಲೇಶ್ವರ ದೇವಾಲಯ ಮತ್ತು ಓಂ ಕಡಲತೀರದಂತಹ ಸಮೀಪದ ಐತಿಹಾಸಿಕ ಹಾಗೂ ಪ್ರವಾಸಿ ಸ್ಥಳಗಳನ್ನು ಸಹ ಸುಲಭವಾಗಿ ಅನ್ವೇಷಿಸಬಹುದು.</p>
     </div>
     <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       <article class="rounded-[1.6rem] border border-ocean-900/10 p-6"><p class="text-xs font-extrabold text-temple-500">ತೀರ್ಥಕ್ಷೇತ್ರ</p><h3 class="mt-2 text-lg font-extrabold">ಮಹಾಬಲೇಶ್ವರ ದೇವಾಲಯ</h3><p class="mt-3 text-sm leading-7 text-slate-600">ಗೋಕರ್ಣದ ಶೈವ ಧಾರ್ಮಿಕ ಗುರುತಿನ ಕೇಂದ್ರ; ಆತ್ಮಲಿಂಗ ಪುರಾಣ ಪರಂಪರೆಯೊಂದಿಗೆ ಸಂಬಂಧಿತ. ಉಡುಪು, ಛಾಯಾಗ್ರಹಣ ಮತ್ತು ಪ್ರವೇಶ ನಿಯಮಗಳನ್ನು ಸ್ಥಳದಲ್ಲೇ ಪಾಲಿಸಿ.</p></article>
@@ -296,6 +453,8 @@ const jsonLd = [attractionSchema, faqSchema];
           <div class="rounded-2xl bg-white p-5 text-sm leading-7 text-slate-600"><strong class="block text-ocean-900">ಛಾಯಾಗ್ರಹಣಕ್ಕೆ ಸಂವೇದನೆ</strong> ಯಾತ್ರಿಕರ ಪೂಜೆ, ಸ್ನಾನ ಅಥವಾ ಸ್ಥಳೀಯರ ಕೆಲಸವನ್ನು ಹತ್ತಿರದಿಂದ ಅನುಮತಿಯಿಲ್ಲದೆ ಚಿತ್ರಿಸಬೇಡಿ.</div>
           <div class="rounded-2xl bg-white p-5 text-sm leading-7 text-slate-600"><strong class="block text-ocean-900">ಮದ್ಯ ಮತ್ತು ಗದ್ದಲ</strong> ಧಾರ್ಮಿಕ ಪಟ್ಟಣದ ಪರಿಸರ, ಸ್ಥಳೀಯ ನಿಯಮ ಮತ್ತು ಕುಟುಂಬ ಬಳಕೆಯನ್ನು ಗೌರವಿಸಿ; ರಾತ್ರಿ ಕಡಲತೀರವನ್ನು ಖಾಸಗಿ ಪಾರ್ಟಿ ಸ್ಥಳವೆಂದು ಪರಿಗಣಿಸಬೇಡಿ.</div>
           <div class="rounded-2xl bg-white p-5 text-sm leading-7 text-slate-600"><strong class="block text-ocean-900">ಜೀವಜಗತ್ತಿಗೆ ಅಂತರ</strong> ಕರಾವಳಿ ಪಕ್ಷಿ/ಪ್ರಾಣಿಗಳನ್ನು ಆಹಾರ ನೀಡುವುದು, ಬೆನ್ನಟ್ಟುವುದು ಅಥವಾ ಮರಳು ವಾಸಸ್ಥಳ ಹಾನಿಗೊಳಿಸುವುದನ್ನು ತಪ್ಪಿಸಿ.</div>
+          <div class="rounded-2xl bg-white p-5 text-sm leading-7 text-slate-600"><strong class="block text-ocean-900">ಕರಾವಳಿ ಪರಿಸರ</strong> ಮರಳು ದಿಣ್ಣೆ, ಸಸ್ಯ ಮತ್ತು ಕಡಲತೀರ ಸಮೀಪದ ಜೌಗು ಪ್ರದೇಶಗಳನ್ನು ಕಾಲ್ನಡಿಗೆ ಹಾನಿಯಿಂದ ಕಾಪಾಡಿ; ಕಚರ ಅಥವಾ ಎಣ್ಣೆಯನ್ನು ಸಮುದ್ರಕ್ಕೆ ಸೇರಿಸಬೇಡಿ.</div>
+          <div class="rounded-2xl bg-white p-5 text-sm leading-7 text-slate-600"><strong class="block text-ocean-900">ಸ್ಥಳೀಯ ಅರ್ಥವ್ಯವಸ್ಥೆ</strong> ಪಟ್ಟಣದ ಸಣ್ಣ ವ್ಯಾಪಾರಿ, ಮೀನುಗಾರ ಮತ್ತು ಮಾರ್ಗದರ್ಶಿಗಳ ಮೇಲೆ ಪ್ರಯಾಣ ಅವಲಂಬಿತವಾಗಿದೆ. ನ್ಯಾಯಬದ್ಧ ಬೆಲೆ ನೀಡುವುದು ಮತ್ತು ಸ್ಥಳೀಯ ಕೈಗಾರಿಕೆಯನ್ನು ಬೆಂಬಲಿಸುವುದು ಸಮುದಾಯಕ್ಕೆ ಸಹಾಯಕ.</div>
         </div>
       </div>
     </div>

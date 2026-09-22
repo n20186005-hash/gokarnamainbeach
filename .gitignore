@@ -1,5 +1,33 @@
+# Dependencies
 node_modules/
+.pnp/
+.pnp.js
+
+# Build output
 dist/
 .astro/
 .wrangler/
+.dev.vars
+
+# Logs
+*.log
+logs/
+
+# Local env / secrets
+.env
+.env.*
+!.env.example
+
+# Editor / OS
 .DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Cache
+.cache/
+
+# Cloudflare
+.wrangler-state/
+.miniflare/

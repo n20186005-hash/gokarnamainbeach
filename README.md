@@ -14,7 +14,7 @@ A Kannada-only, independent nonprofit visitor information site for Gokarna Main 
 
 ## Production domain
 
-There is exactly one production-domain configuration point: `SITE` in `astro.config.mjs`. It is intentionally empty in this delivery. With it empty, canonical and `og:url` are omitted and the sitemap integration is disabled. Fill only that value after a production domain is chosen, then rebuild; all absolute site URLs derive from Astro's `site` value.
+There is exactly one production-domain configuration point: `SITE` in `astro.config.mjs`. It is now set to `https://gokarnamainbeach.com`, which enables canonical/`og:url` absolute URLs and the sitemap integration. All absolute site URLs derive from Astro's `site` value.
 
 ## Privacy and analytics
 
@@ -38,7 +38,7 @@ pnpm build
 pnpm verify
 ```
 
-If a production `SITE` is configured, inspect generated sitemap files after `pnpm build`. If `SITE` remains empty, no sitemap should be emitted by design.
+With `SITE` configured to `https://gokarnamainbeach.com`, inspect the generated sitemap files after `pnpm build`; every sitemap URL should use that domain.
 
 ## Deployment to Cloudflare Workers
 

@@ -1,0 +1,25 @@
+{
+  "name": "Gokarna Main Beach — Visitor Guide",
+  "short_name": "Gokarna Beach",
+  "description": "Independent Kannada visitor guide to Gokarna Main Beach, Gokarna, Uttara Kannada, Karnataka, India.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#073f40",
+  "theme_color": "#073f40",
+  "lang": "kn-IN",
+  "categories": ["travel", "tourism"],
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

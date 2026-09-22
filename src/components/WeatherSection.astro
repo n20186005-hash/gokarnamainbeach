@@ -1,0 +1,213 @@
+---
+import { getWeather, type Lang } from '../lib/weather';
+
+interface Props {
+  lang?: Lang;
+}
+const { lang = 'kn' } = Astro.props;
+const data = await getWeather(lang);
+const waveText = data && data.now.wave != null ? `${data.now.wave} m` : '—';
+
+const UI = lang === 'en' ? {
+  eyebrow: 'Weather',
+  title: 'Current weather and the next 7 days',
+  lead: 'Gokarna Main Beach conditions refresh every few minutes. If rain is likely, bring an umbrella; the sea changes day to day.',
+  labels: { apparent: 'Feels like', humidity: 'Humidity', wind: 'Wind', rainProb: 'Rain chance', uv: 'UV index', wave: 'Wave height' },
+  cards: { outfit: 'What to wear', activity: 'Things to do', items: 'What to bring' },
+  risk: '⚠️ Safety alert',
+  fallback: 'Weather data could not be loaded right now. Please try again shortly.',
+  adviceNote: 'Tips are generated from current conditions; check official sources for precise local alerts.',
+} : {
+  eyebrow: 'ಹವಾಮಾನ',
+  title: 'ಪ್ರಸ್ತುತ ಹವಾಮಾನ ಮತ್ತು ಮುಂದಿನ ೭ ದಿನಗಳು',
+  lead: 'ಗೋಕರ್ಣ ಮುಖ್ಯ ಕಡಲತೀರದ ಹವಾಮಾನವನ್ನು ಪ್ರತಿ ನಿಮಿಷ ನವೀಕರಿಸಲಾಗುತ್ತದೆ. ಕೆಳಗಿನ ಸಲಹೆಗಳು ಪ್ರಸ್ತುತ ಹವಾಮಾನದಿಂದ ನಿಮಗಾಗಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ರೂಪುಗೊಳ್ಳುತ್ತವೆ.',
+  labels: { apparent: 'ಅನುಭವ', humidity: 'ಆರ್ದ್ರತೆ', wind: 'ಗಾಳಿ', rainProb: 'ಮಳೆ ಸಾಧ್ಯತೆ', uv: 'UV ಸೂಚಿಕ', wave: 'ಅಲೆ ಎತ್ತರ' },
+  cards: { outfit: 'ಪ್ರಯಾಣ ಉಡುಪು', activity: 'ಆಟ / ವಿಹಾರ ವ್ಯವಸ್ಥೆ', items: 'ಜೊತೆ ಇಡಬೇಕಾದವು' },
+  risk: '⚠️ ಸುರಕ್ಷತಾ ಎಚ್ಚರಿಕೆ',
+  fallback: 'ಹವಾಮಾನ ಮಾಹಿತಿಯನ್ನು ಪ್ರಸ್ತುತ ಹೊರತೆಗೆಯಲಾಗಲಿಲ್ಲ. ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಮರುಪ್ರಯತ್ನಿಸಿ.',
+  adviceNote: 'ಸಲಹೆಗಳು ಪ್ರಸ್ತುತ ಹವಾಮಾನ ದತ್ತಾಂಶದಿಂದ ಉತ್ಪನ್ನವಾಗಿವೆ; ನಿಖರ ಸ್ಥಳೀಯ ಎಚ್ಚರಿಕೆಗಳಿಗಾಗಿ ಅಧಿಕೃತ ಮೂಲಗಳನ್ನು ನೋಡಿ.',
+};
+---
+
+<section id={lang === 'en' ? 'weather' : 'ಹವಾಮಾನ'} class="shell py-18 md:py-24">
+  <div class="max-w-3xl">
+    <p class="eyebrow">{UI.eyebrow}</p>
+    <h2 class="section-title mt-3">{UI.title}</h2>
+    <p class="lead mt-5">{UI.lead}</p>
+  </div>
+
+  {data && (
+    <div class="mt-10 grid gap-6 lg:grid-cols-[.85fr_1.15fr] lg:items-stretch">
+      <article class="card flex flex-col p-7">
+        <p class="text-sm font-extrabold text-ocean-700">{
+          lang === 'en' ? 'Right now' : 'ಪ್ರಸ್ತುತ'
+        }</p>
+        <div class="mt-3 flex items-center gap-4">
+          <span id="wx-now-icon" class="text-5xl leading-none">{data.now.icon}</span>
+          <div>
+            <p id="wx-now-temp" class="text-4xl font-black text-ocean-900">{data.now.temp}°C</p>
+            <p id="wx-now-label" class="text-sm font-bold text-slate-600">{data.now.label}</p>
+          </div>
+        </div>
+        <dl class="mt-6 grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+          <div><dt class="font-bold text-ocean-700">{UI.labels.apparent}</dt><dd id="wx-now-app" class="text-slate-600">{data.now.apparent}°C</dd></div>
+          <div><dt class="font-bold text-ocean-700">{UI.labels.humidity}</dt><dd id="wx-now-hum" class="text-slate-600">{data.now.humidity}%</dd></div>
+          <div><dt class="font-bold text-ocean-700">{UI.labels.wind}</dt><dd id="wx-now-wind" class="text-slate-600">{data.now.wind} km/h · {data.now.windLevel} {
+            lang === 'en' ? 'level' : 'ಹಂತ'
+          }</dd></div>
+          <div><dt class="font-bold text-ocean-700">{UI.labels.rainProb}</dt><dd id="wx-now-prob" class="text-slate-600">{data.now.precipProb}%</dd></div>
+          <div><dt class="font-bold text-ocean-700">{UI.labels.uv}</dt><dd id="wx-now-uv" class="text-slate-600">{data.now.uv}</dd></div>
+          <div><dt class="font-bold text-ocean-700">{UI.labels.wave}</dt><dd id="wx-now-wave" class="text-slate-600">{waveText}</dd></div>
+        </dl>
+      </article>
+
+      <article class="card p-7">
+        <p class="text-sm font-extrabold text-ocean-700">{
+          lang === 'en' ? 'Next 7 days' : 'ಮುಂದಿನ ೭ ದಿನಗಳು'
+        }</p>
+        <ul class="mt-5 grid gap-3 sm:grid-cols-2">
+          {data.days.map((day, i) => (
+            <li class="flex items-center gap-3 rounded-2xl border border-ocean-900/10 bg-white px-4 py-3">
+              <span id={`wx-day-${i}-icon`} class="text-2xl leading-none">{day.icon}</span>
+              <div class="min-w-0 flex-1">
+                <p class="text-sm font-extrabold text-ocean-900">
+                  <span id={`wx-day-${i}-wd`}>{day.weekday}</span>
+                  <span id={`wx-day-${i}-label`} class="ml-2 font-normal text-slate-600">{day.label}</span>
+                </p>
+                <p id={`wx-day-${i}-temp`} class="text-sm text-slate-600">{day.tmin}° / {day.tmax}°</p>
+              </div>
+              <div class="text-right">
+                <p id={`wx-day-${i}-prob`} class="text-xs font-bold text-ocean-700">{
+                  lang === 'en' ? `Rain ${day.precipProb}%` : `ಮಳೆ ${day.precipProb}%`
+                }</p>
+                <p id={`wx-day-${i}-umb`} class="text-base">{day.umbrella ? '☔' : '🌤️'}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </article>
+    </div>
+  )}
+
+  {data && (
+    <div id="wx-risk">
+      {data.advice.risk.length > 0 && (
+        <div class="mt-6 rounded-2xl border border-red-200 bg-red-50 px-5 py-4">
+          <p class="text-sm font-extrabold text-red-700">{UI.risk}</p>
+          <ul class="mt-2 space-y-1">
+            {data.advice.risk.map((r) => (
+              <li class="text-sm text-red-800">{r}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  )}
+
+  {data && (
+    <div id="wx-advice" class="mt-6 grid gap-6 md:grid-cols-3">
+      <article class="card p-7">
+        <p class="text-sm font-extrabold text-ocean-700">{UI.cards.outfit}</p>
+        <ul class="mt-4 space-y-2">
+          {data.advice.outfit.map((s) => (
+            <li class="text-sm text-slate-700"><span class="mr-2 text-ocean-600">✓</span>{s}</li>
+          ))}
+        </ul>
+      </article>
+      <article class="card p-7">
+        <p class="text-sm font-extrabold text-ocean-700">{UI.cards.activity}</p>
+        <ul class="mt-4 space-y-2">
+          {data.advice.activity.map((s) => (
+            <li class="text-sm text-slate-700"><span class="mr-2 text-ocean-600">✓</span>{s}</li>
+          ))}
+        </ul>
+      </article>
+      <article class="card p-7">
+        <p class="text-sm font-extrabold text-ocean-700">{UI.cards.items}</p>
+        <ul class="mt-4 space-y-2">
+          {data.advice.items.map((s) => (
+            <li class="text-sm text-slate-700"><span class="mr-2 text-ocean-600">✓</span>{s}</li>
+          ))}
+        </ul>
+      </article>
+    </div>
+  )}
+
+  {data && (
+    <p class="mt-6 max-w-3xl text-xs leading-6 text-slate-400">{UI.adviceNote}</p>
+  )}
+
+  {!data && (
+    <p class="mt-10 rounded-2xl bg-sand-100 p-6 text-sm leading-7 text-sand-600">
+      {UI.fallback}
+    </p>
+  )}
+</section>
+
+<script is:inline define:vars={{ lang }}>
+(function () {
+  var STR = {
+    kn: { risk: '⚠️ ಸುರಕ್ಷತಾ ಎಚ್ಚರಿಕೆ', outfit: 'ಪ್ರಯಾಣ ಉಡುಪು', activity: 'ಆಟ / ವಿಹಾರ ವ್ಯವಸ್ಥೆ', items: 'ಜೊತೆ ಇಡಬೇಕಾದವು' },
+    en: { risk: '⚠️ Safety alert', outfit: 'What to wear', activity: 'Things to do', items: 'What to bring' }
+  };
+  var S = STR[lang] || STR.kn;
+  function fmt(n) { return (n === null || n === undefined) ? '—' : Math.round(n); }
+  function setText(id, text) { var el = document.getElementById(id); if (el) el.textContent = text; }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function riskHTML(risk) {
+    if (!risk || !risk.length) return '';
+    var items = risk.map(function (r) {
+      return '<li style="color:#991b1b;font-size:.875rem;margin-top:.35rem;">' + esc(r) + '</li>';
+    }).join('');
+    return '<div style="margin-top:1.5rem;border:1px solid #fecaca;background:#fef2f2;border-radius:1rem;padding:1rem 1.25rem;">' +
+      '<p style="font-weight:800;color:#b91c1c;font-size:.875rem;">' + S.risk + '</p>' +
+      '<ul style="margin-top:.5rem;list-style:none;padding:0;">' + items + '</ul></div>';
+  }
+  function cardHTML(title, list) {
+    var items = list.map(function (s) {
+      return '<li style="font-size:.9rem;color:#334155;margin-top:.5rem;"><span style="margin-right:.4rem;color:#0d9488;">✓</span>' + esc(s) + '</li>';
+    }).join('');
+    return '<article style="background:#fff;border:1px solid rgba(15,118,110,.1);border-radius:1rem;padding:1.75rem;">' +
+      '<p style="font-size:.875rem;font-weight:800;color:#0f766e;">' + title + '</p>' +
+      '<ul style="margin-top:1rem;list-style:none;padding:0;">' + items + '</ul></article>';
+  }
+  function adviceWrap(a) {
+    if (!a) return '';
+    var html = cardHTML(S.outfit, a.outfit) + cardHTML(S.activity, a.activity) + cardHTML(S.items, a.items);
+    return '<div style="margin-top:1.5rem;display:grid;gap:1.5rem;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">' + html + '</div>';
+  }
+  function refresh() {
+    fetch('/api/weather?lang=' + lang, { cache: 'no-store' })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (!d || !d.now) return;
+        var now = d.now;
+        setText('wx-now-icon', now.icon);
+        setText('wx-now-label', now.label);
+        setText('wx-now-temp', fmt(now.temp) + '°C');
+        setText('wx-now-app', fmt(now.apparent) + '°C');
+        setText('wx-now-hum', fmt(now.humidity) + '%');
+        setText('wx-now-wind', fmt(now.wind) + ' km/h · ' + now.windLevel + (lang === 'en' ? ' level' : ' ಹಂತ'));
+        setText('wx-now-prob', fmt(now.precipProb) + '%');
+        setText('wx-now-uv', String(now.uv));
+        setText('wx-now-wave', now.wave != null ? now.wave + ' m' : '—');
+        (d.days || []).forEach(function (day, i) {
+          var p = 'wx-day-' + i + '-';
+          setText(p + 'icon', day.icon);
+          setText(p + 'label', day.label);
+          setText(p + 'temp', fmt(day.tmin) + '° / ' + fmt(day.tmax) + '°');
+          setText(p + 'prob', (lang === 'en' ? 'Rain ' : 'ಮಳೆ ') + fmt(day.precipProb) + '%');
+          setText(p + 'umb', day.umbrella ? '☔' : '🌤️');
+        });
+        var riskEl = document.getElementById('wx-risk');
+        if (riskEl) riskEl.innerHTML = riskHTML(d.advice && d.advice.risk);
+        var advEl = document.getElementById('wx-advice');
+        if (advEl) advEl.innerHTML = adviceWrap(d.advice);
+      })
+      .catch(function () {});
+  }
+  refresh();
+  setInterval(refresh, 10 * 60 * 1000);
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) refresh(); });
+})();
+</script>

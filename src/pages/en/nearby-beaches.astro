@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { place, sourceLinks } from '../../data/place';
+import { enAttractionSchema } from '../../data/enGuide';
+
+export const prerender = false;
+
+const jsonLd = [enAttractionSchema(Astro.site ? Astro.site.toString() : undefined)];
+---
+
+<BaseLayout
+  lang="en"
+  title="Nearby Beaches — Kudle, Om, Half Moon & Paradise | Gokarna Guide"
+  description="Gokarna’s beach string south of Main Beach: Kudle, Om, Half Moon and Paradise. How they connect, access notes and which suits your plan."
+  image={place.heroImage}
+  imageAlt={`${place.fullNameEn} and nearby beaches, ${place.cityEn}`}
+  alternates={[{ lang: 'en', href: '/en/nearby-beaches/' }, { lang: 'x-default', href: '/en/nearby-beaches/' }]}
+  jsonLd={jsonLd}
+>
+  <section class="shell py-18 md:py-24">
+    <div class="max-w-3xl">
+      <p class="eyebrow">Nearby beaches</p>
+      <h1 class="section-title mt-3">The beaches south of Main Beach</h1>
+      <p class="lead mt-5">Gokarna’s coastline continues south from Main Beach into a sequence of bays and coves — Kudle, Om, Half Moon and Paradise. Each has a different shape, access and mood. Plan the link between them before you start, because walking versus boat access changes with the season and the sea.</p>
+    </div>
+
+    <div class="mt-10 grid gap-5 lg:grid-cols-2">
+      <article class="card p-7">
+        <p class="text-xs font-extrabold text-ocean-700">Closest bay</p>
+        <h2 class="mt-2 text-xl font-extrabold text-ocean-900">Kudle Beach</h2>
+        <p class="mt-3 text-sm leading-7 text-slate-600">A wide, bay-shaped sandy beach south of Main Beach. Access depends on the route, walking/road conditions and season. Good for a longer sandy walk and sunset views.</p>
+      </article>
+      <article class="card p-7">
+        <p class="text-xs font-extrabold text-ocean-700">Famous shape</p>
+        <h2 class="mt-2 text-xl font-extrabold text-ocean-900">Om Beach</h2>
+        <p class="mt-3 text-sm leading-7 text-slate-600">Known for the two curved bays that look like the symbol “Om” from above. A popular spot to see Gokarna’s coastline shape; access and crowds vary by season.</p>
+      </article>
+      <article class="card p-7">
+        <p class="text-xs font-extrabold text-ocean-700">Quiet cove</p>
+        <h2 class="mt-2 text-xl font-extrabold text-ocean-900">Half Moon Beach</h2>
+        <p class="mt-3 text-sm leading-7 text-slate-600">A smaller cove reached by walk or boat depending on the season and trail safety. Don’t assume access during the monsoon or rough-sea days.</p>
+      </article>
+      <article class="card p-7">
+        <p class="text-xs font-extrabold text-ocean-700">Farthest cove</p>
+        <h2 class="mt-2 text-xl font-extrabold text-ocean-900">Paradise Beach</h2>
+        <p class="mt-3 text-sm leading-7 text-slate-600">Farther south; usually reached by a longer walk or boat from Om/Half Moon. Plan return transport in daylight; remote coves have little help nearby.</p>
+      </article>
+    </div>
+
+    <div class="mt-10 rounded-[2rem] bg-ocean-900 p-7 text-white md:p-10">
+      <h2 class="text-2xl font-black">How the beaches connect</h2>
+      <div class="mt-5 grid gap-4 text-sm leading-7 text-ocean-50/90 sm:grid-cols-3">
+        <p><strong class="text-white">Walk:</strong> trails link the bays along the cliffs; some sections are steep or slippery. Wear proper footwear; avoid after dark or in rain.</p>
+        <p><strong class="text-white">Boat:</strong> local boats connect Om / Half Moon / Paradise in suitable sea conditions. Agree the fare and return time before boarding; sea state can change.</p>
+        <p><strong class="text-white">Road:</strong> some beaches have a road approach; others do not. Don’t assume a vehicle can reach the sand — combine with a short walk.</p>
+      </div>
+    </div>
+
+    <div class="mt-10 overflow-x-auto">
+      <table class="w-full border-collapse text-left text-sm">
+        <thead>
+          <tr class="bg-ocean-900 text-ocean-50">
+            <th class="px-4 py-3 font-extrabold">Beach</th>
+            <th class="px-4 py-3 font-extrabold">Typical access</th>
+            <th class="px-4 py-3 font-extrabold">Best for</th>
+            <th class="px-4 py-3 font-extrabold">Caution</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-ocean-900/10">
+          <tr class="bg-white"><td class="px-4 py-3 font-bold text-ocean-900">Kudle</td><td class="px-4 py-3 text-slate-600">Walk / road</td><td class="px-4 py-3 text-slate-600">Sandy walk, sunset</td><td class="px-4 py-3 text-slate-600">Last stretch can be steep</td></tr>
+          <tr class="bg-ocean-50/40"><td class="px-4 py-3 font-bold text-ocean-900">Om</td><td class="px-4 py-3 text-slate-600">Walk / boat / road</td><td class="px-4 py-3 text-slate-600">Scenery, viewpoint</td><td class="px-4 py-3 text-slate-600">Crowds in peak season</td></tr>
+          <tr class="bg-white"><td class="px-4 py-3 font-bold text-ocean-900">Half Moon</td><td class="px-4 py-3 text-slate-600">Walk / boat</td><td class="px-4 py-3 text-slate-600">Quiet cove</td><td class="px-4 py-3 text-slate-600">Trail &amp; sea dependent</td></tr>
+          <tr class="bg-ocean-50/40"><td class="px-4 py-3 font-bold text-ocean-900">Paradise</td><td class="px-4 py-3 text-slate-600">Walk / boat</td><td class="px-4 py-3 text-slate-600">Seclusion</td><td class="px-4 py-3 text-slate-600">Remote; plan return</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-10 flex flex-wrap gap-3">
+      <a href="/en/" class="rounded-full bg-ocean-900 px-5 py-3 text-sm font-extrabold text-white no-underline hover:bg-ocean-700">Back to guide</a>
+      <a href="/en/getting-there/" class="rounded-full border border-ocean-900/15 px-5 py-3 text-sm font-bold text-ocean-900 no-underline hover:bg-ocean-50">How to get there</a>
+      <a href="/en/things-to-do/" class="rounded-full border border-ocean-900/15 px-5 py-3 text-sm font-bold text-ocean-900 no-underline hover:bg-ocean-50">Things to do</a>
+    </div>
+
+    <p class="mt-10 text-xs leading-6 text-slate-400">Beach access, boat services and trail safety change with season and sea state. Verify locally before setting out, and follow lifeguard/warning guidance.</p>
+    <p class="mt-3 text-xs leading-6 text-slate-400">References: <a class="underline" href={sourceLinks.district} rel="noreferrer">Uttara Kannada district</a> · <a class="underline" href={sourceLinks.stateTourism} rel="noreferrer">Karnataka Tourism</a></p>
+  </section>
+</BaseLayout>
