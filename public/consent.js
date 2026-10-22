@@ -42,13 +42,24 @@
   function refresh(){effective=read()?.analytics===true;apply(effective);if(checkbox)checkbox.checked=effective;}
   function save(analytics){
     analytics=analytics===true;
+    let grantAttempted=false;
     if(!analytics){retainedDenial=markDeny();apply(false);}
     try{
       if(analytics){clearDeny();localStorage.getItem(KEY);localStorage.setItem(KEY+'-write-check','1');localStorage.removeItem(KEY+'-write-check');}
+      grantAttempted=analytics;
       localStorage.setItem(KEY,JSON.stringify({necessary:true,analytics,preferences:false,marketing:false}));
       if(analytics)window.__gokarnaDenied=false;
-      refresh();return true;
-    }catch{retainedDenial=markDeny();refresh();return false;}
+      refresh();
+      if(analytics&&!effective)throw Error('Grant could not be confirmed');
+      return true;
+    }catch{
+      if(grantAttempted){
+        // Do not leave an unconfirmed shared grant available to another tab.
+        try{localStorage.setItem(KEY,JSON.stringify({necessary:true,analytics:false,preferences:false,marketing:false}));}
+        catch{try{localStorage.removeItem(KEY);}catch{}}
+      }
+      retainedDenial=markDeny();refresh();return false;
+    }
   }
   window.gokarnaConsent={read,save};
   const unused=document.getElementById('preferences');if(unused){unused.checked=false;unused.disabled=true;}

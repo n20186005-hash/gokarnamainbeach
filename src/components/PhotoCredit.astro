@@ -3,8 +3,10 @@ import photos from '../../public/images/manifest.json';
 interface Props { photo: string; lang?: 'kn' | 'en'; }
 const { photo, lang = 'kn' } = Astro.props;
 const item = photos.find(p => p.id === photo)!;
+const uncertain = photo === 'february';
 ---
 <p class="photo-credit bg-sand-50 px-4 py-3 text-xs leading-6 text-slate-600">
+  {uncertain && <><span lang="kn">ಮರಳುತೀರದಲ್ಲಿ ಜನರು. ನಿಖರ ಕಡಲತೀರ ದೃಢಪಟ್ಟಿಲ್ಲ: Commons ಕಡತದ ಶೀರ್ಷಿಕೆ Main Beach ಎಂದರೆ, ಚಿತ್ರದೊಳಗಿನ ಮೆಟಾಡೇಟಾ ಶೀರ್ಷಿಕೆ Kudle Beach ಎನ್ನುತ್ತದೆ.</span> <span lang="en">People along a sandy shore. Exact beach unverified: the Commons file title names Main Beach, while the embedded metadata title names Kudle Beach.</span> <br />{lang === 'en' ? 'Source file title (location unverified): ' : 'ಮೂಲ ಕಡತದ ಶೀರ್ಷಿಕೆ (ಸ್ಥಳ ದೃಢಪಟ್ಟಿಲ್ಲ): '}</>}
   <a href={item.source}>{item.title}</a> · {item.author} · {item.taken} ·
   <a href={item.source}>Wikimedia Commons</a> · <a href={item.license}>CC BY-SA 4.0</a>.
   {lang === 'en' ? 'Resized and encoded as WebP; the displayed frame may be cropped. Historical photograph, not current sea conditions.' : 'ಗಾತ್ರ ಬದಲಿಸಿ WebP ರೂಪಕ್ಕೆ ಪರಿವರ್ತಿಸಲಾಗಿದೆ; ಪ್ರದರ್ಶನದಲ್ಲಿ ಅಂಚು ಕತ್ತರಿಸಬಹುದು. ಇದು ಹಳೆಯ ಚಿತ್ರ, ಪ್ರಸ್ತುತ ಸಮುದ್ರ ಸ್ಥಿತಿ ಅಲ್ಲ.'}

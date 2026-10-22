@@ -59,13 +59,17 @@
       4831,
       3088
     ],
-    "output": "/images/gokarna-main-beach-february-c3ecfcfaa8.webp",
+    "output": "/images/beach-scene-february-c3ecfcfaa8.webp",
     "outputBytes": 126266,
     "outputSHA256": "6bd326c35627b6ba6d54577aec52b4b88636462e34beb80972b8fe4ceebf1a0e",
     "outputSize": [
       1600,
       1023
     ],
-    "transformation": "Proportional resize to maximum 1600px and WebP encoding; CSS crops display frames. No scene alteration."
+    "transformation": "Proportional resize to maximum 1600px and WebP encoding; CSS crops display frames. No scene alteration.",
+    "locationVerification": {
+      "status": "unverified",
+      "reason": "The Commons file title identifies Gokarna Main Beach, but the original embedded metadata title identifies Kudle Beach. The exact beach has not been independently confirmed."
+    }
   }
 ]
