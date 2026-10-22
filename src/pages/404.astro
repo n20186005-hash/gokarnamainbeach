@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+export const prerender = false;
+Astro.response.status = 404;
+---
+<BaseLayout title="ಪುಟ ಕಂಡುಬಂದಿಲ್ಲ | Page not found" description="ಈ ಪುಟ ಲಭ್ಯವಿಲ್ಲ. Return to the Gokarna Main Beach guide." robots="noindex,follow" canonicalPath={null}>
+  <section class="shell py-18">
+    <h1 class="section-title">ಪುಟ ಕಂಡುಬಂದಿಲ್ಲ · Page not found</h1>
+    <p class="lead mt-5">ಈ ವಿಳಾಸದಲ್ಲಿ ಪುಟವಿಲ್ಲ. There is no page at this address.</p>
+    <p class="mt-6"><a href="/">ಕನ್ನಡ ಮಾರ್ಗದರ್ಶಿ</a> · <a href="/en/">English guide</a></p>
+  </section>
+</BaseLayout>

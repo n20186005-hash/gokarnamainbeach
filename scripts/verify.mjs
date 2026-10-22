@@ -18,7 +18,7 @@ if (read('.node-version').trim() !== pkg.engines.node) fail('.node-version 与 e
 const astroConfig = read('astro.config.mjs');
 const siteMatch = astroConfig.match(/const\s+SITE\s*=\s*'([^']*)'/);
 if (!siteMatch || !/^https:\/\//.test(siteMatch[1])) fail('Astro SITE 未配置为 https 生产域名'); else ok(`生产域名已配置为 ${siteMatch[1]}`);
-if (!astroConfig.includes('SITE ? [sitemap()] : []')) fail('sitemap 未按 site 是否存在进行条件启用'); else ok('sitemap 在 site 为空时禁用');
+if (!astroConfig.includes('integrations: SITE ? [sitemap({ filter:')) fail('sitemap 未按 site 是否存在进行条件启用'); else ok('sitemap 在 site 为空时禁用');
 
 const sourceFiles = [];
 function walk(dir) {
@@ -45,7 +45,7 @@ const missing = required.filter((x) => !index.includes(x));
 if (missing.length) fail(`主页缺少关键板块: ${missing.join(', ')}`); else ok('主页关键内容板块齐全');
 if (!index.includes('!1skn!2sin') || !index.includes('!5m2!1skn!2sin')) fail('Google Maps 嵌入未切换 Kannada/India 参数'); else ok('Google Maps 嵌入已切换 Kannada/India 参数');
 if (!index.includes("'@type': 'FAQPage'")) fail('缺少 FAQPage 结构化数据'); else ok('FAQPage 结构化数据存在');
-if (!index.includes("'TouristAttraction', 'LocalBusiness'")) fail('缺少 TouristAttraction/LocalBusiness 结构化数据'); else ok('景点结构化数据存在');
+if (!index.includes("'@type': 'TouristAttraction'") || index.includes('aggregateRating:') || index.includes('openingHoursSpecification:')) fail('景点结构化数据类型或确定性不符'); else ok('景点结构化数据未声明未经证实的商家评分或营业时间');
 
 for (const p of ['src/pages/privacy.astro','src/pages/terms.astro','src/pages/cookies.astro']) {
   if (!fs.existsSync(path.join(root,p))) fail(`缺少独立二级页 ${p}`);
@@ -53,7 +53,8 @@ for (const p of ['src/pages/privacy.astro','src/pages/terms.astro','src/pages/co
 ok('隐私、条款、Cookie 均为独立路由文件');
 
 const layout = read('src/layouts/BaseLayout.astro');
-if (!layout.includes("prefs.analytics !== true") || !layout.includes('G-HXM22WWPKP')) fail('GA4 未按分析同意状态门控'); else ok('GA4 仅在分析同意后加载');
+const consent = read('public/consent.js');
+if (!layout.includes('src="/consent.js" defer') || !consent.includes('G-HXM22WWPKP') || !consent.includes("read()?.analytics===true") || !consent.includes('markDeny()')) fail('GA4 同意控制缺失'); else ok('GA4 保留原测量编号并读取有效同意');
 
 const ws = path.join(root, 'pnpm-workspace.yaml');
 if (fs.existsSync(ws)) {
@@ -62,7 +63,7 @@ if (fs.existsSync(ws)) {
 } else ok('单包项目未创建 pnpm-workspace.yaml');
 
 const wrangler = read('wrangler.jsonc');
-if (!wrangler.includes('\"main\": \"@astrojs/cloudflare/entrypoints/server\"')) fail('Wrangler 未使用 Astro Cloudflare 当前统一入口'); else ok('Wrangler 使用 Astro Cloudflare 当前统一入口');
+if (!wrangler.includes('\"main\": \"./src/worker.mjs\"') || !wrangler.includes('\"run_worker_first\": true') || !read('src/worker.mjs').includes("import astro from '@astrojs/cloudflare/entrypoints/server'")) fail('Astro Worker 封装配置不完整'); else ok('Worker 先处理规范跳转后委托 Astro SSR/ASSETS');
 
 if (process.exitCode) process.exit(process.exitCode);
 console.log('\n静态项目约束检查通过。');

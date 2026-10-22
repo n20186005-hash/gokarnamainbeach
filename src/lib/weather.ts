@@ -2,8 +2,8 @@
 // Data source: Open-Meteo forecast API (public, no access key required).
 // Results are cached so the upstream is not hit on every request.
 
-export const BEACH_LAT = 14.543854;
-export const BEACH_LON = 74.313712;
+export const BEACH_LAT = 14.5437352;
+export const BEACH_LON = 74.3136288;
 
 export type Lang = 'kn' | 'en';
 
@@ -48,6 +48,7 @@ export interface WeatherAdvice {
 }
 
 export interface WeatherData {
+  observedAt: string;
   now: WeatherNow;
   days: WeatherDay[];
   advice: WeatherAdvice;
@@ -267,8 +268,8 @@ const PHRASES: Record<Lang, Phrases> = {
       defRain: 'ಛತ್ರಿ / ಮಳೆ ಕೋಟು',
     },
     risk: {
-      heavyRain: 'ಮಳೆ ಬಲವಾಗಿದೆ — ಕಣಿವೆ, ಕೆಳಮಟ್ಟದ ಪ್ರದೇಶ ತಪ್ಪಿಸಿ; ಹಡಗು/ರಜ್ಜು ಸವಾರಿ ನಿಲ್ಲಬಹುದು',
-      thunder: 'ಮಿಂಚು ಮಳೆ — ಪರ್ವತ ಹತ್ತಬೇಡಿ, ಮರದ ನೆರಳು ಅಥವಾ ಸಮುದ್ರ ತಪ್ಪಿಸಿ; ನೀರಿನ ಆಟ ಸಾಮಾನ್ಯವಾಗಿ ಮುಚ್ಚಿರುತ್ತದೆ',
+      heavyRain: 'ಮಳೆ ಬಲವಾಗಿರಬಹುದು — ತಗ್ಗು ಪ್ರದೇಶ ತಪ್ಪಿಸಿ; ಸ್ಥಳೀಯ ಸೂಚನೆ ಪರಿಶೀಲಿಸಿ',
+      thunder: 'ಮಿಂಚು ಮಳೆ ಸಾಧ್ಯತೆ — ಬಯಲು ತೀರ ಮತ್ತು ಸಮುದ್ರ ತಪ್ಪಿಸಿ; ಸುರಕ್ಷಿತ ಆಶ್ರಯ ಪಡೆಯಿರಿ',
       wind: 'ಬಲವಾದ ಗಾಳಿ — ಬಿಲ್‌ಬೋರ್ಡ್, ಸಮುದ್ರ ಬಂಡೆಗಳಿಂದ ದೂರವಿರಿ',
       fog: 'ಮಂಜು — ದೃಷ್ಟಿ ಕಡಿಮೆ, ಫೆರ್ರಿ/ವಿಮಾನ ವಿಳಂಬ ಸಾಧ್ಯ; ಸಮುದ್ರ/ಪರ್ವತ ನೋಟ ಚೆನ್ನಾಗಿ ಕಾಣುವುದಿಲ್ಲ',
       wave: 'ಎತ್ತರದ ಅಲೆಗಳು — ಸಮುದ್ರಕ್ಕೆ ಇಳಿಯಬೇಡಿ, ದಡದಿಂದ ದೂರವಿರಿ',
@@ -307,8 +308,8 @@ const PHRASES: Record<Lang, Phrases> = {
       defRain: 'Umbrella / raincoat',
     },
     risk: {
-      heavyRain: 'Heavy rain — avoid valleys and low-lying areas; boat/cable-car rides may stop',
-      thunder: 'Thunderstorms — do not climb hills, avoid sheltering under trees or the sea; water activities are usually suspended',
+      heavyRain: 'Heavy rain possible — avoid low-lying areas and check local notices',
+      thunder: 'Thunderstorm conditions — leave exposed shore and sea areas; seek suitable shelter',
       wind: 'Strong wind — stay away from billboards and sea cliffs',
       fog: 'Fog — poor visibility, ferries/flights may be delayed; sea and hill views are unclear',
       wave: 'High waves — do not enter the sea; keep away from the shore',
@@ -427,17 +428,18 @@ interface CacheShape {
 // In-memory fallback for runtimes without the Cache API (e.g. local preview).
 const memoryCache = new Map<string, CacheShape>();
 
-async function readCache(): Promise<WeatherData | null> {
+async function readCache(lang: Lang): Promise<WeatherData | null> {
+  const key = CACHE_KEY + '?lang=' + lang;
   const cache = (globalThis as unknown as { caches?: { default?: Cache } }).caches?.default;
   try {
     if (cache) {
-      const res = await cache.match(CACHE_KEY);
+      const res = await cache.match(key);
       if (res) {
         const data = (await res.json()) as CacheShape;
         if (Date.now() - data.fetched < MAX_AGE_MS) return data.payload;
       }
     } else {
-      const mem = memoryCache.get(CACHE_KEY);
+      const mem = memoryCache.get(key);
       if (mem && Date.now() - mem.fetched < MAX_AGE_MS) return mem.payload;
     }
   } catch {
@@ -446,17 +448,18 @@ async function readCache(): Promise<WeatherData | null> {
   return null;
 }
 
-async function writeCache(payload: WeatherData): Promise<void> {
+async function writeCache(payload: WeatherData, lang: Lang): Promise<void> {
+  const key = CACHE_KEY + '?lang=' + lang;
   const shape: CacheShape = { fetched: Date.now(), payload };
   const cache = (globalThis as unknown as { caches?: { default?: Cache } }).caches?.default;
   try {
     if (cache) {
       await cache.put(
-        CACHE_KEY,
+        key,
         new Response(JSON.stringify(shape), { headers: { 'content-type': 'application/json' } }),
       );
     } else {
-      memoryCache.set(CACHE_KEY, shape);
+      memoryCache.set(key, shape);
     }
   } catch {
     /* ignore cache write errors */
@@ -464,11 +467,12 @@ async function writeCache(payload: WeatherData): Promise<void> {
 }
 
 export async function getWeather(lang: Lang = 'kn'): Promise<WeatherData | null> {
-  const cached = await readCache();
+  const cached = await readCache(lang);
   if (cached) return cached;
 
   try {
     const res = await fetch(buildUrl(), {
+      signal: AbortSignal.timeout(5000),
       headers: { accept: 'application/json' },
       // Cloudflare: cache the upstream response at the edge for 10 minutes.
       cf: { cacheTtl: 600 },
@@ -476,6 +480,7 @@ export async function getWeather(lang: Lang = 'kn'): Promise<WeatherData | null>
     if (!res.ok) return null;
     const j = (await res.json()) as {
       current: {
+        time: string;
         temperature_2m: number;
         apparent_temperature: number;
         relative_humidity_2m: number;
@@ -494,16 +499,26 @@ export async function getWeather(lang: Lang = 'kn'): Promise<WeatherData | null>
       };
     };
 
+    if (!j.current || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(j.current.time) ||
+      !['temperature_2m', 'apparent_temperature', 'relative_humidity_2m', 'wind_speed_10m', 'precipitation', 'weather_code'].every(k => typeof j.current[k as keyof typeof j.current] === 'number' && Number.isFinite(j.current[k as keyof typeof j.current])) ||
+      !j.daily || !Array.isArray(j.daily.time) || j.daily.time.length !== 7 ||
+      !j.daily.time.every(t => /^\d{4}-\d{2}-\d{2}$/.test(t)) ||
+      !['weather_code', 'temperature_2m_max', 'temperature_2m_min', 'precipitation_probability_max', 'uv_index_max', 'wind_speed_10m_max'].every(k => {
+        const values = j.daily[k as keyof typeof j.daily];
+        return Array.isArray(values) && values.length === 7 && values.every(v => typeof v === 'number' && Number.isFinite(v));
+      })) return null;
+
     // Sea state from the marine API (best-effort; ignore if unavailable).
     let wave: number | null = null;
     try {
       const mres = await fetch(buildMarineUrl(), {
+        signal: AbortSignal.timeout(5000),
         headers: { accept: 'application/json' },
         cf: { cacheTtl: 600 },
       } as RequestInit);
       if (mres.ok) {
         const m = (await mres.json()) as { current?: { wave_height?: number | null } };
-        if (typeof m.current?.wave_height === 'number') wave = Math.round(m.current.wave_height * 10) / 10;
+        if (typeof m.current?.wave_height === 'number' && Number.isFinite(m.current.wave_height)) wave = Math.round(m.current.wave_height * 10) / 10;
       }
     } catch {
       /* ignore marine fetch errors */
@@ -536,8 +551,8 @@ export async function getWeather(lang: Lang = 'kn'): Promise<WeatherData | null>
       const code = j.daily.weather_code[i]!;
       const dayProb = j.daily.precipitation_probability_max[i] ?? 0;
       const d = describe(code, lang);
-      const dt = new Date(`${iso}T00:00:00+05:30`);
-      const weekday = (lang === 'en' ? WEEKDAYS_EN : WEEKDAYS_KN)[dt.getDay()] ?? '';
+      const dt = new Date(`${iso}T12:00:00Z`);
+      const weekday = (lang === 'en' ? WEEKDAYS_EN : WEEKDAYS_KN)[dt.getUTCDay()] ?? '';
       return {
         date: iso,
         weekday,
@@ -560,8 +575,8 @@ export async function getWeather(lang: Lang = 'kn'): Promise<WeatherData | null>
     };
     const advice = buildAdvice(now, todayMeta, lang);
 
-    const payload: WeatherData = { now, days, advice, fetched: Date.now() };
-    await writeCache(payload);
+    const payload: WeatherData = { now, days, advice, observedAt: j.current.time, fetched: Date.now() };
+    await writeCache(payload, lang);
     return payload;
   } catch {
     return null;

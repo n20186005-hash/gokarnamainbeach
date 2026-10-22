@@ -32,7 +32,7 @@ interface CacheShape {
   payload: TidesData;
 }
 
-const CACHE_KEY = 'https://gokarnamainbeach.com/__tides-cache';
+const CACHE_KEY = 'https://gokarnamainbeach.com/__tides-cache-v2';
 const MAX_AGE_MS = 10 * 60 * 1000; // 10 minutes
 
 // In-memory fallback for runtimes without the Cache API (e.g. local preview).
@@ -91,6 +91,7 @@ export async function getTides(): Promise<TidesData | null> {
 
   try {
     const res = await fetch(buildUrl(), {
+      signal: AbortSignal.timeout(5000),
       headers: { accept: 'application/json' },
       // Cloudflare: cache the upstream response at the edge for 10 minutes.
       cf: { cacheTtl: 600 },
@@ -100,9 +101,11 @@ export async function getTides(): Promise<TidesData | null> {
       hourly: { time: string[]; sea_level_height_msl: (number | null)[] };
     };
 
-    const series: TidePoint[] = j.hourly.time
-      .map((t, i) => ({ time: t, height: j.hourly.sea_level_height_msl[i] ?? 0 }))
-      .filter((p) => Number.isFinite(p.height));
+    if (!Array.isArray(j.hourly?.time) || !Array.isArray(j.hourly.sea_level_height_msl) ||
+      j.hourly.time.length !== j.hourly.sea_level_height_msl.length ||
+      !j.hourly.time.every(t => /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(t)) ||
+      !j.hourly.sea_level_height_msl.every(h => typeof h === 'number' && Number.isFinite(h))) return null;
+    const series: TidePoint[] = j.hourly.time.map((time, i) => ({ time, height: j.hourly.sea_level_height_msl[i]! }));
 
     if (series.length < 3) return null;
 

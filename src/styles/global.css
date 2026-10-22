@@ -53,7 +53,7 @@ a { text-underline-offset: 0.22em; }
 .hero-photo {
   background-image:
     linear-gradient(90deg, rgba(5,45,47,.9) 0%, rgba(5,45,47,.6) 42%, rgba(5,45,47,.12) 78%),
-    url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Gokarna_Main_Beach.jpg/1280px-Gokarna_Main_Beach.jpg');
+    url('/images/gokarna-main-beach-hero-5ba6e8eaba.webp');
   background-size: cover;
   background-position: center 55%;
 }

@@ -1,6 +1,6 @@
 // Gokarna Main Beach guide — minimal PWA service worker.
 // Network-first for navigations (SSR pages stay fresh), cache-first for static assets.
-const CACHE = 'gokarna-v1';
+const CACHE = 'gokarna-v2';
 const OFFLINE_FALLBACK = '/';
 
 self.addEventListener('install', () => {
@@ -19,7 +19,7 @@ self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
-  if (url.origin !== self.location.origin) return;
+  if (url.origin !== self.location.origin || url.pathname.startsWith('/api/') || url.pathname === '/consent.js') return;
 
   // Navigations: try network, fall back to cache then to offline page.
   if (req.mode === 'navigate') {

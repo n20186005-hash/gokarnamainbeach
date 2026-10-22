@@ -1,0 +1,71 @@
+[
+  {
+    "id": "hero",
+    "title": "Gokarna Main Beach.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Gokarna_Main_Beach.jpg",
+    "author": "Kondephy",
+    "taken": "2020-01-04",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "sourceBytes": 4732126,
+    "sourceSHA1": "5ba6e8eaba0aa09f21fc50ea1aad8ef6efb4768b",
+    "sourceSHA256": "861bb98ab1540165a6abb25111067f580fc422c6d5c7b514487c79cc5c3a4e46",
+    "sourceSize": [
+      4367,
+      2911
+    ],
+    "output": "/images/gokarna-main-beach-hero-5ba6e8eaba.webp",
+    "outputBytes": 86696,
+    "outputSHA256": "b7df0dd5891fccb15bb15526b342b52da801b926721a1a329eb6d5bff971b1ec",
+    "outputSize": [
+      1600,
+      1067
+    ],
+    "transformation": "Proportional resize to maximum 1600px and WebP encoding; CSS crops display frames. No scene alteration."
+  },
+  {
+    "id": "january",
+    "title": "Gokarna Main Beach in January 2023.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Gokarna_Main_Beach_in_January_2023.jpg",
+    "author": "Alexey Komarov",
+    "taken": "2023-01-06",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "sourceBytes": 2591003,
+    "sourceSHA1": "94d49b9d9815d217b5dcea0b50264eb385c67328",
+    "sourceSHA256": "d932f2fa174cf1c0ae52310c7c7dc633099999510a34946acb233ce32d7fa424",
+    "sourceSize": [
+      3890,
+      2593
+    ],
+    "output": "/images/gokarna-main-beach-january-94d49b9d98.webp",
+    "outputBytes": 308550,
+    "outputSHA256": "878963f32c218d006e0a31034418772199f8b96d8e6bb196746482ea1ab45a88",
+    "outputSize": [
+      1600,
+      1067
+    ],
+    "transformation": "Proportional resize to maximum 1600px and WebP encoding; CSS crops display frames. No scene alteration."
+  },
+  {
+    "id": "february",
+    "title": "Gokarna main beach, February, 2018.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Gokarna_main_beach,_February,_2018.jpg",
+    "author": "Alexey Komarov",
+    "taken": "2018-02-16",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "sourceBytes": 5210574,
+    "sourceSHA1": "c3ecfcfaa81abb0140589696536f183f3eda7e10",
+    "sourceSHA256": "0f48dfae826691701c7d4551a69eed7482b608ac790bd04b3fb0feedd8601ad3",
+    "sourceSize": [
+      4831,
+      3088
+    ],
+    "output": "/images/gokarna-main-beach-february-c3ecfcfaa8.webp",
+    "outputBytes": 126266,
+    "outputSHA256": "6bd326c35627b6ba6d54577aec52b4b88636462e34beb80972b8fe4ceebf1a0e",
+    "outputSize": [
+      1600,
+      1023
+    ],
+    "transformation": "Proportional resize to maximum 1600px and WebP encoding; CSS crops display frames. No scene alteration."
+  }
+]

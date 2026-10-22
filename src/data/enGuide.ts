@@ -1,10 +1,10 @@
 // English content for the Gokarna Main Beach guide (SEO-facing copy).
-import { place, sourceLinks } from './place';
+import { place } from './place';
 
 export const enFaq = [
   {
     q: 'Is there an entry fee for Gokarna Main Beach?',
-    a: 'Main Beach is a public beach, and general entry is free according to Karnataka Tourism’s beach guide. Parking, private activities or transport may cost separately; confirm rates on site.',
+    a: 'A current official entry-fee schedule was not found in the checked district source. Confirm any access restrictions and charges locally; parking, transport and private activities may cost separately.',
   },
   {
     q: 'When is the best time to visit?',
@@ -12,19 +12,19 @@ export const enFaq = [
   },
   {
     q: 'What are the usual beach hours?',
-    a: 'The Google Maps listing generally shows about 7 AM to 7 PM. This is variable operational information; follow local notices on special days, festivals or weather conditions.',
+    a: 'Google Maps showed 07:00–19:00 daily when checked on 22 October 2026. This is a third-party listing, not guaranteed access; follow local notices and weather restrictions.',
   },
   {
     q: 'Is it safe to swim?',
-    a: 'Karnataka Tourism’s current Gokarna guide warns that Main Beach is not ideal for swimming because of strong currents. Wave and current conditions change daily; follow lifeguards’ advice, warning flags and local restrictions — if in doubt, do not enter the water.',
+    a: 'Karnataka Tourism warns of strong currents at Main Beach. Follow local notices, flags and any lifeguard instructions. Calm-looking water or the models below do not establish swimming safety; if in doubt, stay ashore.',
   },
   {
     q: 'Are toilets and changing facilities available?',
-    a: 'Karnataka Tourism’s published beach guide indicates public toilets and changing facilities near Main Beach. Their operation and cleanliness vary over time.',
+    a: 'Current operation of public toilets and changing facilities could not be verified from the checked source. Ask locally before relying on them and confirm any charge.',
   },
   {
     q: 'Which railway station is useful if arriving by train?',
-    a: 'Gokarna Road railway station is about 10 km from town. Kumta and Ankola are alternative stations; from there you can reach Gokarna town by local bus, auto or taxi.',
+    a: 'The district guide identifies Kumta as a rail approach. Gokarna Road and Ankola are also station options to check for your train; confirm stops and onward transport with the operator before booking.',
   },
   {
     q: 'What is the connection between Main Beach and Mahabaleshwar Temple?',
@@ -37,17 +37,16 @@ export function enAttractionSchema(site: string | undefined) {
   const attractionId = site ? new URL('/en/#attraction', site).toString() : undefined;
   return {
     '@context': 'https://schema.org',
-    '@type': ['TouristAttraction', 'LocalBusiness'],
+    '@type': 'TouristAttraction',
     ...(attractionId ? { '@id': attractionId } : {}),
     name: 'Gokarna Main Beach',
     alternateName: ['Gokarna Beach', 'Gokarna Main Beach, Gokarna'],
     description:
       'Gokarna Main Beach is the central public beach of Gokarna town in Uttara Kannada, Karnataka, India — known for its long sandy shore, Arabian Sea sunsets and pilgrimage atmosphere near Mahabaleshwar Temple.',
     ...(pageUrl ? { url: pageUrl } : {}),
-    image: [place.heroImage],
-    isAccessibleForFree: true,
+    image: [new URL(place.heroImage, site).toString()],
     hasMap: place.mapsUrl,
-    sameAs: [place.mapsUrl, sourceLinks.stateTourism, sourceLinks.nationalTourism],
+    sameAs: [place.mapsUrl],
     address: {
       '@type': 'PostalAddress',
       ...place.address,
@@ -56,21 +55,6 @@ export function enAttractionSchema(site: string | undefined) {
       '@type': 'GeoCoordinates',
       latitude: place.latitude,
       longitude: place.longitude,
-    },
-    openingHoursSpecification: [
-      {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-        opens: '07:00',
-        closes: '19:00',
-      },
-    ],
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: place.rating,
-      ratingCount: place.ratingCount,
-      bestRating: 5,
-      worstRating: 1,
     },
   };
 }

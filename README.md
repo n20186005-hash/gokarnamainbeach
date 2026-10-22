@@ -1,53 +1,23 @@
-# Gokarna Main Beach — Astro attraction guide
+# Gokarna Main Beach guide
 
-A Kannada-only, independent nonprofit visitor information site for Gokarna Main Beach, Uttara Kannada, Karnataka.
+Independent visitor guide at https://gokarnamainbeach.com with a Kannada home, English home and three English topic pages. Existing Kannada legal pages remain separate routes.
 
-## Stack
+## Build
 
-- Astro 7
-- Tailwind CSS 4 through the Vite plugin
-- TypeScript 6.0.x (kept on the supported major used by `@astrojs/check`; TypeScript 7 is deliberately not used)
-- Cloudflare Workers adapter
-- pnpm pinned through `packageManager`
-- Node.js 24 LTS pinned in both `engines` and `.node-version`
-- No database, login or CMS
+Use Node 24.19.0 and pnpm 11.24.0 as pinned in the project. Install with `pnpm install --frozen-lockfile`, then run `pnpm check`, `pnpm build` and `pnpm verify`. The committed lockfile is required. Existing postinstall prepares the Astro build on a fresh install; deploy commands also build first.
 
-## Production domain
+The Astro Cloudflare adapter retains server rendering. `src/worker.mjs` applies canonical protocol/host redirects before delegating to the adapter, including prerendered static assets. Error responses are 404 and noindex. Only the five indexable visitor pages appear in the sitemap; legal pages stay noindex. The deployment entry and assets directory are generated under `dist/server/wrangler.json` and `dist/client`. Build output is ignored and regenerated; do not serve the server directory as public static files.
 
-There is exactly one production-domain configuration point: `SITE` in `astro.config.mjs`. It is now set to `https://gokarnamainbeach.com`, which enables canonical/`og:url` absolute URLs and the sitemap integration. All absolute site URLs derive from Astro's `site` value.
+## Sources and images
 
-## Privacy and analytics
+The district source supports place identity, temple tradition and nearby beach topics. Dated Maps hours/reviews are third-party information, not guaranteed access. Unverified fees, facility operation and transport distances are qualified rather than asserted. Photo sources and exact original/derivative mappings are in PHOTO-CREDITS.md and public/images/manifest.json; each image has visible attribution. Original site copyright does not supersede their CC BY-SA licences.
 
-GA4 measurement ID `G-HXM22WWPKP` is present but not loaded until the visitor explicitly enables analytics on `/cookies/`. Cookie preferences are stored locally in the browser. Privacy policy, terms and cookie settings are standalone pages, not dialogs.
+## Weather and sea level
 
-## Images
+Existing API routes fetch Open-Meteo model data at request time, with a ten-minute server cache. Weather cache keys include language. Both widgets retain full current/day/advice or graph/turning-point displays and can recover from an unavailable first request. Model timestamps, refresh failure and limited coastal accuracy are visible. These are model estimates, not swimming-safety or navigation guidance.
 
-The pages use real Gokarna Main Beach photography from Wikimedia Commons with visible creator/license attribution. See `PHOTO-CREDITS.md` for source and license details. The delivery sandbox blocked outbound downloads, so the photographs remain remote references rather than bundled binaries.
+## Analytics
 
-## Verification
+The existing GA4 ID is unchanged. The existing cookie page controls its immediate runtime state; unreadable storage fails closed, refusal is retained in the tab where possible, and shared-storage events update open tabs. The privacy/cookie pages distinguish GA controls from Google Maps and Cloudflare delivery/security/Web Analytics. There is no separate preference-storage feature.
 
-`node scripts/verify.mjs` performs repository-level checks for exact dependency specifiers, the single domain configuration, conditional sitemap, required content sections, map locale, structured data, analytics consent gating and forbidden placeholder schemes.
-
-In a network-enabled environment with the pinned Node and pnpm versions, the intended release verification is:
-
-```sh
-rm -rf node_modules dist .astro
-CI=1 corepack pnpm install --frozen-lockfile
-pnpm check
-pnpm build
-pnpm verify
-```
-
-With `SITE` configured to `https://gokarnamainbeach.com`, inspect the generated sitemap files after `pnpm build`; every sitemap URL should use that domain.
-
-## Deployment to Cloudflare Workers
-
-This project uses the Astro Cloudflare adapter (`output: 'server'`), whose `wrangler.jsonc` entry point (`@astrojs/cloudflare/entrypoints/server`) only exists after `astro build` has run. **Deploying without building first fails with `The entry-point file at "@astrojs/cloudflare/entrypoints/server" was not found.`**
-
-The `deploy` script is `astro build && wrangler deploy`, so building is always part of the deploy step. On CI platforms that run a configured **Deploy command**, set it to `npm run deploy` (or `pnpm run deploy`) — this is the reliable option because some platforms skip the separate **Build command** phase entirely (verified in production: the platform ran only `pnpm install --frozen-lockfile` then `npx wrangler deploy`). Only rely on a separate Build command when your platform demonstrably executes it before the Deploy command.
-
-**Safety net:** a `postinstall` hook (`node scripts/prepare-deploy.mjs`) runs `astro build` automatically when a deploy platform does `pnpm install` on a fresh clone, so `dist/server/wrangler.json` exists before `wrangler deploy` even if the platform never runs a Build command. It rebuilds only when `dist/server/wrangler.json` is missing or when `CI`/`DEPLOY` is set, so local installs are not slowed down.
-
-## Delivery sandbox limitation
-
-`pnpm-lock.yaml` is intentionally **not** fabricated in this source package. This sandbox cannot reach the npm registry, so Corepack cannot obtain the pinned pnpm binary and a synchronized lockfile cannot be generated or verified here. See `VALIDATION-NOTES.md` for the exact release gate and the recorded limitation. The same sandbox restriction prevents bundling the credited Wikimedia Commons photo binaries locally; the source currently uses their HTTPS image URLs.
+Production release and desktop/mobile interaction acceptance require a separate check of the actual deployed revision.

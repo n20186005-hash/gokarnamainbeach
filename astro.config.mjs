@@ -10,7 +10,7 @@ export default defineConfig({
   site: SITE || undefined,
   output: 'server',
   adapter: cloudflare(),
-  integrations: SITE ? [sitemap()] : [],
+  integrations: SITE ? [sitemap({ filter: (page) => !/\/(?:cookies|privacy|terms|404)\/?$/.test(new URL(page).pathname) })] : [],
   vite: {
     plugins: [tailwindcss()],
   },

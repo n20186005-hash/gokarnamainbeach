@@ -22,20 +22,18 @@ export const place = {
     postalCode: '581326',
     addressCountry: 'IN',
   },
-  latitude: 14.543854,
-  longitude: 74.313712,
+  latitude: 14.5437352,
+  longitude: 74.3136288,
   rating: 4.4,
-  ratingCount: 35614,
+  ratingCount: 35767,
   opening: '07:00–19:00',
+  checked: '2026-10-22',
   mapsUrl: 'https://maps.app.goo.gl/UnysVUHyiDeTVxnt5',
-  heroImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Gokarna_Main_Beach.jpg/1280px-Gokarna_Main_Beach.jpg',
+  heroImage: '/images/gokarna-main-beach-hero-5ba6e8eaba.webp',
   nearbyLandmarks: ['Mahabaleshwar Temple', 'Om Beach'],
 } as const;
 
 export const sourceLinks = {
-  localGovernment: 'https://rdpr.karnataka.gov.in/',
   district: 'https://uttarakannada.nic.in/en/tourist-place/gokarna/',
-  stateTourism: 'https://karnatakatourism.org/en/experiences/gokarna',
-  stateBeachGuide: 'https://karnatakatourism.org/en/blogs/gokarna-beaches-guide',
-  nationalTourism: 'https://tourism.gov.in/',
+  stateTourism: 'https://karnatakatourism.org/en/destinations/gokarna/',
 } as const;

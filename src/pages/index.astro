@@ -1,4 +1,5 @@
 ---
+import PhotoCredit from '../components/PhotoCredit.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WeatherSection from '../components/WeatherSection.astro';
 import TidesSection from '../components/TidesSection.astro';
@@ -12,7 +13,7 @@ const attractionId = Astro.site ? new URL('#attraction', Astro.site).toString() 
 const faq = [
   {
     q: 'ಗೋಕರ್ಣ ಮುಖ್ಯ ಕಡಲತೀರಕ್ಕೆ ಪ್ರವೇಶ ಶುಲ್ಕ ಇದೆಯೇ?',
-    a: 'ಮುಖ್ಯ ಕಡಲತೀರಕ್ಕೆ ಸಾಮಾನ್ಯ ಪ್ರವೇಶ ಉಚಿತವೆಂದು ಕರ್ನಾಟಕ ಪ್ರವಾಸೋದ್ಯಮದ ಕಡಲತೀರ ಮಾರ್ಗದರ್ಶಿ ತಿಳಿಸುತ್ತದೆ. ಪಾರ್ಕಿಂಗ್, ಖಾಸಗಿ ಚಟುವಟಿಕೆಗಳು ಅಥವಾ ಸಾರಿಗೆಗೆ ಪ್ರತ್ಯೇಕ ಶುಲ್ಕ ಇರಬಹುದು; ಸ್ಥಳದಲ್ಲೇ ದರವನ್ನು ದೃಢಪಡಿಸಿ.',
+    a: 'ಪರಿಶೀಲಿಸಿದ ಜಿಲ್ಲಾ ಮೂಲದಲ್ಲಿ ಪ್ರಸ್ತುತ ಅಧಿಕೃತ ಪ್ರವೇಶ ದರಪಟ್ಟಿ ಕಂಡುಬಂದಿಲ್ಲ. ಪ್ರವೇಶ ನಿರ್ಬಂಧ ಮತ್ತು ಶುಲ್ಕವನ್ನು ಸ್ಥಳೀಯವಾಗಿ ದೃಢಪಡಿಸಿ; ಪಾರ್ಕಿಂಗ್, ಸಾರಿಗೆ ಮತ್ತು ಖಾಸಗಿ ಚಟುವಟಿಕೆಗಳಿಗೆ ಪ್ರತ್ಯೇಕ ಶುಲ್ಕ ಇರಬಹುದು.',
   },
   {
     q: 'ಭೇಟಿಗೆ ಉತ್ತಮ ಕಾಲ ಯಾವುದು?',
@@ -20,19 +21,19 @@ const faq = [
   },
   {
     q: 'ಕಡಲತೀರದ ಸಾಮಾನ್ಯ ಪ್ರವೇಶ ಸಮಯ ಯಾವುದು?',
-    a: 'ಗೂಗಲ್ ನಕ್ಷೆ ಪಟ್ಟಿಯಲ್ಲಿ ಸಾಮಾನ್ಯವಾಗಿ ಬೆಳಿಗ್ಗೆ 7ರಿಂದ ಸಂಜೆ 7ರವರೆಗೆ ಸಮಯ ತೋರಿಸಲಾಗುತ್ತದೆ. ಇದು ಬದಲಾಗಬಹುದಾದ ಕಾರ್ಯಾಚರಣಾ ಮಾಹಿತಿ; ವಿಶೇಷ ದಿನಗಳು, ಹಬ್ಬಗಳು ಅಥವಾ ಹವಾಮಾನ ಸಂದರ್ಭಗಳಲ್ಲಿ ಸ್ಥಳೀಯ ಸೂಚನೆಗಳನ್ನು ಪಾಲಿಸಿ.',
+    a: '22 ಅಕ್ಟೋಬರ್ 2026 ರಂದು Google Maps ಪಟ್ಟಿಯಲ್ಲಿ ಪ್ರತಿದಿನ 07:00–19:00 ತೋರಿಸಲಾಗಿದೆ. ಇದು ಮೂರನೇ ವ್ಯಕ್ತಿಯ ಪಟ್ಟಿ, ಪ್ರವೇಶದ ಖಾತರಿಯಲ್ಲ; ಸ್ಥಳೀಯ ಸೂಚನೆ ಮತ್ತು ಹವಾಮಾನ ನಿರ್ಬಂಧ ಪಾಲಿಸಿ.',
   },
   {
     q: 'ಈಜಲು ಸುರಕ್ಷಿತವೇ?',
-    a: 'ಕರ್ನಾಟಕ ಪ್ರವಾಸೋದ್ಯಮದ ಪ್ರಸ್ತುತ ಗೋಕರ್ಣ ಮಾರ್ಗದರ್ಶಿ ಮುಖ್ಯ ಕಡಲತೀರದಲ್ಲಿ ಬಲವಾದ ಪ್ರವಾಹಗಳ ಕಾರಣ ಈಜು ಆದರ್ಶವಲ್ಲ ಎಂದು ಎಚ್ಚರಿಸುತ್ತದೆ. ಅಲೆ ಮತ್ತು ಪ್ರವಾಹ ಪರಿಸ್ಥಿತಿ ದಿನದಿಂದ ದಿನಕ್ಕೆ ಬದಲಾಗುತ್ತದೆ; ರಕ್ಷಕರ ಸೂಚನೆ, ಎಚ್ಚರಿಕೆ ಧ್ವಜ ಮತ್ತು ಸ್ಥಳೀಯ ನಿರ್ಬಂಧಗಳನ್ನು ಪಾಲಿಸಿ, ಅನುಮಾನವಿದ್ದರೆ ನೀರಿಗೆ ಇಳಿಯಬೇಡಿ.',
+    a: 'ಕರ್ನಾಟಕ ಪ್ರವಾಸೋದ್ಯಮವು ಮುಖ್ಯ ಕಡಲತೀರದ ಬಲವಾದ ಪ್ರವಾಹಗಳ ಬಗ್ಗೆ ಎಚ್ಚರಿಸುತ್ತದೆ. ಸ್ಥಳೀಯ ಸೂಚನೆ, ಧ್ವಜ ಮತ್ತು ರಕ್ಷಕರು ಇದ್ದರೆ ಅವರ ಸೂಚನೆ ಪಾಲಿಸಿ. ಶಾಂತವಾಗಿ ಕಾಣುವ ನೀರು ಅಥವಾ ಕೆಳಗಿನ ಮಾದರಿ ಈಜಿನ ಸುರಕ್ಷತೆಯನ್ನು ದೃಢಪಡಿಸುವುದಿಲ್ಲ; ಅನುಮಾನವಿದ್ದರೆ ತೀರದಲ್ಲಿರಿ.',
   },
   {
     q: 'ಶೌಚಾಲಯ ಮತ್ತು ಬಟ್ಟೆ ಬದಲಿಸುವ ಸೌಲಭ್ಯಗಳಿವೆಯೇ?',
-    a: 'ಕರ್ನಾಟಕ ಪ್ರವಾಸೋದ್ಯಮದ ಪ್ರಕಟಿತ ಕಡಲತೀರ ಮಾರ್ಗದರ್ಶಿಯಲ್ಲಿ ಮುಖ್ಯ ಕಡಲತೀರದ ಬಳಿ ಸಾರ್ವಜನಿಕ ಶೌಚಾಲಯ ಮತ್ತು ಬಟ್ಟೆ ಬದಲಿಸುವ ಸೌಲಭ್ಯಗಳನ್ನು ಸೂಚಿಸಲಾಗಿದೆ. ಅವುಗಳ ಕಾರ್ಯನಿರ್ವಹಣೆ ಹಾಗೂ ಸ್ವಚ್ಛತೆ ಸಮಯಾನುಸಾರ ಬದಲಾಗಬಹುದು.',
+    a: 'ಪರಿಶೀಲಿಸಿದ ಮೂಲದಿಂದ ಶೌಚಾಲಯ ಮತ್ತು ಬಟ್ಟೆ ಬದಲಿಸುವ ಸೌಲಭ್ಯಗಳ ಪ್ರಸ್ತುತ ಕಾರ್ಯನಿರ್ವಹಣೆ ದೃಢಪಟ್ಟಿಲ್ಲ. ಅವುಗಳ ಮೇಲೆ ಅವಲಂಬಿಸುವ ಮೊದಲು ಸ್ಥಳೀಯವಾಗಿ ಲಭ್ಯತೆ ಮತ್ತು ಶುಲ್ಕ ವಿಚಾರಿಸಿ.',
   },
   {
     q: 'ರೈಲಿನಲ್ಲಿ ಬಂದರೆ ಯಾವ ನಿಲ್ದಾಣ ಉಪಯುಕ್ತ?',
-    a: 'ಗೋಕರ್ಣ ರಸ್ತೆ ರೈಲು ನಿಲ್ದಾಣ ಪಟ್ಟಣದಿಂದ ಸುಮಾರು 10 ಕಿಮೀ ದೂರದಲ್ಲಿದೆ. ಕುಮಟಾ ಮತ್ತು ಅಂಕೋಲಾ ಪರ್ಯಾಯ ನಿಲ್ದಾಣಗಳು; ಅಲ್ಲಿಂದ ಸ್ಥಳೀಯ ಬಸ್, ಆಟೋ ಅಥವಾ ಟ್ಯಾಕ್ಸಿಯಿಂದ ಗೋಕರ್ಣ ಪಟ್ಟಣಕ್ಕೆ ಬರಬಹುದು.',
+    a: 'ಜಿಲ್ಲಾ ಮಾರ್ಗದರ್ಶಿ ಕುಮಟಾವನ್ನು ರೈಲು ಸಂಪರ್ಕವಾಗಿ ಸೂಚಿಸುತ್ತದೆ. ನಿಮ್ಮ ರೈಲಿನ ವೇಳಾಪಟ್ಟಿಯಲ್ಲಿ ಗೋಕರ್ಣ ರಸ್ತೆ, ಕುಮಟಾ ಮತ್ತು ಅಂಕೋಲಾ ನಿಲ್ದಾಣಗಳನ್ನು ಪರಿಶೀಲಿಸಿ; ಮುಂದಿನ ಸ್ಥಳೀಯ ಸಾರಿಗೆಯನ್ನು ಮುಂಚಿತವಾಗಿ ದೃಢಪಡಿಸಿ.',
   },
   {
     q: 'ಮುಖ್ಯ ಕಡಲತೀರ ಮತ್ತು ಮಹಾಬಲೇಶ್ವರ ದೇವಾಲಯದ ಸಂಬಂಧವೇನು?',
@@ -42,7 +43,7 @@ const faq = [
 
 const attractionSchema = {
   '@context': 'https://schema.org',
-  '@type': ['TouristAttraction', 'LocalBusiness'],
+  '@type': 'TouristAttraction',
   ...(attractionId ? { '@id': attractionId } : {}),
   name: place.name,
   alternateName: [
@@ -52,10 +53,9 @@ const attractionSchema = {
   ],
   description: 'ಗೋಕರ್ಣ ಪಟ್ಟಣಕ್ಕೆ ಅತ್ಯಂತ ಸಮೀಪದಲ್ಲಿರುವ ಸಾರ್ವಜನಿಕ ಅರಬ್ಬೀ ಸಮುದ್ರ ಕಡಲತೀರ; ತೀರ್ಥಸಂಸ್ಕೃತಿ, ವಿಶಾಲ ಮರಳುತೀರ ಮತ್ತು ಸೂರ್ಯಾಸ್ತಕ್ಕಾಗಿ ಪರಿಚಿತ.',
   ...(pageUrl ? { url: pageUrl } : {}),
-  image: [place.heroImage],
-  isAccessibleForFree: true,
+  image: [new URL(place.heroImage, Astro.site).toString()],
   hasMap: place.mapsUrl,
-  sameAs: [place.mapsUrl, sourceLinks.stateTourism, sourceLinks.nationalTourism],
+  sameAs: [place.mapsUrl],
   address: {
     '@type': 'PostalAddress',
     ...place.address,
@@ -64,21 +64,6 @@ const attractionSchema = {
     '@type': 'GeoCoordinates',
     latitude: place.latitude,
     longitude: place.longitude,
-  },
-  openingHoursSpecification: [
-    {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
-      opens: '07:00',
-      closes: '19:00',
-    },
-  ],
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: place.rating,
-    ratingCount: place.ratingCount,
-    bestRating: 5,
-    worstRating: 1,
   },
 };
 
@@ -99,7 +84,7 @@ const jsonLd = [attractionSchema, faqSchema];
   description="ಗೋಕರ್ಣ ಮುಖ್ಯ ಕಡಲತೀರದ ಇತಿಹಾಸ, ಧಾರ್ಮಿಕ ಹಿನ್ನೆಲೆ, ಋತು ಪ್ರವಾಸ ಸಮ್ಮತಿ, ಭೇಟಿ ಯೋಜನೆ, ಹವಾಮಾನ, ಸೌಲಭ್ಯ, ಪಾರ್ಕಿಂಗ್, ಆಹಾರ, ವಸತಿ, ಸಾರಿಗೆ ಮತ್ತು ಸಮೀಪದ ಸ್ಥಳಗಳ ಲಾಭರಹಿತ ಮಾಹಿತಿ ಮಾರ್ಗದರ್ಶಿ."
   image={place.heroImage}
   imageAlt={`${place.fullNameEn} in ${place.cityEn}, ${place.countryEn}`}
-  alternates={[{ lang: 'en', href: '/en/' }, { lang: 'x-default', href: '/en/' }]}
+  alternates={[{ lang: 'kn', href: '/' }, { lang: 'en', href: '/en/' }, { lang: 'x-default', href: '/en/' }]}
   jsonLd={jsonLd}
 >
   <section class="hero-photo relative min-h-[680px] overflow-hidden text-white">
@@ -110,10 +95,10 @@ const jsonLd = [attractionSchema, faqSchema];
         <h1 class="text-5xl font-black leading-[1.08] tracking-[-.035em] sm:text-6xl lg:text-7xl">ಗೋಕರ್ಣ ಮುಖ್ಯ ಕಡಲತೀರ</h1>
         <p class="mt-6 max-w-2xl text-lg leading-8 text-white/90 md:text-xl">ಅಲೆ, ಮರಳು ಮತ್ತು ಶೈವ ತೀರ್ಥಸಂಸ್ಕೃತಿ ಒಂದೇ ಕರಾವಳಿಯಲ್ಲಿ ಸೇರುವ ಗೋಕರ್ಣದ ನಗರಮುಖ ಕಡಲತೀರ.</p>
         <div class="mt-8 flex flex-wrap gap-3 text-sm font-bold">
-          <span class="pill rounded-full px-4 py-2.5">★ 4.4 · 35,614 ಮೌಲ್ಯಮಾಪನಗಳು</span>
+          <span class="pill rounded-full px-4 py-2.5">Google Maps: 4.4 · 35,767 · 22 ಅಕ್ಟೋಬರ್ 2026</span>
           <span class="pill rounded-full px-4 py-2.5">ಸಾರ್ವಜನಿಕ ಕಡಲತೀರ</span>
-          <span class="pill rounded-full px-4 py-2.5">ಪ್ರವೇಶ ಉಚಿತ</span>
-          <span class="pill rounded-full px-4 py-2.5">ಸಾಮಾನ್ಯ ಸಮಯ 07:00–19:00</span>
+          <span class="pill rounded-full px-4 py-2.5">ಪ್ರವೇಶ ಸ್ಥಳೀಯವಾಗಿ ಪರಿಶೀಲಿಸಿ</span>
+          <span class="pill rounded-full px-4 py-2.5">Maps: 07:00–19:00 · 22 ಅಕ್ಟೋಬರ್ 2026</span>
         </div>
         <div class="mt-9 flex flex-wrap gap-3">
           <a href="#ಯೋಜನೆ" class="rounded-full bg-white px-6 py-3.5 text-sm font-extrabold text-ocean-900 no-underline hover:bg-sand-100">ಭೇಟಿ ಯೋಜಿಸಿ</a>
@@ -121,8 +106,8 @@ const jsonLd = [attractionSchema, faqSchema];
         </div>
       </div>
     </div>
-    <p class="absolute bottom-4 right-5 rounded-full bg-black/45 px-3 py-1.5 text-[11px] text-white/90 backdrop-blur">ಚಿತ್ರ: Kondephy · ವಿಕಿಮೀಡಿಯ ಕಾಮನ್ಸ್ · CC BY-SA 4.0</p>
   </section>
+  <PhotoCredit photo="hero" lang="kn" />
 
   <div class="wave-rule" aria-hidden="true"></div>
 
@@ -140,8 +125,8 @@ const jsonLd = [attractionSchema, faqSchema];
         <p class="text-sm font-extrabold text-ocean-700">ತ್ವರಿತ ಮಾಹಿತಿ</p>
         <dl class="mt-5 divide-y divide-ocean-900/10 text-sm">
           <div class="grid grid-cols-[120px_1fr] gap-4 py-4"><dt class="font-bold">ವಿಳಾಸ</dt><dd class="text-slate-600">{place.addressDisplay}</dd></div>
-          <div class="grid grid-cols-[120px_1fr] gap-4 py-4"><dt class="font-bold">ಪ್ರವೇಶ</dt><dd class="text-slate-600">ಸಾರ್ವಜನಿಕ; ಸಾಮಾನ್ಯ ಪ್ರವೇಶ ಉಚಿತ</dd></div>
-          <div class="grid grid-cols-[120px_1fr] gap-4 py-4"><dt class="font-bold">ಸಮಯ</dt><dd class="text-slate-600">ಸಾಮಾನ್ಯ ಪಟ್ಟಿಯ ಸಮಯ {place.opening}; ಬದಲಾವಣೆ ಸಾಧ್ಯ</dd></div>
+          <div class="grid grid-cols-[120px_1fr] gap-4 py-4"><dt class="font-bold">ಪ್ರವೇಶ</dt><dd class="text-slate-600">ಸ್ಥಳೀಯ ಸೂಚನೆ ಮತ್ತು ಶುಲ್ಕ ಪರಿಶೀಲಿಸಿ</dd></div>
+          <div class="grid grid-cols-[120px_1fr] gap-4 py-4"><dt class="font-bold">ಸಮಯ</dt><dd class="text-slate-600">Maps: ಪ್ರತಿದಿನ {place.opening} (22 ಅಕ್ಟೋಬರ್ 2026); ಪ್ರವೇಶ ಬದಲಾಗಬಹುದು</dd></div>
           <div class="grid grid-cols-[120px_1fr] gap-4 py-4"><dt class="font-bold">ಅನುಕೂಲ ಕಾಲ</dt><dd class="text-slate-600">ಅಕ್ಟೋಬರ್–ಮಾರ್ಚ್; ಬೆಳಿಗ್ಗೆ ಅಥವಾ ಸೂರ್ಯಾಸ್ತಕ್ಕೂ ಮೊದಲು</dd></div>
           <div class="grid grid-cols-[120px_1fr] gap-4 py-4"><dt class="font-bold">ಉಳಿಯುವ ಅವಧಿ</dt><dd class="text-slate-600">ಸಾಮಾನ್ಯವಾಗಿ 1–2 ಗಂಟೆ; ದೇವಾಲಯ/ನಡೆಯಾಟ ಸೇರಿಸಿದರೆ ಹೆಚ್ಚು</dd></div>
           <div class="grid grid-cols-[120px_1fr] gap-4 py-4"><dt class="font-bold">ಸ್ವಭಾವ</dt><dd class="text-slate-600">ನಗರಮುಖ ಮರಳುತೀರ · ಧಾರ್ಮಿಕ ಹಿನ್ನೆಲೆ · ಸೂರ್ಯಾಸ್ತ</dd></div>
@@ -158,14 +143,14 @@ const jsonLd = [attractionSchema, faqSchema];
   <section class="bg-white py-18 md:py-24">
     <div class="shell grid gap-12 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
       <div class="photo-frame overflow-hidden rounded-[2rem] bg-ocean-100 shadow-2xl shadow-ocean-900/10">
-        <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Gokarna_Main_Beach_in_January_2023.jpg?width=1400" alt="ಗೋಕರ್ಣ ಮುಖ್ಯ ಕಡಲತೀರದ ಮರಳು ಮತ್ತು ಅರಬ್ಬೀ ಸಮುದ್ರ — Gokarna Main Beach, Gokarna, India" class="aspect-[4/3] h-full w-full object-cover" loading="lazy" />
-        <p class="bg-sand-50 px-4 py-3 text-[11px] leading-5 text-slate-500">ಚಿತ್ರ: Alexey Komarov · ವಿಕಿಮೀಡಿಯ ಕಾಮನ್ಸ್ · CC BY-SA 4.0</p>
+        <img src="/images/gokarna-main-beach-january-94d49b9d98.webp" alt="ಗೋಕರ್ಣ ಮುಖ್ಯ ಕಡಲತೀರದ ಮರಳು ಮತ್ತು ಅರಬ್ಬೀ ಸಮುದ್ರ — Gokarna Main Beach, Gokarna, India" class="aspect-[4/3] h-full w-full object-cover" loading="lazy" />
+        <PhotoCredit photo="january" lang="kn" />
       </div>
       <div>
         <p class="eyebrow">ಇತಿಹಾಸ ಮತ್ತು ಪರಂಪರೆ</p>
         <h2 class="section-title mt-3">“ಗೋಕರ್ಣ” ಎಂಬ ಹೆಸರು ಮತ್ತು ಆತ್ಮಲಿಂಗದ ಪುರಾಣ ಪರಂಪರೆ</h2>
         <div class="mt-6 space-y-5 text-base leading-8 text-slate-600">
-          <p>ಗೋಕರ್ಣವು ಭಾರತದ ಪಶ್ಚಿಮ ಕರಾವಳಿಯ ಪ್ರಾಚೀನ ಶೈವ ತೀರ್ಥಕ್ಷೇತ್ರಗಳಲ್ಲಿ ಒಂದಾಗಿ ಪರಿಚಿತ. ಕರ್ನಾಟಕ ಪ್ರವಾಸೋದ್ಯಮದ ಪ್ರಕಟಿತ ವಿವರಗಳಲ್ಲಿ “ಗೋಕರ್ಣ” ಎಂಬ ಹೆಸರನ್ನು “ಗೋವಿನ ಕಿವಿ” ಎಂಬ ಅರ್ಥದೊಂದಿಗೆ ಸಂಪರ್ಕಿಸಲಾಗುತ್ತದೆ; ಪಟ್ಟಣದ ಭೂಆಕಾರ ಮತ್ತು ಸ್ಥಳೀಯ ಧಾರ್ಮಿಕ ಕಥನಗಳು ಈ ಹೆಸರಿನ ವಿವರಣೆಗೆ ಸೇರಿಕೊಂಡಿವೆ.</p>
+          <p>ಗೋಕರ್ಣವು ಶೈವ ತೀರ್ಥಕ್ಷೇತ್ರವಾಗಿ ಪರಿಚಿತ. “ಗೋಕರ್ಣ” ಎಂಬ ಹೆಸರನ್ನು “ಗೋವಿನ ಕಿವಿ” ಎಂದು ವಿವರಿಸುವ ಸಂಪ್ರದಾಯವಿದೆ; ಇದು ಪರಂಪರೆಯ ವಿವರಣೆ, ದಿನಾಂಕಿತ ಐತಿಹಾಸಿಕ ನಿರ್ಣಯವಲ್ಲ.</p>
           <p><strong class="text-ocean-900">ಪುರಾಣ ಪರಂಪರೆ:</strong> ರಾವಣನು ಶಿವನಿಂದ ಪಡೆದ ಆತ್ಮಲಿಂಗವನ್ನು ಲಂಕೆಗೆ ಕೊಂಡೊಯ್ಯುವಾಗ ಗಣೇಶನ ತಂತ್ರದಿಂದ ಅದು ಗೋಕರ್ಣದಲ್ಲಿ ನೆಲಸಿದ ಕಥೆ ಮಹಾಬಲೇಶ್ವರ ದೇವಾಲಯದ ಪ್ರಮುಖ ಪೌರಾಣಿಕ ಹಿನ್ನೆಲೆ. ಇದು ಭಕ್ತಿಪರಂಪರೆಯಲ್ಲಿ ಉಳಿದಿರುವ ಪುರಾಣಕಥೆ; ಪುರಾತತ್ತ್ವದ ದೃಢ ದಿನಾಂಕಿತ ಇತಿಹಾಸವೆಂದು ಪರಿಗಣಿಸಬಾರದು.</p>
           <p>ಮುಖ್ಯ ಕಡಲತೀರ ಈ ಧಾರ್ಮಿಕ ಭೂದೃಶ್ಯದ ಭಾಗ. ಕೆಲವು ಯಾತ್ರಿಕರು ಮಹಾಬಲೇಶ್ವರ ದೇವಾಲಯಕ್ಕೆ ತೆರಳುವ ಮೊದಲು ಸಮುದ್ರ ಸ್ನಾನ ಮಾಡುವ ಪದ್ಧತಿಯನ್ನು ಅನುಸರಿಸುತ್ತಾರೆ. ಆದ್ದರಿಂದ ಸ್ಥಳವನ್ನು ಬಳಸುವಾಗ ಸ್ನಾನ, ಪ್ರಾರ್ಥನೆ ಅಥವಾ ಪೂಜಾ ಆಚರಣೆಗಳಲ್ಲಿ ತೊಡಗಿರುವವರ ಖಾಸಗಿತನ ಮತ್ತು ಗೌರವವನ್ನು ಕಾಪಾಡುವುದು ಸೂಕ್ತ.</p>
           <p>ಪುರಾಣದ ಪ್ರಕಾರ, ಶಿವನಿಂದ ಆತ್ಮಲಿಂಗ ಪಡೆದ ರಾವಣನು ಅದನ್ನು ಲಂಕೆಗೆ ಕೊಂಡೊಯ್ಯುವಾಗ ಮಧ್ಯಾಹ್ನದ ಪೂಜಾ ಸಮಯದಲ್ಲಿ ಗಣೇಶ ಬಾಲಕನ ವೇಷದಲ್ಲಿ ಬಂದು “ಇದನ್ನು ನೆಲದ ಮೇಲಿಡು” ಎಂದು ಮರುಳಿಸಿದನಂತೆ. ರಾವಣ ಅದನ್ನು ಇಟ್ಟ ಕೂಡಲೇ ಲಿಂಗ ಬೇರೂನಿತು; ಅದನ್ನು ಮೇಲೆತ್ತಲಾಗದೆ ಗೋಕರ್ಣದಲ್ಲೇ ಉಳಿಯಿತು — ಇಂದಿನ ಮಹಾಬಲೇಶ್ವರ ದೇವಾಲಯದ ಮೂಲ ಲಿಂಗ.</p>
@@ -195,7 +180,7 @@ const jsonLd = [attractionSchema, faqSchema];
       <article class="card p-6">
         <div class="text-2xl">₹</div>
         <h3 class="mt-4 text-lg font-extrabold">ಟಿಕೆಟ್ / ವೆಚ್ಚ</h3>
-        <p class="mt-3 text-sm leading-7 text-slate-600">ಸಾಮಾನ್ಯ ಕಡಲತೀರ ಪ್ರವೇಶ ಉಚಿತ. ಪಾರ್ಕಿಂಗ್, ಖಾಸಗಿ ಕ್ರೀಡೆ/ಸಾರಿಗೆ ಅಥವಾ ಬಾಡಿಗೆ ಸೌಲಭ್ಯಗಳಿಗೆ ಪ್ರತ್ಯೇಕ ಶುಲ್ಕ ಇರಬಹುದು; ಸ್ಥಿರ ದರವನ್ನು ಇಲ್ಲಿ ಊಹಿಸಿಲ್ಲ.</p>
+        <p class="mt-3 text-sm leading-7 text-slate-600">ಪ್ರಸ್ತುತ ಅಧಿಕೃತ ಪ್ರವೇಶ ದರಪಟ್ಟಿ ಪರಿಶೀಲನೆಯಲ್ಲಿ ಕಂಡುಬಂದಿಲ್ಲ. ಸ್ಥಳೀಯ ನಿರ್ಬಂಧ ಮತ್ತು ಯಾವುದೇ ಶುಲ್ಕ ದೃಢಪಡಿಸಿ; ಪಾರ್ಕಿಂಗ್, ಖಾಸಗಿ ಸಾರಿಗೆ ಅಥವಾ ಬಾಡಿಗೆಗೆ ಪ್ರತ್ಯೇಕ ವೆಚ್ಚ ಇರಬಹುದು.</p>
       </article>
       <article class="card p-6">
         <div class="text-2xl">≈</div>
@@ -211,7 +196,7 @@ const jsonLd = [attractionSchema, faqSchema];
           <h3 class="mt-3 text-2xl font-black">ಸುಂದರ ನೀರು ಎಂದರೆ ಯಾವಾಗಲೂ ಸುರಕ್ಷಿತ ನೀರು ಅಲ್ಲ</h3>
         </div>
         <div class="grid gap-4 sm:grid-cols-2 text-sm leading-7 text-ocean-50/90">
-          <p>ಕರ್ನಾಟಕ ಪ್ರವಾಸೋದ್ಯಮದ ಪ್ರಸ್ತುತ ಸ್ಥಳ ಮಾರ್ಗದರ್ಶಿ ಮುಖ್ಯ ಕಡಲತೀರವನ್ನು ಬಲವಾದ ಪ್ರವಾಹಗಳ ಕಾರಣ ಈಜಿಗೆ ಆದರ್ಶವಲ್ಲ ಎಂದು ಗುರುತಿಸುತ್ತದೆ. ರಕ್ಷಕ ಅಥವಾ ಎಚ್ಚರಿಕೆ ಧ್ವಜ ಇದ್ದರೆ ಅದನ್ನೇ ಮೊದಲ ಆದ್ಯತೆಯ ಸೂಚನೆ ಎಂದು ಪರಿಗಣಿಸಿ; ಅನುಮಾನವಿದ್ದರೆ ನೀರಿಗೆ ಇಳಿಯಬೇಡಿ.</p>
+          <p>ನೀರಿಗಿಳಿಯುವುದು ಸುರಕ್ಷಿತವೆಂದು ಈ ತಾಣ ದೃಢಪಡಿಸುವುದಿಲ್ಲ. ಸ್ಥಳೀಯ ನಿರ್ಬಂಧ, ಎಚ್ಚರಿಕೆ ಧ್ವಜ ಮತ್ತು ರಕ್ಷಕರು ಇದ್ದರೆ ಅವರ ಸೂಚನೆ ಪಾಲಿಸಿ; ಅನುಮಾನವಿದ್ದರೆ ತೀರದಲ್ಲಿರಿ. ಹವಾಮಾನ ಅಥವಾ ಸಮುದ್ರ ಮಾದರಿ ಈಜಿನ ಸುರಕ್ಷತೆಯನ್ನು ನಿರ್ಧರಿಸುವುದಿಲ್ಲ.</p>
           <p>ರಿಪ್ ಕರಂಟ್‌ನಂತಹ ಕರಾವಳಿ ಪ್ರವಾಹಗಳು ಕಣ್ಣಿಗೆ ಸ್ಪಷ್ಟವಾಗದೇ ಇರಬಹುದು. ಅನುಮಾನವಿದ್ದರೆ ನೀರಿಗೆ ಇಳಿಯದೆ ತೀರದ ಅನುಭವಕ್ಕೆ ಸೀಮಿತವಾಗಿರಿ.</p>
           <p>ಸೂರ್ಯತಾಪಕ್ಕೆ ನೀರು, ತಲೆಕವಚ ಮತ್ತು ಚರ್ಮರಕ್ಷಣೆ ಸಹಾಯಕ. ಮರಳಿನಲ್ಲಿ ಒಡೆದ ಗಾಜು/ಕಸದ ಸಾಧ್ಯತೆಯಿಂದ ಪಾದರಕ್ಷೆ ಕೈಯಲ್ಲಿಟ್ಟುಕೊಳ್ಳಿ.</p>
           <p>ಧಾರ್ಮಿಕ ಸ್ನಾನ ಮತ್ತು ಸ್ಥಳೀಯ ಮೀನುಗಾರಿಕೆ ಚಟುವಟಿಕೆಗಳಿಗೆ ಸ್ಥಳ ನೀಡಿ; ದೋಣಿ, ಬಲೆ ಮತ್ತು ಕೆಲಸದ ಪ್ರದೇಶಗಳ ಮಧ್ಯೆ ಹೋಗಬೇಡಿ.</p>
@@ -224,7 +209,7 @@ const jsonLd = [attractionSchema, faqSchema];
     <div class="max-w-3xl">
       <p class="eyebrow">ಋತು ಪ್ರವಾಸ ಸಮ್ಮತಿ</p>
       <h2 class="section-title mt-3">ವರ್ಷದ ಕಾಲಕ್ಕೆ ತಕ್ಕಂತೆ ಭೇಟಿ ಯೋಜಿಸಿ</h2>
-      <p class="lead mt-5">ಕೆಳಗಿನ ಕೋಷ್ಟಕವು ಗೋಕರ್ಣ ಕರಾವಳಿಯ ಸುಮಾರು 30 ವರ್ಷಗಳ ಹವಾಮಾನ ಸಾಮಾನ್ಯ ಸ್ಥಿತಿಯನ್ನು (ಭಾರತ ಹವಾಮಾನ ಇಲಾಖೆಯ ದೀರ್ಘಾವಧಿ ಸರಾಸರಿ) ಆಧರಿಸಿದೆ. ನಿಖರ ತಾಪಮಾನ ಮತ್ತು ಮಳೆ ವಾರ್ಷಿಕವಾಗಿ ಬದಲಾಗಬಹುದು.</p>
+      <p class="lead mt-5">ಋತು ಆಧಾರಿತ ಸಾಮಾನ್ಯ ಪ್ರಯಾಣ ಸಲಹೆಗಳು; ಅಳೆಯಲಾದ ಹವಾಮಾನ ದಾಖಲೆ ಅಥವಾ ಮುನ್ಸೂಚನೆಯಲ್ಲ. ನಿಮ್ಮ ಪ್ರಯಾಣ ದಿನದ ಮುನ್ಸೂಚನೆ ಮತ್ತು ಸ್ಥಳೀಯ ನಿರ್ಬಂಧ ಪರಿಶೀಲಿಸಿ.</p>
     </div>
     <div class="mt-10 overflow-x-auto">
       <table class="w-full border-collapse text-left text-sm">
@@ -242,15 +227,15 @@ const jsonLd = [attractionSchema, faqSchema];
           <tr class="bg-white">
             <td class="px-4 py-3 font-bold text-ocean-900">ಚಳಿಗಾಲ / ಶುಷ್ಕ</td>
             <td class="px-4 py-3 text-slate-600">ಅಕ್ಟೋಬರ್–ಮಾರ್ಚ್</td>
-            <td class="px-4 py-3 text-slate-600">೨೦–೩೨°C</td>
+            <td class="px-4 py-3 text-slate-600">ಮುನ್ಸೂಚನೆ ನೋಡಿ</td>
             <td class="px-4 py-3 text-slate-600">ಕಡಿಮೆ</td>
-            <td class="px-4 py-3 text-slate-600">ಸಮತಟ್ಟು, ಈಜಲು ಸುಧಾರಿತ</td>
+            <td class="px-4 py-3 text-slate-600">ಈಜಿನ ಸುರಕ್ಷತೆ ದೃಢಪಟ್ಟಿಲ್ಲ</td>
             <td class="px-4 py-3 text-slate-600">ಅತ್ಯುತ್ತಮ ಕಾಲ; ಬೆಳಗ್ಗೆ/ಸಂಜೆ ನಡೆ</td>
           </tr>
           <tr class="bg-ocean-50/40">
             <td class="px-4 py-3 font-bold text-ocean-900">ಬೆಸಿಗೆ</td>
             <td class="px-4 py-3 text-slate-600">ಮಾರ್ಚ್–ಮೇ</td>
-            <td class="px-4 py-3 text-slate-600">೨೮–೩೬°C</td>
+            <td class="px-4 py-3 text-slate-600">ಮುನ್ಸೂಚನೆ ನೋಡಿ</td>
             <td class="px-4 py-3 text-slate-600">ಬರಳು</td>
             <td class="px-4 py-3 text-slate-600">ಬಿಸಿಲು ಹೆಚ್ಚು, ಸಮುದ್ರ ಬೆಚ್ಚಗೆ</td>
             <td class="px-4 py-3 text-slate-600">ಬೆಳಿಗ್ಗೆ ಆರಂಭಿಸಿ; ಮಧ್ಯಾಹ್ನ ನೆರಳು</td>
@@ -258,7 +243,7 @@ const jsonLd = [attractionSchema, faqSchema];
           <tr class="bg-white">
             <td class="px-4 py-3 font-bold text-ocean-900">ಮುಂಗಾರು / ಮಳೆಗಾಲ</td>
             <td class="px-4 py-3 text-slate-600">ಜೂನ್–ಸೆಪ್ಟೆಂಬರ್</td>
-            <td class="px-4 py-3 text-slate-600">೨೪–೩೦°C</td>
+            <td class="px-4 py-3 text-slate-600">ಮುನ್ಸೂಚನೆ ನೋಡಿ</td>
             <td class="px-4 py-3 text-slate-600">ಭಾರಿ</td>
             <td class="px-4 py-3 text-slate-600">ರುಕ್ಷ ಅಲೆ, ಈಜು ಅಸುರಕ್ಷಿತ</td>
             <td class="px-4 py-3 text-slate-600">ಹಸಿರು ಪರಿಸರ; ಸಮುದ್ರಕ್ಕೆ ಇಳಿಯಬೇಡಿ</td>
@@ -343,19 +328,19 @@ const jsonLd = [attractionSchema, faqSchema];
         <p class="lead mt-5">ಇವು ನಗರ ಸಾರ್ವಜನಿಕ ಕಡಲತೀರದ ಸೌಲಭ್ಯಗಳು; ಹೋಟೆಲ್ ರೆಸಾರ್ಟ್ ಮಟ್ಟದ ಖಾತರಿ ಸೇವೆಗಳು ಅಲ್ಲ. ಕಾರ್ಯನಿರ್ವಹಣೆ, ಸ್ವಚ್ಛತೆ ಮತ್ತು ಲಭ್ಯತೆ ಬದಲಾಗಬಹುದು.</p>
       </div>
       <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        <article class="card p-6"><h3 class="font-extrabold">ಶೌಚಾಲಯ ಮತ್ತು ಬಟ್ಟೆ ಬದಲಾವಣೆ</h3><p class="mt-3 text-sm leading-7 text-slate-600">ಕರ್ನಾಟಕ ಪ್ರವಾಸೋದ್ಯಮದ ಕಡಲತೀರ ಮಾರ್ಗದರ್ಶಿಯಲ್ಲಿ ಸಾರ್ವಜನಿಕ ಶೌಚಾಲಯ ಮತ್ತು ಬಟ್ಟೆ ಬದಲಿಸುವ ಸೌಲಭ್ಯ ಉಲ್ಲೇಖಿಸಲಾಗಿದೆ. ಟಿಷ್ಯೂ, ಸ್ಯಾನಿಟೈಸರ್ ಮೊದಲಾದ ವೈಯಕ್ತಿಕ ವಸ್ತುಗಳನ್ನು ಜೊತೆಗೆ ಇಡುವುದು ಉಪಯುಕ್ತ.</p></article>
-        <article class="card p-6"><h3 class="font-extrabold">ಪಾರ್ಕಿಂಗ್</h3><p class="mt-3 text-sm leading-7 text-slate-600">ಕಡಲತೀರದ ಸಮೀಪ ಪಾರ್ಕಿಂಗ್ ಲಭ್ಯವೆಂದು ರಾಜ್ಯ ಪ್ರವಾಸೋದ್ಯಮ ಸೂಚಿಸುತ್ತದೆ. ದೇವಾಲಯ ಮತ್ತು ಹಳೆಯ ಪಟ್ಟಣದ ಬೀದಿಗಳು ಕಿರಿದಾಗಿರಬಹುದು; ರಜೆ/ಹಬ್ಬದ ದಿನಗಳಲ್ಲಿ ಹೊರವಲಯದಲ್ಲಿ ವಾಹನ ನಿಲ್ಲಿಸಿ ನಡೆದು ಬರುವುದನ್ನು ಪರಿಗಣಿಸಿ.</p></article>
+        <article class="card p-6"><h3 class="font-extrabold">ಶೌಚಾಲಯ ಮತ್ತು ಬಟ್ಟೆ ಬದಲಾವಣೆ</h3><p class="mt-3 text-sm leading-7 text-slate-600">ಪ್ರಸ್ತುತ ಶೌಚಾಲಯ ಅಥವಾ ಬಟ್ಟೆ ಬದಲಿಸುವ ಸೌಲಭ್ಯ ದೃಢಪಟ್ಟಿಲ್ಲ. ಲಭ್ಯತೆ, ಪ್ರವೇಶ ಮತ್ತು ಶುಲ್ಕ ಸ್ಥಳೀಯವಾಗಿ ವಿಚಾರಿಸಿ; ಅಗತ್ಯ ವೈಯಕ್ತಿಕ ವಸ್ತುಗಳನ್ನು ಜೊತೆಗೆ ಇಡಿ.</p></article>
+        <article class="card p-6"><h3 class="font-extrabold">ಪಾರ್ಕಿಂಗ್</h3><p class="mt-3 text-sm leading-7 text-slate-600">ಮಾನ್ಯ ಪಾರ್ಕಿಂಗ್ ಸ್ಥಳ ಮತ್ತು ಪ್ರಸ್ತುತ ಶುಲ್ಕ ಸ್ಥಳೀಯವಾಗಿ ಪರಿಶೀಲಿಸಿ. ಹಳೆಯ ಪಟ್ಟಣದ ಕಿರಿದಾದ ಬೀದಿಗಳನ್ನು ಅಥವಾ ತುರ್ತು ಪ್ರವೇಶವನ್ನು ತಡೆಯಬೇಡಿ; ಕೊನೆಯ ಭಾಗದ ನಡೆಗೆ ಸಿದ್ಧರಿರಿ.</p></article>
         <article class="card p-6"><h3 class="font-extrabold">ಆಹಾರ ಮತ್ತು ನೀರು</h3><p class="mt-3 text-sm leading-7 text-slate-600">ಪಟ್ಟಣ ಭಾಗದಲ್ಲಿ ಸರಳ ಉಪಾಹಾರ, ಸಸ್ಯಾಹಾರಿ ಊಟ, ಕರಾವಳಿ ಶೈಲಿಯ ಆಹಾರ, ಚಹಾ/ತಿಂಡಿ ಮತ್ತು ಪ್ಯಾಕ್ ನೀರು ಪಡೆಯುವ ಸ್ಥಳಗಳ ವರ್ಗಗಳು ಸಾಮಾನ್ಯ. ನಿರ್ದಿಷ್ಟ ವ್ಯಾಪಾರಿಯನ್ನು ಈ ತಾಣ ಶಿಫಾರಸು ಮಾಡುವುದಿಲ್ಲ.</p></article>
         <article class="card p-6"><h3 class="font-extrabold">ವಸತಿ</h3><p class="mt-3 text-sm leading-7 text-slate-600">ಪಟ್ಟಣದಲ್ಲಿ ಧರ್ಮಶಾಲೆ/ಸರಳ ವಸತಿ, ಅತಿಥಿಗೃಹ, ಮನೆಮಠ ವಸತಿ ಮತ್ತು ಸಣ್ಣ ಪ್ರವಾಸಿ ವಸತಿ ಆಯ್ಕೆಗಳು ಸಾಮಾನ್ಯ. ಧಾರ್ಮಿಕ ಹಬ್ಬ ಮತ್ತು ವಾರಾಂತ್ಯದಲ್ಲಿ ಮುಂಚಿತವಾಗಿ ಲಭ್ಯತೆ ಪರಿಶೀಲಿಸಿ.</p></article>
         <article class="card p-6"><h3 class="font-extrabold">ದಿನಸಿ ಮತ್ತು ಔಷಧ</h3><p class="mt-3 text-sm leading-7 text-slate-600">ಗೋಕರ್ಣ ಪಟ್ಟಣದ ಮುಖ್ಯ ಬೀದಿಗಳಲ್ಲಿ ಸಾಮಾನ್ಯ ದಿನಸಿ, ಕುಡಿಯುವ ನೀರು, ಹಣ್ಣು ಮತ್ತು ಮೂಲಭೂತ ಔಷಧ ಪಡೆಯುವ ಅಂಗಡಿ ವರ್ಗಗಳು ಸಿಗುತ್ತವೆ. ರಾತ್ರಿ ತಡವಾಗಿ ಎಲ್ಲ ಸೇವೆಗಳು ತೆರೆದಿರುತ್ತವೆ ಎಂದು ಊಹಿಸಬೇಡಿ.</p></article>
         <article class="card p-6"><h3 class="font-extrabold">ಇಂಧನ ಮತ್ತು ವಿದ್ಯುತ್ ವಾಹನ ಚಾರ್ಜಿಂಗ್</h3><p class="mt-3 text-sm leading-7 text-slate-600">ರಾಷ್ಟ್ರೀಯ ಹೆದ್ದಾರಿ ಸಂಪರ್ಕದ ಮಾರ್ಗಗಳಲ್ಲಿ ಇಂಧನ ತುಂಬುವ ಸೌಲಭ್ಯಗಳು ಸಿಗುತ್ತವೆ. ವಿದ್ಯುತ್ ವಾಹನ ಚಾರ್ಜಿಂಗ್ ಕೇಂದ್ರಗಳ ಲಭ್ಯತೆ ಮತ್ತು ಕಾರ್ಯಸ್ಥಿತಿ ವೇಗವಾಗಿ ಬದಲಾಗಬಹುದು; ಗೋಕರ್ಣಕ್ಕೆ ತಲುಪುವ ಮುನ್ನ ನವೀಕೃತ ನಕ್ಷೆ/ಜಾಲ ಮಾಹಿತಿಯಲ್ಲಿ ದೃಢಪಡಿಸಿ.</p></article>
-        <article class="card p-6"><h3 class="font-extrabold">ರಕ್ಷಕರು ಮತ್ತು ತುರ್ತು ಪರಿಸ್ಥಿತಿ</h3><p class="mt-3 text-sm leading-7 text-slate-600">ರಾಜ್ಯ ಪ್ರವಾಸೋದ್ಯಮದ ಸೌಲಭ್ಯ ಪಟ್ಟಿಯಲ್ಲಿ ಜೀವ ರಕ್ಷಕರನ್ನು ಸೂಚಿಸಲಾಗಿದೆ. ಆದರೂ ಪ್ರತಿಯೊಂದು ಭಾಗ/ಪ್ರತಿ ಕ್ಷಣದಲ್ಲಿ ಮೇಲ್ವಿಚಾರಣೆ ಖಚಿತವಲ್ಲ; ಸಮುದ್ರ ಸುರಕ್ಷತೆಯ ವೈಯಕ್ತಿಕ ಹೊಣೆಗಾರಿಕೆ ಉಳಿಯುತ್ತದೆ.</p></article>
+        <article class="card p-6"><h3 class="font-extrabold">ರಕ್ಷಕರು ಮತ್ತು ತುರ್ತು ಪರಿಸ್ಥಿತಿ</h3><p class="mt-3 text-sm leading-7 text-slate-600">ಈ ಪರಿಶೀಲನೆಯಲ್ಲಿ ರಕ್ಷಕರ ನಿಯೋಜನೆ ಅಥವಾ ಕರ್ತವ್ಯದ ಸಮಯ ದೃಢಪಟ್ಟಿಲ್ಲ. ಮೇಲ್ವಿಚಾರಣೆ ಖಚಿತವೆಂದು ಊಹಿಸಬೇಡಿ; ತುರ್ತು ಪರಿಸ್ಥಿತಿಯಲ್ಲಿ ಸ್ಥಳೀಯ ಪ್ರಾಧಿಕಾರದ ಸಹಾಯ ಪಡೆಯಿರಿ.</p></article>
         <article class="card p-6"><h3 class="font-extrabold">ಚಲನಸೌಲಭ್ಯ</h3><p class="mt-3 text-sm leading-7 text-slate-600">ಮರಳು ಮೇಲ್ಮೈ ಕಾರಣ ಚಕ್ರಕುರ್ಚಿ, ವಾಕರ್ ಮತ್ತು ಮಕ್ಕಳ ಗಾಡಿಗೆ ಸ್ವತಂತ್ರ ಚಲನೆ ಕಷ್ಟವಾಗಬಹುದು. ಸಮತಟ್ಟಾದ ಪ್ರವೇಶದ ಸ್ಥಿತಿ ಋತು/ಮರಳು ಬದಲಾವಣೆಯಿಂದ ವ್ಯತ್ಯಾಸವಾಗಬಹುದು; ಸಹಾಯಕರೊಂದಿಗೆ ಯೋಜಿಸುವುದು ಸೂಕ್ತ.</p></article>
         <article class="card p-6"><h3 class="font-extrabold">ಸಂಪರ್ಕ ಮತ್ತು ಪಾವತಿ</h3><p class="mt-3 text-sm leading-7 text-slate-600">ಪಟ್ಟಣ ಪ್ರದೇಶದಲ್ಲಿ ಮೊಬೈಲ್ ಸಂಪರ್ಕ ಸಾಮಾನ್ಯವಾಗಿ ದೊರೆಯಬಹುದು; ಜನಸಂದಣಿ ಅಥವಾ ಹವಾಮಾನದಿಂದ ಗುಣಮಟ್ಟ ಬದಲಾಗಬಹುದು. ಸಣ್ಣ ವೆಚ್ಚಗಳಿಗೆ ಡಿಜಿಟಲ್ ಪಾವತಿಯ ಜೊತೆಗೆ ಸ್ವಲ್ಪ ನಗದು ಇಡುವುದು ಉಪಯುಕ್ತ.</p></article>
-        <article class="card p-6"><h3 class="font-extrabold">ಎಟಿಎಂ ಮತ್ತು ಬ್ಯಾಂಕಿಂಗ್</h3><p class="mt-3 text-sm leading-7 text-slate-600">ಪಟ್ಟಣ ಮತ್ತು ಬಸ್ ನಿಲ್ದಾಣ ಸಮೀಪ ಎಟಿಎಂ ಹಾಗೂ ಬ್ಯಾಂಕ್ ಶಾಖೆಗಳು ಲಭ್ಯ. ನಗದು ತೆಗೆದುಕೊಳ್ಳಲು ಕಾರ್ಡ್ ಬಳಸಬಹುದು; ಸಂಜೆ/ರಜೆಯಲ್ಲಿ ಮಿತಿಗಳಿರಬಹುದು.</p></article>
-        <article class="card p-6"><h3 class="font-extrabold">ಪ್ರವಾಸಿ ಮಾಹಿತಿ ಕೇಂದ್ರ</h3><p class="mt-3 text-sm leading-7 text-slate-600">ಜಿಲ್ಲಾಡಳಿತ ಮತ್ತು ಪ್ರವಾಸೋದ್ಯಮ ಕಚೇರಿಗಳ ಮೂಲಕ ಪ್ರವಾಸಿ ಮಾಹಿತಿ ಕೇಂದ್ರ/ಸಹಾಯ ಡೆಸ್ಕ್ ಲಭ್ಯವಿರಬಹುದು. ಮಾರ್ಗದರ್ಶಿ, ನಕ್ಷೆ ಮತ್ತು ಘಟನೆ ಮಾಹಿತಿಗೆ ಅಲ್ಲಿ ವಿಚಾರಿಸಿ.</p></article>
-        <article class="card p-6"><h3 class="font-extrabold">ಪ್ರಥಮ ಚಿಕಿತ್ಸೆ ಮತ್ತು ಔಷಧಾಲಯ</h3><p class="mt-3 text-sm leading-7 text-slate-600">ಪಟ್ಟಣದಲ್ಲಿ ಔಷಧಾಲಯಗಳು ಮತ್ತು ಪ್ರಾಥಮಿಕ ಆರೋಗ್ಯ ಕೇಂದ್ರಗಳು ಇವೆ. ಸೂರ್ಯತಾಪ, ಕಡಲುನೀರು ಅಥವಾ ಚಿಕ್ಕ ಗಾಯಗಳಿಗೆ ತ್ವರಿತ ನಿವಾರಣೆಗೆ ಸ್ಥಳೀಯ ಔಷಧಾಲಯ ಬಳಸಿ.</p></article>
-        <article class="card p-6"><h3 class="font-extrabold">ಕಡಲತೀರ ಸಾಧನ ಬಾಡಿಗೆ</h3><p class="mt-3 text-sm leading-7 text-slate-600">ಮಡಕ್ಕೆ, ಸೂರ್ಯಕಿರಣ ಚಟಾಕ್, ಛತ್ರಿ ಮತ್ತು ಕುಳಿತುಕೊಳ್ಳುವ ಸಾಧನಗಳನ್ನು ನೀಡುವ ಬೀಚ್-ಆಧಾರಿತ ಬಾಡಿಗೆ ವ್ಯವಸ್ಥೆಗಳು ಋತು ಮತ್ತು ಸ್ಥಳಕ್ಕೆ ಅವಲಂಬಿತ. ದರ ಮತ್ತು ಠೇವಣಿ ನಿಯಮ ಸ್ಥಳದಲ್ಲೇ ದೃಢಪಡಿಸಿ.</p></article>
+        <article class="card p-6"><h3 class="font-extrabold">ಎಟಿಎಂ ಮತ್ತು ಬ್ಯಾಂಕಿಂಗ್</h3><p class="mt-3 text-sm leading-7 text-slate-600">ನಿಮ್ಮ ಪ್ರಯಾಣಕ್ಕೂ ಮೊದಲು ಕಾರ್ಯನಿರ್ವಹಿಸುವ ಎಟಿಎಂ ಅಥವಾ ಪಾವತಿ ಆಯ್ಕೆ ಪರಿಶೀಲಿಸಿ; ಪ್ರತಿ ಮಳಿಗೆಯೂ ಕಾರ್ಡ್ ಸ್ವೀಕರಿಸುತ್ತದೆ ಎಂದು ಊಹಿಸಬೇಡಿ.</p></article>
+        <article class="card p-6"><h3 class="font-extrabold">ಪ್ರವಾಸಿ ಮಾಹಿತಿ ಕೇಂದ್ರ</h3><p class="mt-3 text-sm leading-7 text-slate-600">ಪ್ರವಾಸಿ ಮಾಹಿತಿ ಡೆಸ್ಕ್‌ನ ಪ್ರಸ್ತುತ ಸ್ಥಳ ಅಥವಾ ಕಾರ್ಯನಿರ್ವಹಣೆ ದೃಢಪಟ್ಟಿಲ್ಲ. ಅಧಿಕೃತ ಜಿಲ್ಲಾ ಮೂಲ ಮತ್ತು ಸ್ಥಳೀಯ ಪ್ರಕಟಣೆಗಳಿಂದ ಮಾರ್ಗ ಹಾಗೂ ನಿರ್ಬಂಧ ಪರಿಶೀಲಿಸಿ.</p></article>
+        <article class="card p-6"><h3 class="font-extrabold">ಪ್ರಥಮ ಚಿಕಿತ್ಸೆ ಮತ್ತು ಔಷಧಾಲಯ</h3><p class="mt-3 text-sm leading-7 text-slate-600">ನಿಮಗೆ ಬೇಕಾದ ಔಷಧಿ ಮತ್ತು ಮೂಲ ಪ್ರಥಮ ಚಿಕಿತ್ಸೆ ಸಾಮಗ್ರಿಗಳನ್ನು ಮುಂಚಿತವಾಗಿ ಸಿದ್ಧಪಡಿಸಿ. ಸಮೀಪದ ವೈದ್ಯಕೀಯ ಸೇವೆಯ ಸ್ಥಳ ಮತ್ತು ಲಭ್ಯತೆಯನ್ನು ಸ್ವತಂತ್ರವಾಗಿ ಪರಿಶೀಲಿಸಿ.</p></article>
+        <article class="card p-6"><h3 class="font-extrabold">ಕಡಲತೀರ ಸಾಧನ ಬಾಡಿಗೆ</h3><p class="mt-3 text-sm leading-7 text-slate-600">ಯಾವುದೇ ಸಾಧನ ಬಾಡಿಗೆ ಲಭ್ಯವೆಂದು ಮುಂಚಿತವಾಗಿ ಊಹಿಸಬೇಡಿ. ಲಭ್ಯವಿದ್ದರೆ ದರ, ಸುರಕ್ಷತೆ, ಠೇವಣಿ ಮತ್ತು ವಾಪಸಿ ನಿಯಮ ಪರಿಶೀಲಿಸಿ.</p></article>
       </div>
     </div>
   </section>
@@ -374,8 +359,8 @@ const jsonLd = [attractionSchema, faqSchema];
         </div>
       </div>
       <div class="photo-frame overflow-hidden rounded-[2rem] bg-sand-100">
-        <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Gokarna_main_beach%2C_February%2C_2018.jpg?width=1400" alt="ಗೋಕರ್ಣ ಮುಖ್ಯ ಕಡಲತೀರದ ಕರಾವಳಿ ದೃಶ್ಯ — Gokarna Main Beach coastline, Gokarna, India" class="aspect-[4/3] h-full w-full object-cover" loading="lazy" />
-        <p class="px-4 py-3 text-[11px] leading-5 text-slate-500">ಚಿತ್ರ: Alexey Komarov · ವಿಕಿಮೀಡಿಯ ಕಾಮನ್ಸ್ · CC BY-SA 4.0</p>
+        <img src="/images/gokarna-main-beach-february-c3ecfcfaa8.webp" alt="ಗೋಕರ್ಣ ಮುಖ್ಯ ಕಡಲತೀರದ ಕರಾವಳಿ ದೃಶ್ಯ — Gokarna Main Beach coastline, Gokarna, India" class="aspect-[4/3] h-full w-full object-cover" loading="lazy" />
+        <PhotoCredit photo="february" lang="kn" />
       </div>
     </div>
   </section>
@@ -389,13 +374,13 @@ const jsonLd = [attractionSchema, faqSchema];
       </div>
       <div class="mt-10 grid gap-5 lg:grid-cols-2">
         <article class="card p-7">
-          <div class="flex items-start gap-4"><span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-ocean-100 font-black text-ocean-900">✈</span><div><h3 class="text-lg font-extrabold">ವಿಮಾನದಲ್ಲಿ</h3><p class="mt-2 text-sm leading-7 text-slate-600">ಉತ್ತರ ಕನ್ನಡ ಜಿಲ್ಲಾಡಳಿತ ಗೋವಾ ಮತ್ತು ಮಂಗಳೂರು ವಿಮಾನ ನಿಲ್ದಾಣಗಳನ್ನು ಗೋಕರ್ಣಕ್ಕೆ ಸಮೀಪದ ಪ್ರಮುಖ ವಿಮಾನ ಸಂಪರ್ಕಗಳಾಗಿ ಸೂಚಿಸುತ್ತದೆ. ಕರ್ನಾಟಕ ಪ್ರವಾಸೋದ್ಯಮದ ಮಾಹಿತಿಯಲ್ಲಿ ಗೋವಾದ ದಾಬೋಲಿಂ ಸುಮಾರು 149–150 ಕಿಮೀ ದೂರ ಎಂದು ನೀಡಲಾಗಿದೆ. ವಿಮಾನ ನಿಲ್ದಾಣದಿಂದ ಪೂರ್ವನಿಗದಿತ ಟ್ಯಾಕ್ಸಿ, ಬಸ್ ಸಂಪರ್ಕ ಅಥವಾ ರೈಲು ಮಾರ್ಗವನ್ನು ಸಂಯೋಜಿಸಬಹುದು.</p></div></div>
+          <div class="flex items-start gap-4"><span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-ocean-100 font-black text-ocean-900">✈</span><div><h3 class="text-lg font-extrabold">ವಿಮಾನದಲ್ಲಿ</h3><p class="mt-2 text-sm leading-7 text-slate-600">ಉತ್ತರ ಕನ್ನಡ ಜಿಲ್ಲಾ ಮಾರ್ಗದರ್ಶಿ ಗೋವಾ ಮತ್ತು ಮಂಗಳೂರು ವಿಮಾನ ನಿಲ್ದಾಣಗಳನ್ನು ಪ್ರಾದೇಶಿಕ ಸಂಪರ್ಕವಾಗಿ ಸೂಚಿಸುತ್ತದೆ. ಗೋವಾದ ದಾಬೋಲಿಂ ಮತ್ತು ಮನೋಹರ್ ಪ್ರತ್ಯೇಕ ವಿಮಾನ ನಿಲ್ದಾಣಗಳು; ನಿಖರ ವಿಮಾನ ನಿಲ್ದಾಣ, ರಸ್ತೆ ಮಾರ್ಗ ಮತ್ತು ಮುಂದಿನ ಸಾರಿಗೆ ಪರಿಶೀಲಿಸಿ.</p></div></div>
         </article>
         <article class="card p-7">
-          <div class="flex items-start gap-4"><span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-ocean-100 font-black text-ocean-900">▰</span><div><h3 class="text-lg font-extrabold">ರೈಲಿನಲ್ಲಿ</h3><p class="mt-2 text-sm leading-7 text-slate-600">ಕೊಂಕಣ ರೈಲ್ವೆಯ ಗೋಕರ್ಣ ರಸ್ತೆ ನಿಲ್ದಾಣ ಪಟ್ಟಣದಿಂದ ಸುಮಾರು 10 ಕಿಮೀ ದೂರ. ಅಂಕೋಲಾ ಸುಮಾರು 20 ಕಿಮೀ ಮತ್ತು ಕುಮಟಾ ಸುಮಾರು 31–32 ಕಿಮೀ ದೂರದ ಪರ್ಯಾಯ ನಿಲ್ದಾಣಗಳು; ಕೆಲವು ದೀರ್ಘದೂರ ರೈಲುಗಳಿಗೆ ಅವು ಹೆಚ್ಚು ಅನುಕೂಲವಾಗಬಹುದು. ನಿಲ್ದಾಣದಿಂದ ಬಸ್, ಆಟೋ ಅಥವಾ ಟ್ಯಾಕ್ಸಿಯಿಂದ ಪಟ್ಟಣ ತಲುಪಬಹುದು.</p></div></div>
+          <div class="flex items-start gap-4"><span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-ocean-100 font-black text-ocean-900">▰</span><div><h3 class="text-lg font-extrabold">ರೈಲಿನಲ್ಲಿ</h3><p class="mt-2 text-sm leading-7 text-slate-600">ಜಿಲ್ಲಾ ಮಾರ್ಗದರ್ಶಿ ಕುಮಟಾವನ್ನು ರೈಲು ಸಂಪರ್ಕವಾಗಿ ಸೂಚಿಸುತ್ತದೆ. ಗೋಕರ್ಣ ರಸ್ತೆ, ಕುಮಟಾ ಮತ್ತು ಅಂಕೋಲಾ ನಿಲ್ದಾಣಗಳನ್ನು ನಿಮ್ಮ ರೈಲಿನ ಪ್ರಸ್ತುತ ವೇಳಾಪಟ್ಟಿಗೆ ಹೋಲಿಸಿ, ನಂತರ ಸ್ಥಳೀಯ ಸಾರಿಗೆಯನ್ನು ದೃಢಪಡಿಸಿ.</p></div></div>
         </article>
         <article class="card p-7">
-          <div class="flex items-start gap-4"><span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-ocean-100 font-black text-ocean-900">▣</span><div><h3 class="text-lg font-extrabold">ಬಸ್‌ನಲ್ಲಿ</h3><p class="mt-2 text-sm leading-7 text-slate-600">ಬೆಂಗಳೂರು, ಮಂಗಳೂರು, ಹುಬ್ಬಳ್ಳಿ, ಗೋವಾ/ಕರಾವಳಿ ಪಟ್ಟಣಗಳಿಂದ ಗೋಕರ್ಣ ಅಥವಾ ಸಮೀಪದ ಕುಮಟಾ/ಅಂಕೋಲಾಕ್ಕೆ ರಾಜ್ಯ/ಖಾಸಗಿ ಬಸ್ ಸೇವೆಗಳ ವರ್ಗಗಳು ಲಭ್ಯ. ಕರ್ನಾಟಕ ಪ್ರವಾಸೋದ್ಯಮ ಬೆಂಗಳೂರು–ಗೋಕರ್ಣ ರಸ್ತೆ ದೂರವನ್ನು ಸುಮಾರು 485 ಕಿಮೀ, ಮಂಗಳೂರು ಸುಮಾರು 238 ಕಿಮೀ ಎಂದು ಸೂಚಿಸುತ್ತದೆ. ವೇಳಾಪಟ್ಟಿ ಋತುವಿಗೆ ಬದಲಾಗುತ್ತದೆ.</p></div></div>
+          <div class="flex items-start gap-4"><span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-ocean-100 font-black text-ocean-900">▣</span><div><h3 class="text-lg font-extrabold">ಬಸ್‌ನಲ್ಲಿ</h3><p class="mt-2 text-sm leading-7 text-slate-600">ಬೆಂಗಳೂರು, ಮಂಗಳೂರು, ಹುಬ್ಬಳ್ಳಿ ಅಥವಾ ಗೋವಾದಿಂದ ಬರುವಾಗ ಗೋಕರ್ಣ ಅಥವಾ ಕುಮಟಾ/ಅಂಕೋಲಾ ಸಂಪರ್ಕಕ್ಕೆ ಪ್ರಸ್ತುತ ಬಸ್ ವೇಳಾಪಟ್ಟಿ ಪರಿಶೀಲಿಸಿ. ಪಕ್ಕದ ಪಟ್ಟಣದಲ್ಲಿ ಇಳಿದರೆ ಗೋಕರ್ಣಕ್ಕೆ ಮತ್ತೊಂದು ಸಾರಿಗೆ ಹಂತ ಬೇಕಾಗಬಹುದು.</p></div></div>
         </article>
         <article class="card p-7">
           <div class="flex items-start gap-4"><span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-ocean-100 font-black text-ocean-900">⌁</span><div><h3 class="text-lg font-extrabold">ಟ್ಯಾಕ್ಸಿ ಮತ್ತು ಆಟೋ</h3><p class="mt-2 text-sm leading-7 text-slate-600">ರೈಲು ನಿಲ್ದಾಣ, ಬಸ್ ನಿಲ್ದಾಣ ಮತ್ತು ಪಟ್ಟಣದೊಳಗಿನ ಕೊನೆಯ ಹಂತಕ್ಕೆ ಸ್ಥಳೀಯ ಟ್ಯಾಕ್ಸಿ/ಆಟೋ ಸಾಮಾನ್ಯ ಆಯ್ಕೆ. ಪ್ರಯಾಣ ಆರಂಭಿಸುವ ಮೊದಲು ದರ ಅಥವಾ ಮೀಟರ್ ವಿಧಾನ, ಸಾಮಾನು ಶುಲ್ಕ ಮತ್ತು ರಾತ್ರಿ ಶುಲ್ಕವನ್ನು ಸ್ಪಷ್ಟಪಡಿಸಿ. ಈ ತಾಣ ಯಾವುದೇ ನಿರ್ದಿಷ್ಟ ಚಾಲಕ/ಸೇವೆಯನ್ನು ಶಿಫಾರಸು ಮಾಡುವುದಿಲ್ಲ.</p></div></div>
@@ -408,17 +393,17 @@ const jsonLd = [attractionSchema, faqSchema];
         <article class="card p-6">
           <p class="text-xs font-extrabold text-temple-500">ವಿಮಾನ ನಿಲ್ದಾಣ → ಕಡಲತೀರ</p>
           <h3 class="mt-2 text-lg font-extrabold text-ocean-900">ವಿಮಾನದಿಂದ</h3>
-          <p class="mt-3 text-sm leading-7 text-slate-600">ಗೋವಾ (ಮನೋಹರ್/ದಾಬೋಲಿಂ) ಸುಮಾರು 150–160 ಕಿಮೀ, ಮಂಗಳೂರು ಸುಮಾರು 235–240 ಕಿಮೀ ದೂರ. ನಿಲ್ದಾಣದಿಂದ ಪೂರ್ವನಿಗದಿತ ಟ್ಯಾಕ್ಸಿ ಅಥವಾ KSRTC/ಖಾಸಗಿ ಬಸ್‌ನಲ್ಲಿ ಗೋಕರ್ಣ/ಕುಮಟಾ/ಅಂಕೋಲಾಕ್ಕೆ ಬನ್ನಿ, ನಂತರ ಸ್ಥಳೀಯ ಆಟೋ/ಟ್ಯಾಕ್ಸಿಯಿಂದ ಮುಖ್ಯ ಕಡಲತೀರದವರೆಗೆ.</p>
+          <p class="mt-3 text-sm leading-7 text-slate-600">ಗೋವಾದ ದಾಬೋಲಿಂ ಮತ್ತು ಮನೋಹರ್ ಒಂದೇ ವಿಮಾನ ನಿಲ್ದಾಣವಲ್ಲ. ವಿಮಾನ ಟಿಕೆಟ್‌ನ ನಿಲ್ದಾಣದ ಹೆಸರು ಪರಿಶೀಲಿಸಿ; ಮುಂದಿನ ರಸ್ತೆ ಪ್ರಯಾಣ, ಸಮಯ ಮತ್ತು ವೆಚ್ಚವನ್ನು ಪ್ರತ್ಯೇಕವಾಗಿ ಯೋಜಿಸಿ.</p>
         </article>
         <article class="card p-6">
           <p class="text-xs font-extrabold text-ocean-700">ರೈಲು / ಬಸ್ → ಕಡಲತೀರ</p>
           <h3 class="mt-2 text-lg font-extrabold text-ocean-900">ರೈಲು ಅಥವಾ ಬಸ್ಸಿನಿಂದ</h3>
-          <p class="mt-3 text-sm leading-7 text-slate-600">ಗೋಕರ್ಣ ರಸ್ತೆ ರೈಲು ನಿಲ್ದಾಣ ~10 ಕಿಮೀ; ಅಲ್ಲಿಂದ ಆಟೋ/ಟ್ಯಾಕ್ಸಿ. KSRTC ಬಸ್ ನೇರವಾಗಿ ಗೋಕರ್ಣ ಬಸ್ ನಿಲ್ದಾಣಕ್ಕೆ ಬಂದರೆ, ಅಲ್ಲಿಂದ ಕಡಲತೀರ ~5 ನಿಮಿಷದ ಆಟೋ ಪ್ರಯಾಣ. ಕುಮಟಾ/ಅಂಕೋಲಾದಿಂದ ಬಂದರೆ ಬಸ್/ಆಟೋ ಬಳಸಿ.</p>
+          <p class="mt-3 text-sm leading-7 text-slate-600">ನಿಮ್ಮ ರೈಲು ಅಥವಾ ಬಸ್ ನಿಲ್ಲುವ ನಿಲ್ದಾಣ ಮತ್ತು ಮುಂದಿನ ಆಟೋ/ಟ್ಯಾಕ್ಸಿ/ಬಸ್ ಲಭ್ಯತೆ ಪರಿಶೀಲಿಸಿ. ಜಿಲ್ಲಾ ಮಾರ್ಗದರ್ಶಿಯ ಕುಮಟಾ 32 ಕಿಮೀ ಮತ್ತು ಕಾರವಾರ 60 ಕಿಮೀ ರಸ್ತೆ ಉಲ್ಲೇಖಗಳು ಪ್ರಾದೇಶಿಕ ಅಂದಾಜುಗಳು; ಕಡಲತೀರದ ಪ್ರವೇಶದ್ವಾರಕ್ಕೆ ಅಳೆಯಲಾದ ದೂರಗಳಲ್ಲ.</p>
         </article>
         <article class="card p-6">
           <p class="text-xs font-extrabold text-ocean-700">ಸ್ಥಳೀಯ → ಕಡಲತೀರ</p>
           <h3 class="mt-2 text-lg font-extrabold text-ocean-900">ಟ್ಯಾಕ್ಸಿ / ಆಟೋದಿಂದ</h3>
-          <p class="mt-3 text-sm leading-7 text-slate-600">ಪಟ್ಟಣದ ಯಾವುದೇ ಬಿಂದುವಿನಿಂದ ಬೆಲೆಹಿಟ್ಟಲ್ ರಸ್ತೆ ಪ್ರವೇಶದವರೆಗೆ ಆಟೋ/ಟ್ಯಾಕ್ಸಿ; ಕೊನೆಯ ಕೆಲವು ನೂರು ಮೀಟರ್ ಮರಳಿನಲ್ಲಿ ನಡೆಯಿರಿ. ದರ ಮೊದಲೇ ನಿಗದಿಪಡಿಸಿ, ರಾತ್ರಿ ಶುಲ್ಕ ವಿಚಾರಿಸಿ.</p>
+          <p class="mt-3 text-sm leading-7 text-slate-600">ಪಟ್ಟಣದ ಯಾವುದೇ ಬಿಂದುವಿನಿಂದ ಬೆಲೆಹಿಟ್ಟಲ್ ರಸ್ತೆ ಪ್ರವೇಶದವರೆಗೆ ಆಟೋ/ಟ್ಯಾಕ್ಸಿ; ಕೊನೆಯ ಭಾಗದ ನಡೆ ಮತ್ತು ಪ್ರವೇಶ ಸ್ಥಿತಿಯನ್ನು ಸ್ಥಳೀಯವಾಗಿ ವಿಚಾರಿಸಿ. ದರ ಮೊದಲೇ ನಿಗದಿಪಡಿಸಿ, ರಾತ್ರಿ ಶುಲ್ಕ ವಿಚಾರಿಸಿ.</p>
         </article>
       </div>
     </div>
@@ -505,13 +490,10 @@ const jsonLd = [attractionSchema, faqSchema];
         <h2 class="section-title mt-3">ಪಾರದರ್ಶಕ ಮೂಲಾಧಾರ</h2>
       </div>
       <div class="card p-6 md:p-8">
-        <p class="text-sm leading-7 text-slate-600">ಈ ಮಾರ್ಗದರ್ಶಿಯ ಭೌಗೋಳಿಕ, ಪ್ರವೇಶ, ಋತು ಮತ್ತು ಸೌಲಭ್ಯ ಮಾಹಿತಿಯನ್ನು ಪ್ರಮುಖವಾಗಿ ಕೆಳಗಿನ ಸಾರ್ವಜನಿಕ ಸಂಸ್ಥೆಗಳ ಪ್ರಕಟಣೆಗಳೊಂದಿಗೆ ಹೋಲಿಸಲಾಗಿದೆ. ಬಳಕೆದಾರ ಮೌಲ್ಯಮಾಪನ/ಸಾಮಾನ್ಯ ಸಮಯದಂತಹ ವೇಗವಾಗಿ ಬದಲಾಗುವ ಅಂಶಗಳಿಗೆ ಗೂಗಲ್ ನಕ್ಷೆ ಪಟ್ಟಿಯನ್ನು ಸಹ ಸೂಚಕವಾಗಿ ಬಳಸಲಾಗಿದೆ.</p>
+        <p class="text-sm leading-7 text-slate-600">ಜಿಲ್ಲಾ ಮೂಲವು ಸ್ಥಳದ ಗುರುತು, ದೇವಾಲಯದ ಪರಂಪರೆ ಮತ್ತು ಸಮೀಪದ ಕಡಲತೀರಗಳ ಮಾಹಿತಿಯನ್ನು ಬೆಂಬಲಿಸುತ್ತದೆ. Google Maps ಮೌಲ್ಯಮಾಪನ ಮತ್ತು ಪಟ್ಟಿಯ ಸಮಯವನ್ನು 22 ಅಕ್ಟೋಬರ್ 2026 ರಂದು ಪರಿಶೀಲಿಸಲಾಗಿದೆ. ಪ್ರಸ್ತುತ ಸೌಲಭ್ಯ, ಪ್ರವೇಶ ಶುಲ್ಕ ಮತ್ತು ಈಜಿನ ಸುರಕ್ಷತೆ ಇಲ್ಲಿ ದೃಢಪಟ್ಟಿಲ್ಲ.</p>
         <ul class="mt-5 space-y-3 text-sm font-bold text-ocean-700">
-          <li><a class="underline" href={sourceLinks.localGovernment} rel="noreferrer">ಕರ್ನಾಟಕ ಗ್ರಾಮೀಣಾಭಿವೃದ್ಧಿ ಮತ್ತು ಪಂಚಾಯತ್ ರಾಜ್ ಇಲಾಖೆ — ಸ್ಥಳೀಯ ಆಡಳಿತ ಚೌಕಟ್ಟು</a></li>
           <li><a class="underline" href={sourceLinks.district} rel="noreferrer">ಉತ್ತರ ಕನ್ನಡ ಜಿಲ್ಲಾಡಳಿತ — ಗೋಕರ್ಣ ಪ್ರವಾಸಿ ಸ್ಥಳ ಮಾಹಿತಿ</a></li>
-          <li><a class="underline" href={sourceLinks.stateTourism} rel="noreferrer">ಕರ್ನಾಟಕ ಪ್ರವಾಸೋದ್ಯಮ — ಗೋಕರ್ಣ ಅನುಭವ ಮಾರ್ಗದರ್ಶಿ</a></li>
-          <li><a class="underline" href={sourceLinks.stateBeachGuide} rel="noreferrer">ಕರ್ನಾಟಕ ಪ್ರವಾಸೋದ್ಯಮ — ಗೋಕರ್ಣ ಕಡಲತೀರಗಳ ಮಾರ್ಗದರ್ಶಿ</a></li>
-          <li><a class="underline" href={sourceLinks.nationalTourism} rel="noreferrer">ಭಾರತ ಸರ್ಕಾರದ ಪ್ರವಾಸೋದ್ಯಮ ಸಚಿವಾಲಯ — ರಾಷ್ಟ್ರೀಯ ಪ್ರವಾಸೋದ್ಯಮ ಮಾಹಿತಿ</a></li>
+          <li><a class="underline" href={sourceLinks.stateTourism} rel="noreferrer">ಕರ್ನಾಟಕ ಪ್ರವಾಸೋದ್ಯಮ — ಗೋಕರ್ಣ (ಪರಿಶೀಲನೆ: 22 ಅಕ್ಟೋಬರ್ 2026)</a></li>
         </ul>
         <p class="mt-5 text-xs leading-6 text-slate-500">ಸೂಚನೆ: ಈ ತಾಣ ಅಧಿಕೃತ ಪ್ರಕಟಣೆಯನ್ನು ಬದಲಿಸುವುದಿಲ್ಲ. ಹವಾಮಾನ, ಸಮುದ್ರ ಪರಿಸ್ಥಿತಿ, ಸಾರಿಗೆ ವೇಳಾಪಟ್ಟಿ, ಪ್ರವೇಶ ನಿಯಮ ಮತ್ತು ಸೌಲಭ್ಯ ಸ್ಥಿತಿ ಪ್ರಯಾಣದ ದಿನವೇ ಬದಲಾಗಬಹುದು.</p>
       </div>
